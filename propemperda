@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIPROPERDA</title>
+    <meta name="description" content="Dashboard informasi pembentukan Peraturan Daerah" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+      :root {
+        --blue: #0f4c81;
+        --blue-dark: #0b355a;
+        --blue-light: #7fb4ce;
+        --gold: #f0c96b;
+        --paper: #f8fbfd;
+        --line: #dce7ed;
+        --ink: #0f172a;
+        --muted: #5d6c76;
+        --shadow: 0 14px 40px rgba(4, 34, 58, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        color: var(--ink);
+        background: #f7fbfc;
+        line-height: 1.5;
+      }
+      a { color: inherit; }
+      button { font: inherit; }
+      .container { width: min(100% - 40px, 1120px); margin-inline: auto; }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: linear-gradient(90deg, var(--blue-dark), var(--blue));
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+      }
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 86px;
+        gap: 18px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        color: #fff;
+        text-decoration: none;
+      }
+      .brand__seal {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px;
+        border: 2px solid rgba(255,255,255,.35);
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .brand__seal img {
+        display: block;
+        width: auto;
+        height: 38px;
+        object-fit: contain;
+      }
+      .brand strong { display: block; font-size: 17px; }
+      .brand small { display: block; color: rgba(255,255,255,.75); font-size: 11px; line-height: 1.4; }
+      .nav-toggle {
+        display: none;
+        border: 0;
+        color: #fff;
+        background: transparent;
+        font-weight: 700;
+      }
+      .main-nav { display: flex; gap: 2px; }
+      .nav-link {
+        padding: 15px 14px 14px;
+        border-bottom: 3px solid transparent;
+        color: rgba(255,255,255,.78);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .035em;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color .15s ease, border-color .15s ease;
+      }
+      .nav-link:hover, .nav-link:focus-visible, .nav-link.active {
+        border-color: var(--gold);
+        color: #fff;
+        outline: 0;
+      }
+
+      .page { min-height: 560px; }
+      .hero {
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        background: linear-gradient(118deg, var(--blue-dark), var(--blue) 66%, #4d7187);
+      }
+      .hero__content { position: relative; z-index: 1; padding-top: 80px; padding-bottom: 92px; }
+      .hero__shape { position: absolute; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; }
+      .hero__shape--one { right: -80px; bottom: -120px; width: 430px; height: 430px; box-shadow: 0 0 0 48px rgba(255,255,255,.04), 0 0 0 112px rgba(255,255,255,.03); }
+      .hero__shape--two { top: -170px; right: 30%; width: 280px; height: 280px; }
+      .eyebrow { margin: 0 0 15px; color: #f5ce7c; font-size: 12px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+      .eyebrow--blue { color: var(--blue-light); }
+      h1, h2, p { margin-top: 0; }
+      .hero h1 { max-width: 790px; margin-bottom: 23px; font-size: clamp(30px, 4.4vw, 50px); line-height: 1.1; letter-spacing: -.025em; }
+      .hero__description { max-width: 825px; margin-bottom: 0; color: rgba(255,255,255,.88); font-size: 16px; line-height: 1.74; }
+      .hero__caption { display: inline-flex; gap: 9px; align-items: center; margin: 28px 0 0; color: rgba(255,255,255,.86); font-size: 13px; }
+      .hero__caption i { color: var(--gold); }
+
+      .section { padding-top: 66px; padding-bottom: 76px; }
+      .section-heading { display: flex; gap: 36px; align-items: end; justify-content: space-between; margin-bottom: 28px; }
+      .section-heading h2 { margin-bottom: 0; color: var(--blue); font-size: 28px; letter-spacing: -.02em; }
+      .section-heading > p { max-width: 500px; margin-bottom: 3px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+      .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .service-card {
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 28px;
+        border: 1px solid var(--line);
+        color: var(--blue);
+        background: var(--paper);
+        text-align: left;
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .service-card:hover, .service-card:focus-visible { border-color: #92a8b5; outline: 0; box-shadow: var(--shadow); transform: translateY(-5px); }
+      .service-card__icon { color: var(--gold); font-size: 24px; }
+      .service-card strong { font-size: 19px; line-height: 1.3; }
+      .service-card > span:last-child { color: var(--muted); font-size: 13px; }
+
+      .page-content { min-height: calc(100vh - 200px); }
+      .page-title { margin-bottom: 42px; }
+      .page-title h1 { margin-bottom: 9px; color: var(--blue); font-size: clamp(29px, 4vw, 43px); letter-spacing: -.025em; }
+      .page-title > p:last-child { margin-bottom: 0; color: var(--muted); font-size: 16px; }
+      .year-block + .year-block { margin-top: 40px; }
+      .year-block h2 { display: flex; gap: 15px; align-items: center; margin-bottom: 17px; color: var(--blue); font-size: 22px; }
+      .year-block h2::after { flex: 1; height: 1px; background: #cbd8de; content: ""; }
+      .document-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .document-card { min-height: 76px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 15px 17px; border: 1px solid var(--line); color: var(--ink); background: var(--paper); font-size: 14px; line-height: 1.35; text-decoration: none; transition: border-color .15s ease, background .15s ease, transform .15s ease; }
+      .document-card:hover, .document-card:focus-visible { border-color: #8aa5b5; background: #fbfdfe; outline: 0; transform: translateY(-2px); }
+      .document-card > i:first-child { color: var(--blue); font-size: 20px; }
+      .document-card > i:last-child { color: var(--muted); font-size: 12px; }
+
+      .year-choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+      .year-choice { min-height: 220px; display: flex; flex-direction: column; align-items: flex-start; padding: 28px; border: 1px solid var(--line); color: var(--ink); background: var(--paper); text-align: left; transition: transform .18s ease, box-shadow .18s ease; }
+      .year-choice:hover, .year-choice:focus-visible, .year-choice.selected { border-color: #92a8b5; outline: 0; box-shadow: var(--shadow); transform: translateY(-4px); }
+      .year-choice img { display: block; width: auto; max-height: 64px; margin-bottom: 20px; }
+      .year-choice strong { margin-top: 0; color: var(--blue); font-size: 30px; }
+      .year-choice span { margin-top: 0; color: var(--muted); font-size: 14px; }
+      .year-choice small { margin-top: 20px; color: var(--blue); font-size: 13px; font-weight: 700; }
+      .information-panel { display: flex; gap: 11px; align-items: flex-start; margin-top: 24px; padding: 16px 18px; border-left: 4px solid var(--gold); color: var(--muted); background: var(--paper); line-height: 1.55; }
+      .information-panel i { margin-top: 4px; color: var(--blue); }
+      .information-panel p { margin: 0; }
+
+      .year-panel { margin-top: 8px; }
+      .ranperda-list { display: grid; gap: 18px; }
+      .ranperda-row { padding: 22px 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); box-shadow: 0 8px 24px rgba(15, 76, 129, 0.05); }
+      .ranperda-row__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 22px; }
+      .ranperda-row__head h4 { margin: 0 0 6px; color: var(--blue); font-size: 18px; }
+      .meta { color: var(--muted); font-size: 13px; }
+      .badge { display: inline-flex; align-items: center; padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+      .badge-selesai { color: #0b6b3a; background: #e6f7ee; }
+      .stage-tracker-h { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+      .stage-h { position: relative; padding-top: 8px; text-align: center; color: var(--muted); font-size: 12px; font-weight: 600; }
+      .stage-h .node { display: grid; place-items: center; width: 34px; height: 34px; margin: 0 auto 10px; border-radius: 50%; background: #e5edf2; color: var(--muted); }
+      .stage-h .node i { font-size: 13px; }
+      .stage-h .line { position: absolute; top: 16px; left: calc(-50% + 17px); width: calc(100% - 34px); height: 2px; background: #cfdbe3; }
+      .stage-h:first-child .line { display: none; }
+      .stage-h.done .node { color: #fff; background: var(--blue); }
+      .stage-h.active .node { color: #fff; background: var(--gold); }
+      .stage-h.pending .node { color: #95a4ad; background: #eef4f7; }
+      .stage-h.done .line, .stage-h.active .line { background: var(--blue); }
+      .stage-label { display: block; margin-top: 2px; }
+      .ranperda-table-wrap { margin-top: 20px; overflow-x: auto; }
+      .ranperda-search { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+      .ranperda-search i { color: var(--blue); }
+      .ranperda-search input { flex: 1; border: 0; outline: 0; font: inherit; color: var(--ink); background: transparent; }
+      .ranperda-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); }
+      .ranperda-table th, .ranperda-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+      .ranperda-table thead th { color: var(--blue); background: #eef5f8; font-weight: 800; }
+      .ranperda-table tbody tr:nth-child(even) { background: #fbfdfe; }
+      .status-button { padding: 7px 12px; border: 0; border-radius: 999px; color: #fff; background: var(--blue); font-size: 12px; font-weight: 700; cursor: pointer; }
+      .status-button:hover, .status-button:focus-visible { background: var(--blue-dark); outline: 0; }
+      .ranperda-progress-panel { margin-bottom: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+      .ranperda-progress-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+      .ranperda-progress-head h5 { margin: 0 0 6px; color: var(--blue); font-size: 17px; }
+      .ranperda-progress-head p { margin: 0; color: var(--muted); font-size: 13px; }
+
+      .survey-content { max-width: 900px; }
+      .rating-guide { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 34px; }
+      .rating-guide span { padding: 8px 10px; color: var(--blue); background: #e6edf0; font-size: 12px; }
+      .rating-guide b { margin-right: 4px; }
+      .survey-group { margin: 0; padding: 0; border: 0; }
+      .survey-group + .survey-group { margin-top: 37px; }
+      .survey-group legend { width: 100%; margin-bottom: 12px; padding: 0 0 11px; border-bottom: 1px solid #bfcfd7; color: var(--blue); font-size: 19px; font-weight: 800; }
+      .survey-question { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid #d2dde2; }
+      .survey-question > span { font-size: 14px; line-height: 1.5; }
+      .rating-options { display: flex; gap: 6px; }
+      .rating-options input { position: absolute; opacity: 0; pointer-events: none; }
+      .rating-options label { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid #aabec8; color: var(--muted); background: var(--paper); font-size: 13px; cursor: pointer; transition: color .12s ease, background .12s ease, border-color .12s ease; }
+      .rating-options input:focus-visible + label { outline: 3px solid #bfd2dd; outline-offset: 2px; }
+      .rating-options input:checked + label { border-color: var(--blue); color: #fff; background: var(--blue); }
+      .survey-group--open { display: grid; gap: 17px; }
+      .survey-group--open label,
+      #survey-form > label { display: grid; gap: 8px; color: var(--blue); font-size: 14px; line-height: 1.45; }
+      textarea, input[type="text"] { width: 100%; padding: 11px; border: 1px solid #b6c7cf; color: var(--ink); background: var(--paper); }
+      textarea { min-height: 90px; resize: vertical; }
+      input[type="text"] { min-height: 48px; }
+      textarea:focus, input[type="text"]:focus { border-color: var(--blue); outline: 3px solid #c8d8df; }
+      .form-action { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; margin-top: 32px; }
+      .button { padding: 13px 18px; border: 0; font-size: 14px; font-weight: 800; }
+      .button--primary { color: #fff; background: var(--blue); }
+      .button--primary:hover, .button--primary:focus-visible { background: var(--blue-dark); outline: 3px solid #a9c0cc; outline-offset: 2px; }
+      #survey-feedback { margin: 0; color: var(--muted); font-size: 13px; }
+
+      .site-footer { color: #fff; background: var(--blue); }
+      .footer-grid { display: grid; grid-template-columns: 1.25fr .9fr .9fr; gap: 42px; padding-top: 48px; padding-bottom: 35px; }
+      .site-footer h2 { margin-bottom: 13px; color: #fff; font-size: 15px; line-height: 1.43; }
+      .site-footer p, .footer-list { margin: 0; color: rgba(255,255,255,.76); font-size: 13px; line-height: 1.75; }
+      .footer-list { padding: 0; list-style: none; }
+      .footer-list a { display: inline-flex; gap: 10px; align-items: center; text-decoration: none; }
+      .footer-list a:hover, .footer-list a:focus-visible { color: #fff; outline: 0; text-decoration: underline; }
+      .footer-list i { width: 16px; color: #f5ce7c; text-align: center; }
+      .footer-list--plain li { display: flex; gap: 10px; align-items: center; }
+      .footer-logos { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; margin-top: 24px; }
+      .footer-logos img { max-height: 52px; max-width: 180px; object-fit: contain; }
+      .footer-bottom { padding-top: 19px; padding-bottom: 24px; border-top: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.58); font-size: 12px; }
+
+      @media (max-width: 800px) {
+        .service-grid { grid-template-columns: 1fr; }
+        .service-card { min-height: 170px; }
+        .footer-grid { grid-template-columns: 1fr 1fr; }
+        .footer-grid > :first-child { grid-column: 1 / -1; }
+      }
+
+      @media (max-width: 640px) {
+        .container { width: min(100% - 36px, 1120px); }
+        .header-top { min-height: 76px; }
+        .brand small { max-width: 220px; font-size: 10px; }
+        .brand strong { font-size: 17px; }
+        .brand__seal { width: 40px; height: 40px; }
+        .nav-toggle { display: block; }
+        .main-nav { display: none; padding-bottom: 9px; }
+        .main-nav.open { display: flex; flex-direction: column; }
+        .nav-link { width: 100%; padding: 12px 0; }
+        .hero__content { padding-top: 55px; padding-bottom: 64px; }
+        .hero h1 { font-size: 31px; }
+        .hero__description { font-size: 15px; }
+        .section { padding-top: 50px; padding-bottom: 60px; }
+        .section-heading { display: block; }
+        .section-heading > p { margin-top: 12px; }
+        .document-grid, .year-choice-grid, .footer-grid { grid-template-columns: 1fr; }
+        .footer-grid > :first-child { grid-column: auto; }
+        .survey-question { grid-template-columns: 1fr; gap: 12px; }
+        .rating-options { justify-content: flex-start; }
+      }
+      
+      /* Grafik Status Ranperda */
+      .chart-section { margin-top: 40px; margin-bottom: 40px; }
+      .chart-controls { display: flex; gap: 12px; margin-bottom: 24px; justify-content: center; flex-wrap: wrap; }
+      .chart-btn { padding: 10px 20px; border: 2px solid var(--line); background: #fff; color: var(--blue); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all .2s ease; font-size: 14px; }
+      .chart-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+      .chart-btn:hover { border-color: var(--blue); }
+      .chart-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 24px; }
+      .chart-wrapper { background: #fff; padding: 24px; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+      .chart-wrapper h3 { margin: 0 0 16px; color: var(--blue); font-size: 16px; }
+      .chart-canvas { position: relative; height: 300px; }
+      
+      @media (max-width: 768px) {
+        .chart-container { grid-template-columns: 1fr; }
+      }
+
+      /* Status Dashboard */
+      .status-dashboard { margin-bottom: 40px; }
+      .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+      .status-header h2 { margin: 0; color: var(--ink); font-size: 24px; }
+      .status-toggle { display: flex; gap: 12px; }
+      .status-toggle button { padding: 8px 16px; border: 1px solid var(--line); background: #fff; color: var(--blue); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all .2s; }
+      .status-toggle button.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+      .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+      .status-card {
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .status-card--blue { background: #e6f0f7; border-color: #0f4c81; }
+      .status-card--gray { background: #f0f3f6; border-color: #8b95a3; }
+      .status-card--gold { background: #fef6e8; border-color: #f0c96b; }
+      .status-card--orange { background: #fee4d6; border-color: #eb7a3c; }
+      .status-card--green { background: #e8f6f1; border-color: #0b6b3a; }
+      .status-card--purple { background: #f0ebf8; border-color: #7c3aed; }
+      
+      .status-card__header { display: flex; justify-content: space-between; align-items: flex-start; }
+      .status-card__title { margin: 0; color: var(--ink); font-size: 16px; font-weight: 600; flex: 1; }
+      .status-card__icon { font-size: 28px; margin-left: 12px; }
+      .status-card__content { display: flex; flex-direction: column; gap: 14px; }
+      .status-card__desc { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+      .status-card__row { display: flex; gap: 16px; align-items: flex-end; }
+      .status-card__item { flex: 1; }
+      .status-card__label { margin: 0; color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+      .status-card__number { margin: 6px 0 0; color: var(--ink); font-size: 32px; font-weight: 800; }
+      
+      @media (max-width: 1200px) {
+        .status-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 768px) {
+        .status-grid { grid-template-columns: 1fr; }
+        .status-header { flex-direction: column; align-items: flex-start; }
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-top">
+        <a class="brand" href="#beranda" data-page-link="beranda">
+          <span class="brand__seal">
+            <img src="./Logo DPRD.png" alt="Logo DPRD NTT">
+            <img src="./Logo pemprov.png" alt="Logo Pemprov NTT">
+          </span>
+          <span class="brand__text">
+            <strong>SIPROPERDA</strong>
+            <small>Sistem Informasi Progres Pembentukan Peraturan Daerah</small>
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-label="Buka menu navigasi" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <nav class="main-nav" aria-label="Navigasi utama">
+          <a class="nav-link active" href="#beranda" data-page-link="beranda">Beranda</a>
+          <a class="nav-link" href="#propemperda" data-page-link="propemperda">PROPEMPERDA</a>
+          <a class="nav-link" href="#informasi" data-page-link="informasi">Informasi Pembentukan Perda</a>
+          <a class="nav-link" href="#survei" data-page-link="survei">Survei Pengguna</a>
+          <a class="nav-link" href="#lainnya" data-page-link="lainnya">Lainnya</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="beranda" class="page hero" aria-labelledby="beranda-title">
+        <div class="hero__shape hero__shape--one"></div>
+        <div class="hero__shape hero__shape--two"></div>
+        <div class="container hero__content">
+          <p class="eyebrow eyebrow--blue">Selamat datang di SIPROPERDA</p>
+          <h1 id="beranda-title">Sistem Informasi Progres Pembentukan Peraturan Daerah</h1>
+          <p class="hero__description">Pusat informasi dan pemantauan pelaksanaan Program Pembentukan Peraturan Daerah (Propemperda) pada Sekretariat DPRD Provinsi Nusa Tenggara Timur. Dashboard ini menyediakan informasi perkembangan pembentukan Peraturan Daerah secara terintegrasi, transparan, akuntabel, dan mudah diakses untuk mendukung pengambilan keputusan, meningkatkan koordinasi antar pemangku kepentingan, serta mewujudkan pelayanan publik yang lebih efektif melalui transformasi digital.</p>
+        </div>
+      </section>
+
+      <section class="page" id="beranda-content" aria-labelledby="beranda-services-title">
+        <div class="container section">
+          <!-- Grafik Status Ranperda -->
+          <div class="chart-section" id="chart-section">
+            <div class="section-heading">
+              <h2>Status Ranperda</h2>
+              <p>Analisis status pembentukan Peraturan Daerah berdasarkan tahun yang dipilih.</p>
+            </div>
+            
+            <div class="chart-controls">
+              <button class="chart-btn active" type="button" data-chart-year="2025">Tahun 2025</button>
+              <button class="chart-btn" type="button" data-chart-year="2026">Tahun 2026</button>
+            </div>
+            
+            <div class="chart-container">
+              <div class="chart-wrapper">
+                <h3>Pengusul Ranperda (Pemerintah vs DPRD)</h3>
+                <div class="chart-canvas">
+                  <canvas id="chart-pengusul"></canvas>
+                </div>
+              </div>
+              <div class="chart-wrapper">
+                <h3>Status Pembahasan Ranperda</h3>
+                <div class="chart-canvas">
+                  <canvas id="chart-status"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-heading">
+            <h2 id="beranda-services-title">Fitur utama</h2>
+            <p>Jelajahi informasi penting mengenai PROPEMPERDA, pemantauan pembentukan Perda, dan survei pengguna.</p>
+          </div>
+          <div class="service-grid">
+            <a class="service-card" href="#propemperda" data-go-to="propemperda">
+              <i class="service-card__icon fa-solid fa-file-contract"></i>
+              <strong>Dokumen PROPEMPERDA</strong>
+              <span>Akses dokumen dan perubahan PROPEMPERDA dari berbagai tahun.</span>
+            </a>
+            <a class="service-card" href="#informasi" data-go-to="informasi">
+              <i class="service-card__icon fa-solid fa-chart-line"></i>
+              <strong>Informasi Pembentukan Perda</strong>
+              <span>Temukan informasi status pembentukan Perda untuk tahun yang dipilih.</span>
+            </a>
+            <a class="service-card" href="#survei" data-go-to="survei">
+              <i class="service-card__icon fa-solid fa-comments"></i>
+              <strong>Survei Pengguna</strong>
+              <span>Berikan penilaian dan saran untuk pengembangan dashboard ke depan.</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="propemperda" class="page" aria-labelledby="propemperda-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Dokumen</p>
+            <h1 id="propemperda-title">PROPEMPERDA</h1>
+            <p>Program Pembentukan Peraturan Daerah Provinsi Nusa Tenggara Timur</p>
+          </div>
+
+          <section class="year-block" aria-labelledby="year-2025-title">
+            <h2 id="year-2025-title">2025</h2>
+            <div class="document-grid">
+              <a class="document-card" href="https://drive.google.com/file/d/1ZtJNNpHjtTU3ntNonpqhxlvpJuGMjAIZ/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK PROPEMPERDA 2025 <small>(Senin, 18 November 2024)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1kpMRhh_jL4lyiiQ8FE9p8PEGn6r16Dr8/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan PROPEMPERDA 2025 <small>(Jum'at, 16 Mei 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1FcOLje_N0bFBKSCUZww8IM7Slnnrb3nt/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Kedua PROPEMPERDA 2025 <small>(Senin, 30 Juni 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1xv8uF__TpXhqOZMHVmj0rVrPkC6JzGWq/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Ketiga PROPEMPERDA 2025 <small>(Senin, 29 September 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1HzzoX-dKFpY8Yopz621pCNX5zg9cbo8i/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Keempat PROPEMPERDA 2025 <small>(Senin, 20 Oktober 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1EBVU_iJKOXyrfIbKt2VWToqbhIpa1bfD/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Kelima PROPEMPERDA 2025 <small>(Senin, 12 November 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            </div>
+          </section>
+
+          <section class="year-block" aria-labelledby="year-2026-title">
+            <h2 id="year-2026-title">2026</h2>
+            <div class="document-grid">
+              <a class="document-card" href="https://drive.google.com/file/d/1k3OX4WMGW3C1K_awW2EzOhB6p6Vn3XRk/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK PROPEMPERDA 2026 <small>(Senin, 29 September 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/16gSW1YIpyvR0VWvQ4eQEhxhm_73UMeE6/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan PROPEMPERDA 2026 <small>(Rabu, 29 Oktober 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/12PbafsdgBMj7-oRFH-C7nG68te6bLb8v/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Kedua PROPEMPERDA 2026 <small>(Rabu, 14 Januari 2026)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="informasi" class="page" aria-labelledby="informasi-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Pemantauan</p>
+            <h1 id="informasi-title">INFORMASI PEMBENTUKAN PERDA</h1>
+            <p>Pilih tahun untuk mengakses informasi pembentukan Peraturan Daerah.</p>
+          </div>
+
+          <div class="year-choice-grid" role="group" aria-label="Pilih tahun informasi">
+            <button class="year-choice" type="button" data-information-year="2025">
+              <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+              <strong>2025</strong>
+              <span>Informasi pembentukan Perda Tahun 2025</span>
+              <small>Lihat informasi <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></small>
+            </button>
+            <button class="year-choice" type="button" data-information-year="2026">
+              <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+              <strong>2026</strong>
+              <span>Informasi pembentukan Perda Tahun 2026</span>
+              <small>Lihat informasi <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></small>
+            </button>
+          </div>
+
+          <div id="information-panel" class="information-panel" aria-live="polite">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <p>Pilih salah satu tahun untuk menampilkan informasi pembentukan Perda</p>
+          </div>
+        </div>
+      </section>
+      <section id="Informasi2025" class="page" aria-labelledby="informasi-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Pemantauan Progres Pembentukan Perda</p>
+            <h1 id="informasi-title">Informasi Pembentukan Peraturan Daerah Tahun 2025</h1>
+          </div>
+          <div class="ranperda-table-wrap">
+            <div class="ranperda-search">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input type="search" placeholder="Cari ranperda..." aria-label="Cari ranperda" />
+            </div>
+            <div class="ranperda-progress-panel" hidden>
+              <div class="ranperda-progress-head">
+                <div>
+                  <h5 class="ranperda-progress-title">Pilih status untuk melihat progres</h5>
+                  <p class="ranperda-progress-meta">Klik tombol “Lihat Progres” pada tabel untuk membuka indikator tahap pembahasan.</p>
+                </div>
+                <span class="badge badge-selesai">Selesai</span>
+              </div>
+              <div class="ranperda-progress-tracker stage-tracker-h" aria-live="polite"></div>
+            </div>
+            <table class="ranperda-table">
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>Judul Ranperda</th>
+                        <th>NA dan Ranperda disiapkan oleh</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody class="ranperda-table-body">
+                      <tr>
+                        <td>1.</td>
+                        <td>Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>2.</td>
+                        <td>Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>3.</td>
+                        <td>Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>4.</td>
+                        <td>Ranperda tentang Penyelenggaraan Penanaman Modal</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penyelenggaraan Penanaman Modal" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>5.</td>
+                        <td>Ranperda tentang Penyelenggaraan Transportasi</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penyelenggaraan Transportasi" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>6.</td>
+                        <td>Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>7.</td>
+                        <td>Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>8.</td>
+                        <td>Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>9.</td>
+                        <td>Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>10.</td>
+                        <td>Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda)" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>11.</td>
+                        <td>Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda)" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>12.</td>
+                        <td>Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda)" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>13.</td>
+                        <td>Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda)" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>14.</td>
+                        <td>Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda)" data-initiator="Pemerintah Daerah" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>15.</td>
+                        <td>Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut</td>
+                        <td>DPRD</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut" data-initiator="DPRD" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>16.</td>
+                        <td>Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah</td>
+                        <td>DPRD</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah" data-initiator="DPRD" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>17.</td>
+                        <td>Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan</td>
+                        <td>DPRD</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan" data-initiator="DPRD" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="Informasi2026" class="page" aria-labelledby="informasi-2026-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Pemantauan Progres Pembentukan Perda</p>
+            <h1 id="informasi-2026-title">Informasi Pembentukan Peraturan Daerah Tahun 2026</h1>
+          </div>
+          <div class="ranperda-table-wrap">
+            <div class="ranperda-search">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input type="search" placeholder="Cari ranperda..." aria-label="Cari ranperda" />
+            </div>
+            <div class="ranperda-progress-panel" hidden>
+              <div class="ranperda-progress-head">
+                <div>
+                  <h5 class="ranperda-progress-title">Pilih status untuk melihat progres</h5>
+                  <p class="ranperda-progress-meta">Klik tombol “Lihat Progres” pada tabel untuk membuka indikator tahap pembahasan.</p>
+                </div>
+                <span class="badge badge-selesai">Selesai</span>
+              </div>
+              <div class="ranperda-progress-tracker stage-tracker-h" aria-live="polite"></div>
+            </div>
+            <table class="ranperda-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Judul Ranperda</th>
+                  <th>NA dan Ranperda disiapkan oleh</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody class="ranperda-table-body">
+                <tr>
+                  <td>1.</td>
+                  <td>Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut" data-initiator="DPRD" data-progress="done,done,active,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah" data-initiator="DPRD" data-progress="done,active,pending,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td>Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan" data-initiator="DPRD" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td>Ranperda tentang Penyelenggaraan Jasa Konstruksi</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Penyelenggaraan Jasa Konstruksi" data-initiator="Pemerintah Daerah" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>5.</td>
+                  <td>Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman" data-initiator="Pemerintah Daerah" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>6.</td>
+                  <td>Ranperda tentang Pengelolaan Cendana</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Pengelolaan Cendana" data-initiator="Pemerintah Daerah" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>7.</td>
+                  <td>Ranperda tentang Pengelolaan Perhutanan Sosial</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Pengelolaan Perhutanan Sosial" data-initiator="Pemerintah Daerah" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>8.</td>
+                  <td>Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur" data-initiator="DPRD" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>9.</td>
+                  <td>Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda)</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda)" data-initiator="DPRD" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>10.</td>
+                  <td>Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur" data-initiator="DPRD" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="survei" class="page" aria-labelledby="survei-title" hidden>
+        <div class="container section page-content survey-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Partisipasi pengguna</p>
+            <h1 id="survei-title">SURVEI PENGGUNA</h1>
+            <p>Penilaian Anda membantu pengembangan Dashboard SIPROPERDA.</p>
+          </div>
+
+          <div class="rating-guide" aria-label="Petunjuk penilaian">
+            <span><b>1</b> Sangat Tidak Setuju</span>
+            <span><b>2</b> Tidak Setuju</span>
+            <span><b>3</b> Cukup Setuju</span>
+            <span><b>4</b> Setuju</span>
+            <span><b>5</b> Sangat Setuju</span>
+          </div>
+
+          <form id="survey-form">
+            <label>Nama <input name="nama" type="text" placeholder="Nama lengkap" required></label>
+            <div id="survey-questions"></div>
+
+            <fieldset class="survey-group survey-group--open">
+              <legend>F. Pertanyaan Terbuka</legend>
+              <label>1. Apa kelebihan Dashboard SIPROPERDA?<textarea name="kelebihan" rows="4" required></textarea></label>
+              <label>2. Apa kekurangan Dashboard SIPROPERDA?<textarea name="kekurangan" rows="4" required></textarea></label>
+              <label>3. Fitur apa yang perlu ditambahkan?<textarea name="fitur" rows="4" required></textarea></label>
+              <label>4. Saran untuk pengembangan SIPROPERDA ke depan.<textarea name="saran" rows="4" required></textarea></label>
+            </fieldset>
+
+            <div class="form-action">
+              <button class="button button--primary" type="submit">Kirim Penilaian</button>
+              <p id="survey-feedback" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section id="lainnya" class="page" aria-labelledby="lainnya-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Informasi tambahan</p>
+            <h1 id="lainnya-title">LAINNYA</h1>
+            <p>Informasi tambahan terkait pembentukan Peraturan Daerah.</p>
+          </div>
+
+          <div class="year-choice-grid" role="group" aria-label="Pilih tahun informasi">
+            <button class="year-choice" type="button" data-information-year="2025">
+              <img src="./Logo DPRD.png" alt="Logo DPRD NTT">
+              <strong>WEBSITE DPRD PROVINSI NUSA TENGGARA TIMUR</strong>
+              <span>Website Resmi Dewan Perwakilan Rakyat Daerah Provinsi Nusa Tenggara Timur</span>
+              <a href="https://dprd.nttprov.go.id/" target="_blank" rel="noopener noreferrer" class="button button--primary" style="margin-top: 12px;">Kunjungi Website</a>
+            </button>
+            <button class="year-choice" type="button" data-information-year="2026">
+              <img src="./logo-badekat.png" alt="logo-badekat">
+              <strong>WEBSITE BaDEKAT</strong>
+              <span>Bangun Dedikasi, Efisiensi Efektifitas, Kolaboratif, Adaptif dan Transparansi</span>
+              <a href="https://dprd.nttprov.go.id/badekat/" target="_blank" rel="noopener noreferrer" class="button button--primary" style="margin-top: 12px;">Kunjungi Website</a>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="kontak" class="site-footer">
+      <div class="container footer-grid">
+        <section>
+          <h2>SEKRETARIAT DEWAN PERWAKILAN RAKYAT DAERAH<br />PROVINSI NUSA TENGGARA TIMUR</h2>
+          <p>SIPROPERDA — Sistem Informasi Progres Pembentukan Peraturan Daerah</p>
+        </section>
+        <section>
+          <h2>Media Sosial</h2>
+          <ul class="footer-list">
+            <li><a href="https://www.instagram.com/setwan.ntt/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+            <li><a href="https://web.facebook.com/humas.provntt?locale=id_ID&_rdc=1&_rdr" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i> Facebook</a></li>
+            <li><a href="https://www.tiktok.com/@setwan.ntt" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</a></li>
+            <li><a href="https://www.youtube.com/@SekretariatDPRDProvNTT" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+            <li><a href="https://dprd.nttprov.go.id/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe" aria-hidden="true"></i> Website DPRD NTT</a></li>
+          </ul>
+        </section>
+        <section>
+          <h2>Kontak</h2>
+          <ul class="footer-list footer-list--plain">
+            <li><i class="fa-solid fa-phone" aria-hidden="true"></i> 082145676564</li>
+            <li><i class="fa-solid fa-envelope" aria-hidden="true"></i> nttsetwan@gmail.com</li>
+            <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Jl. El Tari No. 52</li>
+          </ul>
+        </section>
+      </div>
+      <div class="container footer-bottom">© <span id="current-year"></span> Sekretariat DPRD Provinsi Nusa Tenggara Timur</div>
+    </footer>
+
+    <script>
+      const pages = document.querySelectorAll('.page');
+      const pageLinks = document.querySelectorAll('[data-page-link]');
+      const mainNav = document.querySelector('.main-nav');
+      const navToggle = document.querySelector('.nav-toggle');
+
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzS0RvXE4flV2xpzSdBY2vvuClQoND9kdNgcsXTh6C_6VUkEdMQ8aWxHnWLX-WWGxf9/exec';
+
+      const showPage = (pageId) => {
+        const page = document.getElementById(pageId);
+        const visiblePageIds = pageId === 'beranda' ? ['beranda', 'beranda-content'] : [pageId];
+        const navPageId = pageId.startsWith('Informasi') ? 'informasi' : pageId;
+
+        if (!page && pageId !== 'beranda') return;
+
+        pages.forEach((item) => {
+          const isActive = visiblePageIds.includes(item.id);
+          item.hidden = !isActive;
+          item.classList.toggle('page--active', isActive);
+        });
+
+        pageLinks.forEach((link) => {
+          link.classList.toggle('active', link.dataset.pageLink === navPageId);
+        });
+
+        if (mainNav) mainNav.classList.remove('open');
+        if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      pageLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const pageId = link.dataset.pageLink;
+          if (!pageId) return;
+          event.preventDefault();
+          history.replaceState(null, '', `#${pageId}`);
+          showPage(pageId);
+        });
+      });
+
+      document.querySelectorAll('[data-go-to]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const pageId = button.dataset.goTo;
+          history.replaceState(null, '', `#${pageId}`);
+          showPage(pageId);
+        });
+      });
+
+      if (navToggle) {
+        navToggle.addEventListener('click', () => {
+          const isOpen = mainNav.classList.toggle('open');
+          navToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+      }
+
+      const surveyGroups = [
+        {
+          title: 'A. Kemudahan Penggunaan',
+          questions: [
+            'Dashboard SIPROPERDA mudah dipahami.',
+            'Menu dan fitur mudah digunakan.',
+            'Informasi dapat ditemukan dengan cepat.'
+          ]
+        },
+        {
+          title: 'B. Kualitas Informasi',
+          questions: [
+            'Informasi yang ditampilkan lengkap.',
+            'Data yang tersedia mudah dipahami.',
+            'Informasi yang disajikan sesuai kebutuhan pekerjaan.'
+          ]
+        },
+        {
+          title: 'C. Efektivitas Pemantauan',
+          questions: [
+            'Dashboard memudahkan pemantauan perkembangan Propemperda.',
+            'Dashboard mempercepat proses monitoring dibanding cara manual.',
+            'Dashboard membantu mengetahui status setiap Ranperda secara lebih cepat.'
+          ]
+        },
+        {
+          title: 'D. Manfaat',
+          questions: [
+            'Dashboard membantu meningkatkan efisiensi pekerjaan.',
+            'Dashboard mempermudah penyusunan laporan atau penyampaian informasi.',
+            'Dashboard mendukung koordinasi antarbagian.'
+          ]
+        },
+        {
+          title: 'E. Kepuasan Pengguna',
+          questions: [
+            'Saya puas dengan tampilan Dashboard SIPROPERDA.',
+            'Dashboard layak digunakan sebagai media monitoring Propemperda.',
+            'Saya merekomendasikan Dashboard SIPROPERDA untuk digunakan secara berkelanjutan.'
+          ]
+        }
+      ];
+
+      let questionNumber = 1;
+      const questionsContainer = document.querySelector('#survey-questions');
+
+      surveyGroups.forEach((group) => {
+        const groupElement = document.createElement('fieldset');
+        groupElement.className = 'survey-group';
+        groupElement.innerHTML = `<legend>${group.title}</legend>`;
+
+        group.questions.forEach((question) => {
+          const currentNumber = questionNumber;
+          const questionElement = document.createElement('div');
+          questionElement.className = 'survey-question';
+
+          const options = [1, 2, 3, 4, 5]
+            .map((value) => `
+              <input id="q${currentNumber}-${value}" name="q${currentNumber}" type="radio" value="${value}" required />
+              <label for="q${currentNumber}-${value}" aria-label="Nilai ${value}">${value}</label>
+            `)
+            .join('');
+
+          questionElement.innerHTML = `
+            <span>${currentNumber}. ${question}</span>
+            <div class="rating-options" aria-label="Nilai pertanyaan ${currentNumber}">${options}</div>
+          `;
+          groupElement.appendChild(questionElement);
+          questionNumber += 1;
+        });
+
+        questionsContainer.appendChild(groupElement);
+      });
+
+      document.querySelectorAll('[data-information-year]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const year = button.dataset.informationYear;
+          const targetPageId = year === '2026' ? 'Informasi2026' : 'Informasi2025';
+          document.querySelectorAll('[data-information-year]').forEach((item) => item.classList.remove('selected'));
+          button.classList.add('selected');
+          document.querySelector('#information-panel').innerHTML = `
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <p>Area informasi pembentukan Perda Tahun <strong>${year}</strong> siap diisi dengan data, status, atau tautan dokumen sesuai kebutuhan pengelola SIPROPERDA.</p>
+          `;
+          history.replaceState(null, '', `#${targetPageId}`);
+          showPage(targetPageId);
+        });
+      });
+
+      document.querySelector('#survey-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const form = event.target;
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const formData = new FormData(form);
+        const payload = new URLSearchParams(formData);
+
+        try {
+          const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: payload
+          });
+
+          const result = await response.json();
+          document.querySelector('#survey-feedback').textContent = result.status === 'success'
+            ? 'Terima kasih! Data survei berhasil dikirim.'
+            : 'Gagal mengirim survei. Coba lagi nanti.';
+        } catch (error) {
+          document.querySelector('#survey-feedback').textContent = 'Terjadi kesalahan saat mengirim survei. Silakan coba lagi.';
+          console.error(error);
+        }
+      });
+
+      const renderProgressTracker = (trackerElement, stages) => {
+        if (!trackerElement) return;
+        trackerElement.innerHTML = stages.map((state, index) => {
+          const labels = ['Perencanaan', 'Pembahasan', 'Persetujuan', 'Penetapan'];
+          const icon = state === 'done' ? '<i class="fa-solid fa-check" aria-hidden="true"></i>' : state === 'active' ? '<i class="fa-solid fa-rotate-right" aria-hidden="true"></i>' : '<i class="fa-regular fa-circle" aria-hidden="true"></i>';
+          return `
+            <div class="stage-h ${state}">
+              ${index > 0 ? '<span class="line"></span>' : ''}
+              <span class="node">${icon}</span>
+              <span class="stage-label">${labels[index]}</span>
+            </div>
+          `;
+        }).join('');
+      };
+
+      document.querySelectorAll('.ranperda-table-wrap').forEach((wrap) => {
+        const searchInput = wrap.querySelector('.ranperda-search input[type="search"]');
+        const tableBody = wrap.querySelector('.ranperda-table-body');
+        const rows = Array.from(tableBody ? tableBody.querySelectorAll('tr') : []);
+        const progressPanel = wrap.querySelector('.ranperda-progress-panel');
+        const progressTitle = wrap.querySelector('.ranperda-progress-title');
+        const progressMeta = wrap.querySelector('.ranperda-progress-meta');
+        const progressTracker = wrap.querySelector('.ranperda-progress-tracker');
+
+        wrap.querySelectorAll('.status-button').forEach((button) => {
+          button.addEventListener('click', () => {
+            if (progressPanel) progressPanel.hidden = false;
+            if (progressTitle) progressTitle.textContent = button.dataset.title;
+            if (progressMeta) progressMeta.textContent = `Inisiator: ${button.dataset.initiator}`;
+            const stages = (button.dataset.progress || 'done,done,done,done').split(',');
+            renderProgressTracker(progressTracker, stages);
+            progressPanel?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+        });
+
+        if (searchInput && tableBody) {
+          searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim().toLowerCase();
+            rows.forEach((row) => {
+              const text = row.textContent.toLowerCase();
+              row.style.display = text.includes(query) ? '' : 'none';
+            });
+          });
+        }
+      });
+
+      document.querySelector('#current-year').textContent = new Date().getFullYear();
+
+      // Grafik Status Ranperda
+      let chartPengusul, chartStatus;
+      
+      const initializeCharts = () => {
+        // Mengumpulkan data dari tabel
+        const getChartData = (year) => {
+          const pageId = year === '2025' ? 'Informasi2025' : 'Informasi2026';
+          const page = document.getElementById(pageId);
+          if (!page) return { pengusul: {}, status: {} };
+          
+          const tableBody = page.querySelector('.ranperda-table-body');
+          if (!tableBody) return { pengusul: {}, status: {} };
+          
+          const rows = tableBody.querySelectorAll('tr');
+          const pengusul = { 'Pemerintah Daerah': 0, 'DPRD': 0 };
+          const status = { 'Perencanaan': 0, 'Pembahasan': 0, 'Persetujuan': 0, 'Penetapan': 0 };
+          
+          rows.forEach((row) => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 4) {
+              // Kolom 3: Pengusul
+              const pengusulCell = cells[2].textContent.trim();
+              if (pengusulCell === 'Pemerintah Daerah') pengusul['Pemerintah Daerah']++;
+              else if (pengusulCell === 'DPRD') pengusul['DPRD']++;
+              
+              // Kolom 4: Status (data-progress)
+              const statusButton = cells[3].querySelector('.status-button');
+              if (statusButton) {
+                const progressStr = statusButton.dataset.progress || 'pending,pending,pending,pending';
+                const stages = progressStr.split(',');
+                
+                // Hitung status berdasarkan stages
+                let statusIndex = stages.length - 1;
+                for (let i = stages.length - 1; i >= 0; i--) {
+                  if (stages[i] !== 'done') {
+                    statusIndex = i;
+                    break;
+                  }
+                }
+                
+                if (statusIndex === 0) status['Perencanaan']++;
+                else if (statusIndex === 1) status['Pembahasan']++;
+                else if (statusIndex === 2) status['Persetujuan']++;
+                else if (statusIndex === 3) status['Penetapan']++;
+                else status['Penetapan']++; // Jika semua done
+              }
+            }
+          });
+          
+          return { pengusul, status };
+        };
+        
+        // Inisialisasi Chart Pengusul (Pie Chart)
+        const ctxPengusul = document.getElementById('chart-pengusul');
+        if (chartPengusul) chartPengusul.destroy();
+        
+        const data2025 = getChartData(2025);
+        chartPengusul = new Chart(ctxPengusul, {
+          type: 'doughnut',
+          data: {
+            labels: ['Pemerintah Daerah', 'DPRD'],
+            datasets: [{
+              data: [data2025.pengusul['Pemerintah Daerah'], data2025.pengusul['DPRD']],
+              backgroundColor: ['#0f4c81', '#f0c96b'],
+              borderColor: '#fff',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  font: { size: 13, weight: '600' },
+                  padding: 15,
+                  usePointStyle: true
+                }
+              }
+            }
+          }
+        });
+        
+        // Inisialisasi Chart Status (Bar Chart)
+        const ctxStatus = document.getElementById('chart-status');
+        if (chartStatus) chartStatus.destroy();
+        
+        chartStatus = new Chart(ctxStatus, {
+          type: 'bar',
+          data: {
+            labels: ['Perencanaan', 'Pembahasan', 'Persetujuan', 'Penetapan'],
+            datasets: [{
+              label: 'Jumlah Ranperda',
+              data: [
+                data2025.status['Perencanaan'],
+                data2025.status['Pembahasan'],
+                data2025.status['Persetujuan'],
+                data2025.status['Penetapan']
+              ],
+              backgroundColor: '#0f4c81',
+              borderColor: '#0b355a',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            indexAxis: 'x',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  font: { size: 12, weight: '600' },
+                  usePointStyle: true
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1
+                }
+              }
+            }
+          }
+        });
+      };
+      
+      // Event listener untuk tombol tahun
+      document.querySelectorAll('[data-chart-year]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('[data-chart-year]').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const year = btn.dataset.chartYear;
+          const data = getChartData(year);
+          
+          // Update Chart Pengusul
+          chartPengusul.data.datasets[0].data = [
+            data.pengusul['Pemerintah Daerah'],
+            data.pengusul['DPRD']
+          ];
+          chartPengusul.update();
+          
+          // Update Chart Status
+          chartStatus.data.datasets[0].data = [
+            data.status['Perencanaan'],
+            data.status['Pembahasan'],
+            data.status['Persetujuan'],
+            data.status['Penetapan']
+          ];
+          chartStatus.update();
+        });
+      });
+      
+      // Helper function untuk mendapatkan data
+      const getChartData = (year) => {
+        const pageId = year === '2025' ? 'Informasi2025' : 'Informasi2026';
+        const page = document.getElementById(pageId);
+        if (!page) return { pengusul: {}, status: {} };
+        
+        const tableBody = page.querySelector('.ranperda-table-body');
+        if (!tableBody) return { pengusul: {}, status: {} };
+        
+        const rows = tableBody.querySelectorAll('tr');
+        const pengusul = { 'Pemerintah Daerah': 0, 'DPRD': 0 };
+        const status = { 'Perencanaan': 0, 'Pembahasan': 0, 'Persetujuan': 0, 'Penetapan': 0 };
+        
+        rows.forEach((row) => {
+          const cells = row.querySelectorAll('td');
+          if (cells.length >= 4) {
+            // Kolom 3: Pengusul
+            const pengusulCell = cells[2].textContent.trim();
+            if (pengusulCell === 'Pemerintah Daerah') pengusul['Pemerintah Daerah']++;
+            else if (pengusulCell === 'DPRD') pengusul['DPRD']++;
+            
+            // Kolom 4: Status (data-progress)
+            const statusButton = cells[3].querySelector('.status-button');
+            if (statusButton) {
+              const progressStr = statusButton.dataset.progress || 'pending,pending,pending,pending';
+              const stages = progressStr.split(',');
+              
+              // Hitung status berdasarkan stages
+              let statusIndex = stages.length - 1;
+              for (let i = stages.length - 1; i >= 0; i--) {
+                if (stages[i] !== 'done') {
+                  statusIndex = i;
+                  break;
+                }
+              }
+              
+              if (statusIndex === 0) status['Perencanaan']++;
+              else if (statusIndex === 1) status['Pembahasan']++;
+              else if (statusIndex === 2) status['Persetujuan']++;
+              else if (statusIndex === 3) status['Penetapan']++;
+              else status['Penetapan']++; // Jika semua done
+            }
+          }
+        });
+        
+        return { pengusul, status };
+      };
+      
+      // Inisialisasi grafik saat halaman dimuat
+      initializeCharts();
+
+      const pageFromHash = window.location.hash.replace('#', '');
+      if (pageFromHash && document.getElementById(pageFromHash)) showPage(pageFromHash);
+      else showPage('beranda');
+    </script>
+  </body>
+</html>
