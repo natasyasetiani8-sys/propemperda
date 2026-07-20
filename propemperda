@@ -377,11 +377,95 @@
               <h2>Status Ranperda</h2>
               <p>Analisis status pembentukan Peraturan Daerah berdasarkan tahun yang dipilih.</p>
             </div>
-            
-            <div class="chart-controls">
-              <button class="chart-btn active" type="button" data-chart-year="2025">Tahun 2025</button>
-              <button class="chart-btn" type="button" data-chart-year="2026">Tahun 2026</button>
+
+          <div class="status-dashboard">
+            <div class="status-header">
+              <h2>Status Tahapan Pembentukan UU Tahun Berjalan</h2>
             </div>
+            <div class="status-grid" id="summary-cards">
+              <div class="status-card status-card--blue">
+                <div class="status-card__header">
+                  <h3 class="status-card__title">Total Ranperda</h3>
+                  <i class="status-card__icon fa-solid fa-file-lines"></i>
+                </div>
+                <div class="status-card__content">
+                  <p class="status-card__number" id="summary-total">0</p>
+                  <p class="status-card__desc">Jumlah ranperda untuk tahun yang dipilih.</p>
+                </div>
+              </div>
+              <div class="status-card status-card--gray">
+                <div class="status-card__header">
+                  <h3 class="status-card__title">Pengusul Pemerintah</h3>
+                  <i class="status-card__icon fa-solid fa-landmark"></i>
+                </div>
+                <div class="status-card__content">
+                  <p class="status-card__number" id="summary-government">0</p>
+                  <p class="status-card__desc">Ranperda yang diajukan oleh Pemerintah Daerah.</p>
+                </div>
+              </div>
+              <div class="status-card status-card--gold">
+                <div class="status-card__header">
+                  <h3 class="status-card__title">Pengusul DPRD</h3>
+                  <i class="status-card__icon fa-solid fa-person-chalkboard"></i>
+                </div>
+                <div class="status-card__content">
+                  <p class="status-card__number" id="summary-dprd">0</p>
+                  <p class="status-card__desc">Ranperda yang diajukan oleh DPRD.</p>
+                </div>
+              </div>
+              <div class="status-card status-card--purple">
+                <div class="status-card__header">
+                  <h3 class="status-card__title">Perencanaan</h3>
+                  <i class="status-card__icon fa-solid fa-calendar-check"></i>
+                </div>
+                <div class="status-card__content">
+                  <p class="status-card__number" id="summary-planning">0</p>
+                  <p class="status-card__desc">Ranperda dalam tahap perencanaan.</p>
+                </div>
+              </div>
+              <div class="status-card status-card--orange">
+                <div class="status-card__header">
+                  <h3 class="status-card__title">Pembahasan</h3>
+                  <i class="status-card__icon fa-solid fa-comments"></i>
+                </div>
+                <div class="status-card__content">
+                  <p class="status-card__number" id="summary-discussion">0</p>
+                  <p class="status-card__desc">Ranperda yang sedang dibahas.</p>
+                </div>
+              </div>
+              <div class="status-card status-card--green">
+                <div class="status-card__header">
+                  <h3 class="status-card__title">Persetujuan</h3>
+                  <i class="status-card__icon fa-solid fa-gavel"></i>
+                </div>
+                <div class="status-card__content">
+                  <p class="status-card__number" id="summary-approval">0</p>
+                  <p class="status-card__desc">Ranperda yang berada pada tahap persetujuan paripurna.</p>
+                </div>
+              </div>
+              <div class="status-card status-card--gray">
+                <div class="status-card__header">
+                  <h3 class="status-card__title">Penetapan</h3>
+                  <i class="status-card__icon fa-solid fa-flag-checkered"></i>
+                </div>
+                <div class="status-card__content">
+                  <p class="status-card__number" id="summary-finalization">0</p>
+                  <p class="status-card__desc">Ranperda yang berada pada tahap penetapan.</p>
+                </div>
+              </div>
+              <div class="status-card status-card--gold">
+                <div class="status-card__header">
+                  <h3 class="status-card__title">RUU Selesai</h3>
+                  <i class="status-card__icon fa-solid fa-circle-check"></i>
+                </div>
+                <div class="status-card__content">
+                  <p class="status-card__number" id="summary-completed">0</p>
+                  <p class="status-card__desc">Ranperda yang telah selesai semua tahap.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
             
             <div class="chart-container">
               <div class="chart-wrapper">
@@ -1044,6 +1128,7 @@
           const rows = tableBody.querySelectorAll('tr');
           const pengusul = { 'Pemerintah Daerah': 0, 'DPRD': 0 };
           const status = { 'Perencanaan': 0, 'Pembahasan': 0, 'Persetujuan': 0, 'Penetapan': 0 };
+          let completed = 0;
           
           rows.forEach((row) => {
             const cells = row.querySelectorAll('td');
@@ -1058,6 +1143,8 @@
               if (statusButton) {
                 const progressStr = statusButton.dataset.progress || 'pending,pending,pending,pending';
                 const stages = progressStr.split(',');
+                
+                if (progressStr === 'done,done,done,done') completed++;
                 
                 // Hitung status berdasarkan stages
                 let statusIndex = stages.length - 1;
@@ -1077,7 +1164,7 @@
             }
           });
           
-          return { pengusul, status };
+          return { pengusul, status, total: rows.length, completed };
         };
         
         // Inisialisasi Chart Pengusul (Pie Chart)
@@ -1182,6 +1269,8 @@
             data.status['Penetapan']
           ];
           chartStatus.update();
+          
+          updateSummaryCards(year);
         });
       });
       
@@ -1212,6 +1301,8 @@
               const progressStr = statusButton.dataset.progress || 'pending,pending,pending,pending';
               const stages = progressStr.split(',');
               
+              if (progressStr === 'done,done,done,done') completed++;
+              
               // Hitung status berdasarkan stages
               let statusIndex = stages.length - 1;
               for (let i = stages.length - 1; i >= 0; i--) {
@@ -1230,11 +1321,24 @@
           }
         });
         
-        return { pengusul, status };
+        return { pengusul, status, total: rows.length, completed };
+      };
+      
+      const updateSummaryCards = (year) => {
+        const summary = getChartData(year);
+        document.getElementById('summary-total').textContent = summary.total || 0;
+        document.getElementById('summary-government').textContent = summary.pengusul['Pemerintah Daerah'] || 0;
+        document.getElementById('summary-dprd').textContent = summary.pengusul['DPRD'] || 0;
+        document.getElementById('summary-planning').textContent = summary.status['Perencanaan'] || 0;
+        document.getElementById('summary-discussion').textContent = summary.status['Pembahasan'] || 0;
+        document.getElementById('summary-approval').textContent = summary.status['Persetujuan'] || 0;
+        document.getElementById('summary-finalization').textContent = summary.status['Penetapan'] || 0;
+        document.getElementById('summary-completed').textContent = summary.completed || 0;
       };
       
       // Inisialisasi grafik saat halaman dimuat
       initializeCharts();
+      updateSummaryCards('2025');
 
       const pageFromHash = window.location.hash.replace('#', '');
       if (pageFromHash && document.getElementById(pageFromHash)) showPage(pageFromHash);
