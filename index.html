@@ -321,6 +321,10 @@
       .status-card__item { flex: 1; }
       .status-card__label { margin: 0; color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
       .status-card__number { margin: 6px 0 0; color: var(--ink); font-size: 32px; font-weight: 800; }
+      .ranperda-progress-details { margin-top: 20px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: #fff; display: grid; gap: 12px; }
+      .ranperda-progress-details .detail-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+      .ranperda-progress-details .detail-label { color: var(--muted); font-size: 13px; font-weight: 600; }
+      .ranperda-progress-details .detail-value { color: var(--ink); font-size: 14px; font-weight: 700; text-align: right; }
       
       @media (max-width: 1200px) {
         .status-grid { grid-template-columns: repeat(2, 1fr); }
@@ -380,7 +384,7 @@
 
           <div class="status-dashboard">
             <div class="status-header">
-              <h2>Status Tahapan Pembentukan UU Tahun Berjalan</h2>
+              <h2>Status Tahapan Pembentukan Peraturan Daerah Tahun Berjalan</h2>
             </div>
             <div class="status-grid" id="summary-cards">
               <div class="status-card status-card--blue">
@@ -587,6 +591,20 @@
                 <span class="badge badge-selesai">Selesai</span>
               </div>
               <div class="ranperda-progress-tracker stage-tracker-h" aria-live="polite"></div>
+              <div class="ranperda-progress-details">
+                <div class="detail-row">
+                  <span class="detail-label">Pengusul</span>
+                  <span class="detail-value progress-detail-initiator">-</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Tanggal Penetapan PROPEMPERDA</span>
+                  <span class="detail-value progress-detail-penetapan">-</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Pembaruan Terakhir</span>
+                  <span class="detail-value progress-detail-updated">-</span>
+                </div>
+              </div>
             </div>
             <table class="ranperda-table">
                     <thead>
@@ -728,6 +746,20 @@
                 <span class="badge badge-selesai">Selesai</span>
               </div>
               <div class="ranperda-progress-tracker stage-tracker-h" aria-live="polite"></div>
+              <div class="ranperda-progress-details">
+                <div class="detail-row">
+                  <span class="detail-label">Pengusul</span>
+                  <span class="detail-value progress-detail-initiator">-</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Tanggal Penetapan PROPEMPERDA</span>
+                  <span class="detail-value progress-detail-penetapan">-</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Pembaruan Terakhir</span>
+                  <span class="detail-value progress-detail-updated">-</span>
+                </div>
+              </div>
             </div>
             <table class="ranperda-table">
               <thead>
@@ -1087,12 +1119,18 @@
         const progressTitle = wrap.querySelector('.ranperda-progress-title');
         const progressMeta = wrap.querySelector('.ranperda-progress-meta');
         const progressTracker = wrap.querySelector('.ranperda-progress-tracker');
+        const progressInitiator = wrap.querySelector('.progress-detail-initiator');
+        const progressPenetapan = wrap.querySelector('.progress-detail-penetapan');
+        const progressUpdated = wrap.querySelector('.progress-detail-updated');
 
         wrap.querySelectorAll('.status-button').forEach((button) => {
           button.addEventListener('click', () => {
             if (progressPanel) progressPanel.hidden = false;
             if (progressTitle) progressTitle.textContent = button.dataset.title;
             if (progressMeta) progressMeta.textContent = `Inisiator: ${button.dataset.initiator}`;
+            if (progressInitiator) progressInitiator.textContent = button.dataset.initiator || '—';
+            if (progressPenetapan) progressPenetapan.textContent = button.dataset.penetapan || 'Belum tersedia';
+            if (progressUpdated) progressUpdated.textContent = button.dataset.updated || 'Belum tersedia';
             const stages = (button.dataset.progress || 'done,done,done,done').split(',');
             renderProgressTracker(progressTracker, stages);
             progressPanel?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
