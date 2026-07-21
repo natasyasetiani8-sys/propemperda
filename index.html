@@ -944,34 +944,6 @@
       </section>
     </main>
 
-    <footer id="kontak" class="site-footer">
-      <div class="container footer-grid">
-        <section>
-          <h2>SEKRETARIAT DEWAN PERWAKILAN RAKYAT DAERAH<br />PROVINSI NUSA TENGGARA TIMUR</h2>
-          <p>SIPROPERDA — Sistem Informasi Progres Pembentukan Peraturan Daerah</p>
-        </section>
-        <section>
-          <h2>Media Sosial</h2>
-          <ul class="footer-list">
-            <li><a href="https://www.instagram.com/setwan.ntt/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</a></li>
-            <li><a href="https://web.facebook.com/humas.provntt?locale=id_ID&_rdc=1&_rdr" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i> Facebook</a></li>
-            <li><a href="https://www.tiktok.com/@setwan.ntt" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</a></li>
-            <li><a href="https://www.youtube.com/@SekretariatDPRDProvNTT" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTube</a></li>
-            <li><a href="https://dprd.nttprov.go.id/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe" aria-hidden="true"></i> Website DPRD NTT</a></li>
-          </ul>
-        </section>
-        <section>
-          <h2>Kontak</h2>
-          <ul class="footer-list footer-list--plain">
-            <li><i class="fa-solid fa-phone" aria-hidden="true"></i> 082145676564</li>
-            <li><i class="fa-solid fa-envelope" aria-hidden="true"></i> nttsetwan@gmail.com</li>
-            <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Jl. El Tari No. 52</li>
-          </ul>
-        </section>
-      </div>
-      <div class="container footer-bottom">© <span id="current-year"></span> Sekretariat DPRD Provinsi Nusa Tenggara Timur</div>
-    </footer>
-
     <script>
       const pages = document.querySelectorAll('.page');
       const pageLinks = document.querySelectorAll('[data-page-link]');
@@ -979,6 +951,44 @@
       const navToggle = document.querySelector('.nav-toggle');
 
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzS0RvXE4flV2xpzSdBY2vvuClQoND9kdNgcsXTh6C_6VUkEdMQ8aWxHnWLX-WWGxf9/exec';
+      const footerMarkup = (pageId) => `
+        <footer class="site-footer" id="kontak-${pageId}">
+          <div class="container footer-grid">
+            <section>
+              <h2>SEKRETARIAT DEWAN PERWAKILAN RAKYAT DAERAH<br />PROVINSI NUSA TENGGARA TIMUR</h2>
+              <p>SIPROPERDA — Sistem Informasi Progres Pembentukan Peraturan Daerah</p>
+            </section>
+            <section>
+              <h2>Media Sosial</h2>
+              <ul class="footer-list">
+                <li><a href="https://www.instagram.com/setwan.ntt/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+                <li><a href="https://web.facebook.com/humas.provntt?locale=id_ID&_rdc=1&_rdr" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i> Facebook</a></li>
+                <li><a href="https://www.tiktok.com/@setwan.ntt" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</a></li>
+                <li><a href="https://www.youtube.com/@SekretariatDPRDProvNTT" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+                <li><a href="https://dprd.nttprov.go.id/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe" aria-hidden="true"></i> Website DPRD NTT</a></li>
+              </ul>
+            </section>
+            <section>
+              <h2>Kontak</h2>
+              <ul class="footer-list footer-list--plain">
+                <li><i class="fa-solid fa-phone" aria-hidden="true"></i> 082145676564</li>
+                <li><i class="fa-solid fa-envelope" aria-hidden="true"></i> nttsetwan@gmail.com</li>
+                <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Jl. El Tari No. 52</li>
+              </ul>
+            </section>
+          </div>
+          <div class="container footer-bottom">© <span class="current-year"></span> Sekretariat DPRD Provinsi Nusa Tenggara Timur</div>
+        </footer>
+      `;
+
+      const attachSharedFooter = () => {
+        pages.forEach((page) => {
+          if (page.querySelector('.site-footer')) return;
+          page.insertAdjacentHTML('beforeend', footerMarkup(page.id));
+        });
+      };
+
+      attachSharedFooter();
 
       const showPage = (pageId) => {
         const page = document.getElementById(pageId);
@@ -1227,7 +1237,9 @@
         }
       });
 
-      document.querySelector('#current-year').textContent = new Date().getFullYear();
+      document.querySelectorAll('.current-year').forEach((el) => {
+        el.textContent = new Date().getFullYear();
+      });
 
       // Grafik Status Ranperda
       let chartPengusul, chartStatus;
