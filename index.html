@@ -244,11 +244,21 @@
       .footer-logos img { max-height: 52px; max-width: 180px; object-fit: contain; }
       .footer-bottom { padding-top: 19px; padding-bottom: 24px; border-top: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.58); font-size: 12px; }
 
+      .information-wrapper { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: start; }
+      .information-sidebar { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 120px; }
+      .year-switch-button { padding: 14px 16px; border: 2px solid var(--line); border-radius: 10px; color: var(--ink); background: var(--paper); font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s ease; text-align: center; }
+      .year-switch-button:hover { border-color: #92a8b5; background: #fbfdfe; }
+      .year-switch-button.active { border-color: var(--blue); color: #fff; background: var(--blue); }
+      .year-switch-button:focus-visible { outline: 3px solid #c8d8df; outline-offset: 2px; }
+      .information-main { display: flex; flex-direction: column; }
+
       @media (max-width: 800px) {
         .service-grid { grid-template-columns: 1fr; }
         .service-card { min-height: 170px; }
         .footer-grid { grid-template-columns: 1fr 1fr; }
         .footer-grid > :first-child { grid-column: 1 / -1; }
+        .information-wrapper { grid-template-columns: 1fr; }
+        .information-sidebar { position: static; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px; }
       }
 
       @media (max-width: 640px) {
@@ -573,10 +583,22 @@
       </section>
       <section id="Informasi2025" class="page" aria-labelledby="informasi-title" hidden>
         <div class="container section page-content">
-          <div class="page-title">
-            <p class="eyebrow eyebrow--blue">Pemantauan Progres Pembentukan Perda</p>
-            <h1 id="informasi-title">Informasi Pembentukan Peraturan Daerah Tahun 2025</h1>
-          </div>
+          <div class="information-wrapper">
+            <aside class="information-sidebar">
+              <button class="year-switch-button active" type="button" data-year-switch="2025" aria-current="page">
+                <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+                2025
+              </button>
+              <button class="year-switch-button" type="button" data-year-switch="2026">
+                <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+                2026
+              </button>
+            </aside>
+            <div class="information-main">
+              <div class="page-title">
+                <p class="eyebrow eyebrow--blue">Pemantauan Progres Pembentukan Perda</p>
+                <h1 id="informasi-title">Informasi Pembentukan Peraturan Daerah Tahun 2025</h1>
+              </div>
           <div class="ranperda-table-wrap">
             <div class="ranperda-search">
               <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -724,15 +746,28 @@
               </article>
             </div>
           </div>
+          </div>
         </div>
       </section>
       <section id="Informasi2026" class="page" aria-labelledby="informasi-2026-title" hidden>
         <div class="container section page-content">
-          <div class="page-title">
-            <p class="eyebrow eyebrow--blue">Pemantauan Progres Pembentukan Perda</p>
-            <h1 id="informasi-2026-title">Informasi Pembentukan Peraturan Daerah Tahun 2026</h1>
-          </div>
-          <div class="ranperda-table-wrap">
+          <div class="information-wrapper">
+            <aside class="information-sidebar">
+              <button class="year-switch-button" type="button" data-year-switch="2025">
+                <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+                2025
+              </button>
+              <button class="year-switch-button active" type="button" data-year-switch="2026" aria-current="page">
+                <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+                2026
+              </button>
+            </aside>
+            <div class="information-main">
+              <div class="page-title">
+                <p class="eyebrow eyebrow--blue">Pemantauan Progres Pembentukan Perda</p>
+                <h1 id="informasi-2026-title">Informasi Pembentukan Peraturan Daerah Tahun 2026</h1>
+              </div>
+              <div class="ranperda-table-wrap">
             <div class="ranperda-search">
               <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
               <input type="search" placeholder="Cari ranperda..." aria-label="Cari ranperda" />
@@ -833,6 +868,8 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1064,6 +1101,21 @@
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
             <p>Area informasi pembentukan Perda Tahun <strong>${year}</strong> siap diisi dengan data, status, atau tautan dokumen sesuai kebutuhan pengelola SIPROPERDA.</p>
           `;
+          history.replaceState(null, '', `#${targetPageId}`);
+          showPage(targetPageId);
+        });
+      });
+
+      document.querySelectorAll('[data-year-switch]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const year = button.dataset.yearSwitch;
+          const targetPageId = year === '2026' ? 'Informasi2026' : 'Informasi2025';
+          document.querySelectorAll('[data-year-switch]').forEach((item) => {
+            item.classList.remove('active');
+            item.removeAttribute('aria-current');
+          });
+          button.classList.add('active');
+          button.setAttribute('aria-current', 'page');
           history.replaceState(null, '', `#${targetPageId}`);
           showPage(targetPageId);
         });
