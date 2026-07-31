@@ -632,6 +632,25 @@
                   <span class="detail-label">Perkembangan Ranperda</span>
                   <span class="detail-value progress-detail-perkembangan">-</span>
                 </div>
+                <div class="detail-row">
+                  <span class="detail-label">Dokumen per Tahap</span>
+                  <span class="detail-value">
+                    <div class="file-manager">
+                      <h6 style="margin:0 0 8px;color:var(--blue);font-size:14px;">Kelola dokumen</h6>
+                      <div class="stage-tabs" style="display:flex;gap:8px;margin-bottom:8px;">
+                        <button type="button" class="stage-tab" data-stage="Perencanaan">Perencanaan</button>
+                        <button type="button" class="stage-tab" data-stage="Pembahasan">Pembahasan</button>
+                        <button type="button" class="stage-tab" data-stage="Persetujuan">Persetujuan</button>
+                        <button type="button" class="stage-tab" data-stage="Penetapan">Penetapan</button>
+                      </div>
+                      <div class="stage-upload" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+                        <input type="file" class="file-input" />
+                        <button type="button" class="button upload-file-button" style="padding:8px 12px;">Upload</button>
+                      </div>
+                      <ul class="file-list" style="margin:0;padding:0;list-style:none;max-height:160px;overflow:auto;border-top:1px solid var(--line);padding-top:8px;" aria-live="polite"></ul>
+                    </div>
+                  </span>
+                </div>
               </div>
             </div>
             <table class="ranperda-table">
@@ -983,7 +1002,7 @@
 
       const attachSharedFooter = () => {
         pages.forEach((page) => {
-          if (page.querySelector('.site-footer')) return;
+          if (page.id === 'beranda' || page.querySelector('.site-footer')) return;
           page.insertAdjacentHTML('beforeend', footerMarkup(page.id));
         });
       };
@@ -1196,6 +1215,80 @@
         const progressUpdated = wrap.querySelector('.progress-detail-updated');
         const progressPerkembangan = wrap.querySelector('.progress-detail-perkembangan');
 
+        // Helper for file storage key (per ranperda title)
+        const storageKey = (title) => `siproperda:files:${encodeURIComponent(title)}`;
+
+        const loadFiles = (title) => {
+          try {
+            return JSON.parse(localStorage.getItem(storageKey(title)) || '{}');
+          } catch (e) {
+            return {};
+          }
+        };
+
+        const saveFiles = (title, data) => {
+          try {
+            localStorage.setItem(storageKey(title), JSON.stringify(data));
+          } catch (e) {
+            console.error('Gagal menyimpan file ke localStorage', e);
+          }
+        };
+
+        const renderFileList = (panel, title, stage) => {
+          if (!panel) return;
+          const list = panel.querySelector('.file-list');
+          list.innerHTML = '';
+          const filesByStage = loadFiles(title) || {};
+          const items = filesByStage[stage] || [];
+          if (!items.length) {
+            list.innerHTML = '<li style="color:var(--muted);font-size:13px;">Belum ada dokumen untuk tahap ini.</li>';
+            return;
+          }
+          items.forEach((f, idx) => {
+            const li = document.createElement('li');
+            li.style.padding = '6px 0';
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
+            const name = document.createElement('span');
+            name.textContent = f.name + ' • ' + (new Date(f.uploadedAt).toLocaleString());
+            name.style.fontSize = '13px';
+            name.style.color = 'var(--ink)';
+            const actions = document.createElement('span');
+            actions.style.display = 'inline-flex';
+            actions.style.gap = '8px';
+            const view = document.createElement('a');
+            view.href = f.dataUrl;
+            view.target = '_blank';
+            view.rel = 'noopener noreferrer';
+            view.innerHTML = '<i class="fa-regular fa-eye"></i>';
+            view.title = 'Lihat dokumen';
+            const del = document.createElement('button');
+            del.type = 'button';
+            del.title = 'Hapus dokumen';
+            del.style.border = '0';
+            del.style.background = 'transparent';
+            del.style.color = 'var(--muted)';
+            del.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
+            del.addEventListener('click', () => {
+              const files = loadFiles(title);
+              files[stage] = (files[stage] || []).filter((_, i) => i !== idx);
+              saveFiles(title, files);
+              renderFileList(panel, title, stage);
+            });
+            actions.appendChild(view);
+            actions.appendChild(del);
+            li.appendChild(name);
+            li.appendChild(actions);
+            list.appendChild(li);
+          });
+        };
+
+        const setActiveStage = (panel, title, stage) => {
+          panel.querySelectorAll('.stage-tab').forEach((t) => t.classList.toggle('active', t.dataset.stage === stage));
+          renderFileList(panel, title, stage);
+        };
+
         wrap.querySelectorAll('.status-button').forEach((button) => {
           button.addEventListener('click', () => {
             if (progressPanel) progressPanel.hidden = false;
@@ -1222,6 +1315,41 @@
             
             const stages = (button.dataset.progress || 'done,done,done,done').split(',');
             renderProgressTracker(progressTracker, stages);
+            // Siapkan manajemen file per tahapan untuk ranperda ini
+            const ranperdaTitle = button.dataset.title || 'ranperda-unknown';
+            // Inisialisasi tab dan upload
+            if (progressPanel) {
+              const panel = progressPanel;
+              // Aktifkan tab pertama (Perencanaan) secara default
+              panel.querySelectorAll('.stage-tab').forEach((t) => {
+                t.addEventListener('click', () => {
+                  setActiveStage(panel, ranperdaTitle, t.dataset.stage);
+                });
+              });
+
+              const uploadBtn = panel.querySelector('.upload-file-button');
+              const fileInput = panel.querySelector('.file-input');
+              panel.querySelectorAll('.stage-tab').forEach((t) => t.classList.remove('active'));
+              setActiveStage(panel, ranperdaTitle, 'Perencanaan');
+
+              uploadBtn?.addEventListener('click', () => {
+                const stage = panel.querySelector('.stage-tab.active')?.dataset.stage || 'Perencanaan';
+                const file = fileInput?.files?.[0];
+                if (!file) return alert('Pilih file untuk diunggah.');
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                  const dataUrl = ev.target.result;
+                  const files = loadFiles(ranperdaTitle) || {};
+                  files[stage] = files[stage] || [];
+                  files[stage].push({ name: file.name, dataUrl, uploadedAt: Date.now() });
+                  saveFiles(ranperdaTitle, files);
+                  renderFileList(panel, ranperdaTitle, stage);
+                  fileInput.value = '';
+                };
+                reader.readAsDataURL(file);
+              });
+            }
+
             progressPanel?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           });
         });
