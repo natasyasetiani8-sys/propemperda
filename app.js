@@ -4,6 +4,8 @@
   const STAGES = ['Perencanaan', 'Penyusunan', 'Pembahasan', 'Persetujuan Bersama', 'Penetapan dan Pengundangan'];
   const INITIATORS = ['Pemerintah Daerah', 'DPRD'];
   const INITIATOR_COLORS = ['#0f4c81', '#f0c96b'];
+  const API_BASE = String(window.SIPROPEMPERDA_API_BASE || '').replace(/\/+$/, '');
+  const apiUrl = (path) => `${API_BASE}${path}`;
 
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -223,7 +225,7 @@
     btn.disabled = true;
     fb.textContent = 'Mengirim...';
     try {
-      const res = await fetch('/api/survey', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) });
+      const res = await fetch(apiUrl('/api/survey'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) });
       const out = await res.json().catch(() => ({}));
       if (res.ok) { fb.textContent = 'Terima kasih! Data survei berhasil dikirim.'; form.reset(); }
       else fb.textContent = out.error || 'Gagal mengirim survei. Coba lagi nanti.';
@@ -247,7 +249,7 @@
     const show = (n) => { $('#visitor-count').textContent = Number(n || 0).toLocaleString('id-ID'); };
     show(DATA.visits);
     try { if (sessionStorage.getItem('visited')) return; } catch {}
-    fetch('/api/visit', { method: 'POST' })
+    fetch(apiUrl('/api/visit'), { method: 'POST' })
       .then((r) => r.json())
       .then((d) => { show(d.total); try { sessionStorage.setItem('visited', '1'); } catch {} })
       .catch(() => {});
@@ -259,7 +261,7 @@
     updateFooterTime();
     setInterval(updateFooterTime, 1000);
     try {
-      const res = await fetch('/api/public', { cache: 'no-store' });
+      const res = await fetch(apiUrl('/api/public'), { cache: 'no-store' });
       if (!res.ok) throw new Error(res.status);
       DATA = await res.json();
     } catch (err) {

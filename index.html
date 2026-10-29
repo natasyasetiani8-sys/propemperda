@@ -158,6 +158,8 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const API_BASE = String(window.SIPROPEMPERDA_API_BASE || '').replace(/\/+$/, '');
+  const apiUrl = (path) => `${API_BASE}${path}`;
   const num = (x) => Number(x || 0).toLocaleString('id-ID');
   const dateFmt = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
   const fmtDate = (iso) => (iso ? dateFmt.format(new Date(`${iso}T00:00:00Z`)) : '-');
@@ -170,9 +172,9 @@
 
   // ---------- Jaringan ----------
   async function api(method, url, body) {
-    const opt = { method, credentials: 'same-origin', headers: { 'X-Requested-With': 'fetch' } };
+    const opt = { method, credentials: 'include', headers: { 'X-Requested-With': 'fetch' } };
     if (body !== undefined) { opt.headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
-    const res = await fetch(url, opt);
+    const res = await fetch(apiUrl(url), opt);
     const out = await res.json().catch(() => ({}));
     if (res.status === 401 && !url.endsWith('/login')) { showLogin(); throw new Error(out.error || 'Sesi berakhir. Silakan masuk lagi.'); }
     if (!res.ok) throw new Error(out.error || `Terjadi kesalahan (${res.status})`);
@@ -326,7 +328,7 @@
     return `
       <div class="toolbar">
         <div class="stats" style="margin:0;flex:1"><div class="stat"><span>Responden</span><b>${num(list.length)}</b><small>Rata-rata nilai ${list.length ? avgAll.toFixed(2) : '-'} dari 5</small></div></div>
-        <a class="btn" href="/api/admin/surveys.csv">Unduh CSV (Excel)</a>
+        <a class="btn" href="${apiUrl('/api/admin/surveys.csv')}">Unduh CSV (Excel)</a>
       </div>
       ${list.length ? `
       <section class="card flush"><h2>Rata-rata per pertanyaan</h2><div class="scroll"><table><tbody>${avgRows}</tbody></table></div></section>
@@ -339,14 +341,14 @@
       <section class="card"><h2>Ganti kata sandi</h2>
         <form class="form" data-form="pw">
           <label>Kata sandi saat ini<input name="current" type="password" autocomplete="current-password" required></label>
-          <label>Kata sandi baru (minimal 8 karakter)<input name="next" type="password" autocomplete="new-password" minlength="8" required></label>
-          <label>Ulangi kata sandi baru<input name="again" type="password" autocomplete="new-password" minlength="8" required></label>
+          <label>Kata sandi baru (minimal 16 karakter)<input name="next" type="password" autocomplete="new-password" minlength="16" required></label>
+          <label>Ulangi kata sandi baru<input name="again" type="password" autocomplete="new-password" minlength="16" required></label>
           <div><button class="btn primary" type="submit">Simpan kata sandi</button></div>
         </form>
       </section>
       <section class="card"><h2>Cadangan data</h2>
         <p class="hint">Unduh seluruh data Ranperda, PROPEMPERDA, dan jawaban survei sebagai satu berkas JSON. Salinan harian otomatis juga disimpan server di folder <code>data/backup</code>. Berkas yang diunggah ada di folder <code>uploads</code>.</p>
-        <a class="btn" href="/api/admin/backup">Unduh cadangan (JSON)</a>
+        <a class="btn" href="${apiUrl('/api/admin/backup')}">Unduh cadangan (JSON)</a>
       </section>`;
   }
 
@@ -400,8 +402,8 @@
     input.value = 'Mengunggah...';
     input.disabled = true;
     try {
-      const res = await fetch(`/api/admin/upload?name=${encodeURIComponent(file.name)}`, {
-        method: 'POST', credentials: 'same-origin', body: file,
+      const res = await fetch(apiUrl(`/api/admin/upload?name=${encodeURIComponent(file.name)}`), {
+        method: 'POST', credentials: 'include', body: file,
         headers: { 'X-Requested-With': 'fetch', 'Content-Type': 'application/octet-stream' },
       });
       const out = await res.json().catch(() => ({}));

@@ -1,0 +1,21 @@
+name = "sipropemperda-api"
+main = "worker.js"
+compatibility_date = "2026-10-29"
+
+[vars]
+ADMIN_USER = "admin"
+CORS_ORIGIN = "https://siproperda-setwan-ntt.netlify.app"
+MAX_UPLOAD_MB = "25"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sipropemperda"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "sipropemperda-uploads"
+
+[triggers]
+crons = ["0 18 * * *"]
