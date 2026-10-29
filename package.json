@@ -1,0 +1,13 @@
+{
+  "name": "sipropemperda",
+  "version": "1.0.0",
+  "description": "SIPROPEMPERDA — dashboard progres pembentukan Peraturan Daerah dengan panel admin",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "reset-admin": "node server.js --reset-admin"
+  },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED",
+  "private": true
+}

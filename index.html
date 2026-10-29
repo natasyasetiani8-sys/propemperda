@@ -1,297 +1,555 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portofolio Profesional & Fotografi</title>
-    <!-- Menggunakan font Google Poppins untuk kesan modern, bersih, dan ramah -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* === COLOR PALETTE & VARIABLES === */
-        :root {
-            --color-yellow-light: #E8F957;
-            --color-yellow-lime: #BBE11A;
-            --color-blue-lightest: #C1E5FB;
-            --color-blue-light: #86D0FD;
-            --color-blue-mid: #4891E7;
-            --color-blue-dark: #042C8F;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin SIPROPEMPERDA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{--blue:#0f4c81;--blue-dark:#0b355a;--gold:#f0c96b;--paper:#f8fbfd;--line:#dce7ed;--ink:#0f172a;--muted:#5d6c76;--red:#b42318;--green:#0b6b3a}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#f1f6f9;line-height:1.5;font-size:14px}
+    [hidden]{display:none!important}
+    h1,h2,h3{margin:0}
+    button,input,select,textarea{font:inherit;color:inherit}
+    :focus-visible{outline:3px solid #9fc3dd;outline-offset:2px}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+    /* Login */
+    .login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(118deg,var(--blue-dark),var(--blue))}
+    .login form{width:min(380px,100%);display:grid;gap:14px;padding:30px;border-radius:14px;background:#fff;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+    .login h1{font-size:22px;color:var(--blue)}
+    .login p{margin:0;color:var(--muted)}
 
-        body {
-            background-color: var(--color-blue-lightest);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-            color: var(--color-blue-dark);
-        }
+    /* Kerangka */
+    #app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+    .side{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;padding:20px 14px;background:var(--blue-dark);color:#fff}
+    .side .brand{padding:4px 10px 18px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:10px}
+    .side .brand strong{display:block;font-size:17px}
+    .side .brand small{color:rgba(255,255,255,.7);font-size:12px}
+    .side button,.side a{display:block;width:100%;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:rgba(255,255,255,.82);text-align:left;text-decoration:none;font-weight:600;cursor:pointer}
+    .side button:hover,.side a:hover{background:rgba(255,255,255,.1);color:#fff}
+    .side button.on{background:#fff;color:var(--blue)}
+    .side .sp{flex:1}
+    .main{padding:28px clamp(16px,3vw,36px) 60px;min-width:0}
+    .main>h1{margin-bottom:20px;font-size:26px;color:var(--blue);letter-spacing:-.02em}
 
-        /* === BACKGROUND BLOBS FOR GLASSMORPHISM EFFECT === */
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: -1;
-            opacity: 0.7;
-            animation: float 10s infinite ease-in-out alternate;
-        }
+    /* Komponen */
+    .card{margin-bottom:18px;padding:20px;border:1px solid var(--line);border-radius:12px;background:#fff}
+    .card h2{margin-bottom:12px;font-size:16px;color:var(--blue)}
+    .card.flush{padding:0;overflow:hidden}
+    .card.flush>h2{padding:16px 20px 0}
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:18px}
+    .stat{display:grid;gap:2px;padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}
+    .stat span{color:var(--muted);font-weight:600}
+    .stat b{font-size:30px;color:var(--blue);line-height:1.2}
+    .stat small{color:var(--muted)}
+    .toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:14px}
+    .scroll{overflow-x:auto}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:11px 16px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    th{background:#eef5f8;color:var(--blue);font-weight:700;white-space:nowrap}
+    tr:last-child td{border-bottom:0}
+    td.act{white-space:nowrap;text-align:right}
+    .num{width:48px;color:var(--muted)}
+    .empty{padding:26px 20px;color:var(--muted)}
+    .badge{display:inline-block;padding:3px 10px;border-radius:999px;background:#e8f3ff;color:var(--blue);font-size:12px;font-weight:700;white-space:nowrap}
+    .badge.done{background:#e6f7ee;color:var(--green)}
+    .bar{height:8px;min-width:120px;border-radius:99px;background:#e5edf2;overflow:hidden}
+    .bar i{display:block;height:100%;background:var(--blue)}
+    ol.steps{margin:0;padding-left:20px;display:grid;gap:6px}
+    .hint{margin:0 0 10px;color:var(--muted)}
 
-        .blob-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--color-blue-mid);
-            top: -100px;
-            left: -100px;
-        }
+    .btn{display:inline-block;padding:9px 14px;border:1px solid #b6c7cf;border-radius:8px;background:#fff;color:var(--blue);font-weight:700;text-decoration:none;cursor:pointer}
+    .btn:hover{border-color:var(--blue)}
+    .btn.primary{border-color:var(--blue);background:var(--blue);color:#fff}
+    .btn.primary:hover{background:var(--blue-dark)}
+    .btn.danger{color:var(--red)}
+    .btn.danger:hover{border-color:var(--red)}
+    .btn.small{padding:6px 10px;font-size:13px}
+    .btn[disabled]{opacity:.55;cursor:wait}
 
-        .blob-2 {
-            width: 350px;
-            height: 350px;
-            background: var(--color-yellow-lime);
-            bottom: -50px;
-            right: -50px;
-            animation-delay: -5s;
-        }
+    label{display:grid;gap:6px;font-weight:600;color:var(--blue)}
+    input:not([type=file]),select,textarea{width:100%;padding:10px 11px;border:1px solid #b6c7cf;border-radius:8px;background:#fff;font-weight:400;color:var(--ink)}
+    textarea{resize:vertical}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+    .grid3{display:grid;grid-template-columns:110px 1fr 1.4fr;gap:12px}
+    .form{display:grid;gap:14px;max-width:420px}
 
-        .blob-3 {
-            width: 250px;
-            height: 250px;
-            background: var(--color-blue-light);
-            top: 40%;
-            left: 30%;
-            animation-delay: -2s;
-        }
+    /* Dialog */
+    dialog{width:min(940px,calc(100% - 24px));max-height:92vh;padding:0;border:0;border-radius:14px;box-shadow:0 30px 80px rgba(4,34,58,.35)}
+    dialog::backdrop{background:rgba(11,53,90,.55)}
+    .dlgform{display:grid;gap:14px;max-height:92vh;padding:24px;overflow:auto}
+    .dlgform h2{font-size:20px;color:var(--blue)}
+    .dlgform h3{margin-top:6px;font-size:15px;color:var(--blue)}
+    .dlgactions{position:sticky;bottom:-24px;display:flex;gap:10px;justify-content:flex-end;align-items:center;margin:0 -24px -24px;padding:14px 24px;border-top:1px solid var(--line);background:#fff}
+    .dlgactions .err{flex:1;margin:0;color:var(--red);font-weight:600}
+    .stagebox{display:grid;gap:10px;margin:0;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+    .stagebox legend{padding:0 8px;font-weight:700;color:var(--blue)}
+    .stagebox>.btn{justify-self:start}
+    .docs{display:grid;gap:10px}
+    .doc{display:grid;grid-template-columns:1fr 160px auto;gap:8px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .doc .d-note,.doc .src{grid-column:1/-1}
+    .src{display:flex;gap:8px;align-items:center}
+    .src input{flex:1;min-width:0}
+    .src .btn{flex:none}
+    dl.ans{display:grid;grid-template-columns:1fr auto;gap:6px 16px;margin:0}
+    dl.ans dd{margin:0;font-weight:700;color:var(--blue)}
+    dl.ans dt{color:var(--ink)}
+    .open-ans{padding:10px 12px;border-left:4px solid var(--gold);background:var(--paper)}
+    .open-ans b{display:block;color:var(--blue)}
 
-        @keyframes float {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(30px) scale(1.1); }
-        }
+    #toast{position:fixed;right:18px;bottom:18px;z-index:50;max-width:min(420px,calc(100% - 36px));padding:12px 16px;border-radius:10px;background:var(--blue-dark);color:#fff;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    #toast.bad{background:var(--red)}
 
-        /* === NAVBAR (GLASSMORPHISM) === */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 5%;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--color-blue-dark);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .logo span {
-            color: var(--color-blue-mid);
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--color-blue-dark);
-            margin-left: 2rem;
-            font-weight: 600;
-            transition: 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--color-blue-mid);
-        }
-
-        /* === HERO SECTION === */
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 120px 5% 50px;
-            text-align: center;
-        }
-
-        .hero-text h1 {
-            font-size: 3rem;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-
-        .hero-text p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
-            color: #1a3a78; /* Slightly lighter dark blue */
-        }
-
-        /* === CARDS CONTAINER === */
-        .card-container {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        /* === GLASSMORPHISM CARD (Fotografi) === */
-        .glass-card {
-            flex: 1;
-            min-width: 300px;
-            padding: 2.5rem;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(4, 44, 143, 0.15);
-            text-align: left;
-            transition: transform 0.3s ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .glass-card h2 {
-            color: var(--color-blue-dark);
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
-        }
-
-        .glass-card p {
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        /* === NEUMORPHISM BUTTONS === */
-        /* Tombol Kuning/Fun (Untuk Fotografi) */
-        .btn-neu-yellow {
-            display: inline-block;
-            padding: 12px 28px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            color: var(--color-blue-dark);
-            background: var(--color-yellow-light);
-            /* Bayangan Neumorphism: kombinasi highlight terang dan shadow gelap */
-            box-shadow: 6px 6px 12px rgba(187, 225, 26, 0.5), 
-                       -6px -6px 12px rgba(255, 255, 255, 0.9);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-neu-yellow:hover {
-            box-shadow: inset 4px 4px 8px rgba(187, 225, 26, 0.5), 
-                        inset -4px -4px 8px rgba(255, 255, 255, 0.9);
-        }
-
-        /* Tombol Biru/Profesional (Untuk Pemerintahan) */
-        .btn-neu-blue {
-            display: inline-block;
-            padding: 12px 28px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            color: var(--color-blue-dark);
-            background: var(--color-blue-lightest);
-            /* Bayangan Neumorphism disesuaikan dengan background biru terang */
-            box-shadow: 6px 6px 12px rgba(134, 208, 253, 0.6), 
-                       -6px -6px 12px rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
-        }
-
-        .btn-neu-blue:hover {
-            box-shadow: inset 4px 4px 8px rgba(134, 208, 253, 0.6), 
-                        inset -4px -4px 8px rgba(255, 255, 255, 0.8);
-        }
-
-        /* Tag kecil di dalam card */
-        .tag {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        .tag-fun {
-            background: var(--color-yellow-lime);
-            color: var(--color-blue-dark);
-        }
-        
-        .tag-pro {
-            background: var(--color-blue-mid);
-            color: white;
-        }
-
-        /* RESPONSIVE DESIGN */
-        @media (max-width: 768px) {
-            .hero-text h1 { font-size: 2.2rem; }
-            .nav-links { display: none; } /* Disembunyikan untuk versi mobile simpel */
-            .card-container { flex-direction: column; }
-        }
-    </style>
+    @media (max-width:820px){
+      #app{grid-template-columns:1fr}
+      .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;padding:12px}
+      .side .brand{width:100%;border:0;margin:0;padding:0 6px 6px}
+      .side button,.side a{width:auto}
+      .side .sp{display:none}
+      .grid3{grid-template-columns:1fr}
+      .doc{grid-template-columns:1fr}
+    }
+    @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  </style>
 </head>
 <body>
+  <div class="login" id="login" hidden>
+    <form id="loginForm">
+      <div>
+        <h1>Admin SIPROPEMPERDA</h1>
+        <p>Masuk untuk memperbarui data dan dokumen.</p>
+      </div>
+      <label>Nama pengguna<input name="username" autocomplete="username" required autofocus></label>
+      <label>Kata sandi<input name="password" type="password" autocomplete="current-password" required></label>
+      <p id="loginErr" role="alert" style="color:var(--red);font-weight:600" hidden></p>
+      <button class="btn primary" type="submit">Masuk</button>
+    </form>
+  </div>
 
-    <!-- Background Animasi Blobs -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+  <div id="app" hidden>
+    <aside class="side">
+      <div class="brand"><strong>SIPROPEMPERDA</strong><small>Panel admin</small></div>
+      <button data-nav="ringkasan">Ringkasan</button>
+      <button data-nav="ranperda">Ranperda</button>
+      <button data-nav="propemperda">PROPEMPERDA</button>
+      <button data-nav="survei">Survei</button>
+      <button data-nav="akun">Akun</button>
+      <div class="sp"></div>
+      <a href="/" target="_blank" rel="noopener">Lihat situs publik</a>
+      <button data-act="logout">Keluar</button>
+    </aside>
+    <main class="main" id="view"></main>
+  </div>
 
-    <!-- Navigasi -->
-    <nav>
-        <div class="logo">Porto<span>Folio.</span></div>
-        <div class="nav-links">
-            <a href="#">Beranda</a>
-            <a href="#">Galeri Foto</a>
-            <a href="#">Karier Pro</a>
-            <a href="#">Kontak</a>
-        </div>
-    </nav>
+  <dialog id="dlg"></dialog>
+  <div id="toast" role="status" hidden></div>
 
-    <!-- Konten Utama (Hero) -->
-    <section class="hero">
-        <div class="hero-text">
-            <h1>Menangkap Keindahan, <br>Melayani Negara.</h1>
-            <p>Selamat datang di ruang digital saya. Sebuah harmoni antara kreativitas fotografi visual dan dedikasi profesional di sektor pemerintahan.</p>
-        </div>
+<script>
+(() => {
+  'use strict';
+  const STAGES = ['Perencanaan', 'Penyusunan', 'Pembahasan', 'Persetujuan Bersama', 'Penetapan dan Pengundangan'];
+  const INITIATORS = ['Pemerintah Daerah', 'DPRD'];
+  const TITLES = { ringkasan: 'Ringkasan', ranperda: 'Ranperda', propemperda: 'Dokumen PROPEMPERDA', survei: 'Hasil Survei Pengguna', akun: 'Akun dan Cadangan' };
 
-        <div class="card-container">
-            <!-- Card 1: Fotografi (Sisi Fun/Kreatif) -->
-            <div class="glass-card">
-                <span class="tag tag-fun">Creative Side</span>
-                <h2>Fotografi Alam</h2>
-                <p>Membekukan waktu melalui lensa. Eksplorasi keindahan dunia lewat fotografi <strong>Landscape</strong> yang megah dan detail tersembunyi dalam <strong>Macro Photography</strong>.</p>
-                <a href="#" class="btn-neu-yellow">Lihat Galeri Foto</a>
-            </div>
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const num = (x) => Number(x || 0).toLocaleString('id-ID');
+  const dateFmt = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  const fmtDate = (iso) => (iso ? dateFmt.format(new Date(`${iso}T00:00:00Z`)) : '-');
+  const fmtSize = (b) => (b >= 1048576 ? `${(b / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(b / 1024))} KB`);
+  const stageName = (c) => (c >= STAGES.length ? 'Selesai' : STAGES[c]);
+  const average = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
 
-            <!-- Card 2: Pemerintahan (Sisi Profesional) -->
-            <div class="glass-card">
-                <span class="tag tag-pro">Professional Side</span>
-                <h2>Pengalaman Publik</h2>
-                <p>Dedikasi, integritas, dan manajemen publik. Rekam jejak perjalanan karier profesional dan kontribusi saya di instansi <strong>Pemerintahan</strong>.</p>
-                <a href="#" class="btn-neu-blue">Profil Profesional</a>
-            </div>
-        </div>
-    </section>
+  const S = { data: { propemperda: [], ranperda: [], survey: [] }, summary: null, surveys: [], view: 'ringkasan', year: null };
+  const allYears = () => [...new Set([...S.data.propemperda, ...S.data.ranperda].map((x) => x.year))].sort();
 
+  // ---------- Jaringan ----------
+  async function api(method, url, body) {
+    const opt = { method, credentials: 'same-origin', headers: { 'X-Requested-With': 'fetch' } };
+    if (body !== undefined) { opt.headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
+    const res = await fetch(url, opt);
+    const out = await res.json().catch(() => ({}));
+    if (res.status === 401 && !url.endsWith('/login')) { showLogin(); throw new Error(out.error || 'Sesi berakhir. Silakan masuk lagi.'); }
+    if (!res.ok) throw new Error(out.error || `Terjadi kesalahan (${res.status})`);
+    return out;
+  }
+  let toastTimer;
+  function toast(msg, isBad) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.className = isBad ? 'bad' : '';
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.hidden = true; }, isBad ? 6000 : 3000);
+  }
+  async function refresh() {
+    const [data, summary] = await Promise.all([api('GET', '/api/admin/data'), api('GET', '/api/admin/summary')]);
+    S.data = data;
+    S.summary = summary;
+  }
+
+  // ---------- Login ----------
+  function showLogin() { $('#app').hidden = true; $('#login').hidden = false; }
+  async function boot() {
+    try {
+      await api('GET', '/api/admin/me');
+      await refresh();
+      $('#login').hidden = true;
+      $('#app').hidden = false;
+      go(S.view);
+    } catch { showLogin(); }
+  }
+  $('#loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const err = $('#loginErr');
+    err.hidden = true;
+    try {
+      await api('POST', '/api/admin/login', { username: f.username.value, password: f.password.value });
+      f.password.value = '';
+      await boot();
+    } catch (ex) { err.textContent = ex.message; err.hidden = false; }
+  });
+
+  // ---------- Tampilan ----------
+  async function go(view) {
+    S.view = view;
+    if (view === 'survei') { try { S.surveys = await api('GET', '/api/admin/surveys'); } catch (e) { toast(e.message, true); } }
+    render();
+    window.scrollTo(0, 0);
+  }
+  function render() {
+    $$('[data-nav]').forEach((b) => b.classList.toggle('on', b.dataset.nav === S.view));
+    const body = { ringkasan: vRingkasan, ranperda: vRanperda, propemperda: vPropemperda, survei: vSurvei, akun: vAkun }[S.view]();
+    $('#view').innerHTML = `<h1>${TITLES[S.view]}</h1>${body}`;
+  }
+
+  function vRingkasan() {
+    const { ranperda, propemperda } = S.data;
+    const sm = S.summary;
+    const rows = allYears().map((y) => {
+      const l = ranperda.filter((r) => r.year === y);
+      const done = l.filter((r) => r.completed >= STAGES.length).length;
+      return `<tr><td>${y}</td><td>${l.length}</td><td>${done}</td><td>${l.length - done}</td><td>${propemperda.filter((p) => p.year === y).length}</td></tr>`;
+    }).join('');
+    return `
+      <div class="stats">
+        <div class="stat"><span>Pengunjung</span><b>${num(sm.visits.total)}</b><small>${num(sm.visits.today)} hari ini</small></div>
+        <div class="stat"><span>Responden survei</span><b>${num(sm.surveys)}</b></div>
+        <div class="stat"><span>Berkas terunggah</span><b>${num(sm.uploads.count)}</b><small>${fmtSize(sm.uploads.bytes)}</small></div>
+      </div>
+      <section class="card flush"><h2>Per tahun</h2>
+        <div class="scroll"><table><thead><tr><th>Tahun</th><th>Ranperda</th><th>Sudah diundangkan</th><th>Sedang berjalan</th><th>SK PROPEMPERDA</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="5" class="empty">Belum ada data.</td></tr>'}</tbody></table></div>
+      </section>
+      <section class="card"><h2>Cara memperbarui data</h2>
+        <ol class="steps">
+          <li>Buka menu <b>Ranperda</b>, pilih tahun, lalu klik <b>Ubah</b> pada Ranperda yang ingin diperbarui.</li>
+          <li>Ganti <b>Tahap yang sedang berjalan</b> agar indikator progres di situs publik ikut berubah.</li>
+          <li>Pada kotak tahap, klik <b>Tambah dokumen</b>, lalu tempel tautan Google Drive atau <b>Unggah berkas</b> dari komputer.</li>
+          <li>Klik <b>Simpan</b>. Perubahan langsung tampil di situs publik tanpa perlu mengedit kode.</li>
+        </ol>
+      </section>`;
+  }
+
+  function vRanperda() {
+    const years = allYears();
+    if (S.year == null) S.year = years[years.length - 1] ?? new Date().getFullYear();
+    if (!years.includes(S.year)) years.push(S.year);
+    const list = S.data.ranperda.filter((r) => r.year === S.year);
+    const rows = list.map((r, i) => `
+      <tr>
+        <td class="num">${i + 1}.</td>
+        <td>${esc(r.title)}</td>
+        <td>${esc(r.initiator)}</td>
+        <td><span class="badge${r.completed >= STAGES.length ? ' done' : ''}">${stageName(r.completed)}</span></td>
+        <td>${Object.values(r.docs || {}).reduce((n, d) => n + d.length, 0)}</td>
+        <td class="act">
+          <button class="btn small" data-act="up" data-id="${r.id}" aria-label="Naikkan urutan" ${i === 0 ? 'disabled' : ''}>Naik</button>
+          <button class="btn small" data-act="down" data-id="${r.id}" aria-label="Turunkan urutan" ${i === list.length - 1 ? 'disabled' : ''}>Turun</button>
+          <button class="btn small primary" data-act="edit-ranperda" data-id="${r.id}">Ubah</button>
+          <button class="btn small danger" data-act="del-ranperda" data-id="${r.id}">Hapus</button>
+        </td>
+      </tr>`).join('');
+    return `
+      <div class="toolbar">
+        <label>Tahun<select id="yearSel">${years.map((y) => `<option${y === S.year ? ' selected' : ''}>${y}</option>`).join('')}</select></label>
+        <button class="btn primary" data-act="new-ranperda">Tambah Ranperda</button>
+      </div>
+      <section class="card flush"><div class="scroll"><table>
+        <thead><tr><th></th><th>Judul Ranperda</th><th>Pengusul</th><th>Tahap saat ini</th><th>Dokumen</th><th></th></tr></thead>
+        <tbody>${rows || `<tr><td colspan="6" class="empty">Belum ada Ranperda untuk tahun ${S.year}. Klik <b>Tambah Ranperda</b>.</td></tr>`}</tbody>
+      </table></div></section>`;
+  }
+
+  function vPropemperda() {
+    const years = allYears();
+    const blocks = years.filter((y) => S.data.propemperda.some((p) => p.year === y)).map((y) => {
+      const rows = S.data.propemperda.filter((p) => p.year === y).sort((a, b) => (a.date || '').localeCompare(b.date || '')).map((p) => `
+        <tr>
+          <td>${esc(p.title)}</td>
+          <td>${fmtDate(p.date)}</td>
+          <td><a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">Buka dokumen</a></td>
+          <td class="act">
+            <button class="btn small primary" data-act="edit-prop" data-id="${p.id}">Ubah</button>
+            <button class="btn small danger" data-act="del-prop" data-id="${p.id}">Hapus</button>
+          </td>
+        </tr>`).join('');
+      return `<section class="card flush"><h2>${y}</h2><div class="scroll"><table><thead><tr><th>Judul</th><th>Tanggal</th><th>Dokumen</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></section>`;
+    }).join('');
+    return `<div class="toolbar"><p class="hint" style="margin:0">SK PROPEMPERDA dan perubahannya yang tampil di menu PROPEMPERDA.</p><button class="btn primary" data-act="new-prop">Tambah SK</button></div>${blocks || '<p class="empty">Belum ada dokumen.</p>'}`;
+  }
+
+  function vSurvei() {
+    const list = S.surveys;
+    const qs = S.data.survey.flatMap((g) => g.questions);
+    const avgAll = average(list.map((s) => average(s.q)));
+    const avgRows = qs.map((q, i) => {
+      const a = average(list.map((s) => s.q[i]));
+      return `<tr><td class="num">${i + 1}.</td><td>${esc(q)}</td><td><b>${a.toFixed(2)}</b></td><td><div class="bar" aria-hidden="true"><i style="width:${(a / 5) * 100}%"></i></div></td></tr>`;
+    }).join('');
+    const rows = [...list].reverse().map((s) => `
+      <tr>
+        <td>${new Date(s.at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}</td>
+        <td>${esc(s.nama)}</td>
+        <td>${average(s.q).toFixed(2)}</td>
+        <td class="act">
+          <button class="btn small" data-act="view-survey" data-id="${s.id}">Lihat</button>
+          <button class="btn small danger" data-act="del-survey" data-id="${s.id}">Hapus</button>
+        </td>
+      </tr>`).join('');
+    return `
+      <div class="toolbar">
+        <div class="stats" style="margin:0;flex:1"><div class="stat"><span>Responden</span><b>${num(list.length)}</b><small>Rata-rata nilai ${list.length ? avgAll.toFixed(2) : '-'} dari 5</small></div></div>
+        <a class="btn" href="/api/admin/surveys.csv">Unduh CSV (Excel)</a>
+      </div>
+      ${list.length ? `
+      <section class="card flush"><h2>Rata-rata per pertanyaan</h2><div class="scroll"><table><tbody>${avgRows}</tbody></table></div></section>
+      <section class="card flush"><h2>Jawaban masuk</h2><div class="scroll"><table><thead><tr><th>Waktu</th><th>Nama</th><th>Rata-rata</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></section>`
+      : '<p class="empty card">Belum ada responden.</p>'}`;
+  }
+
+  function vAkun() {
+    return `
+      <section class="card"><h2>Ganti kata sandi</h2>
+        <form class="form" data-form="pw">
+          <label>Kata sandi saat ini<input name="current" type="password" autocomplete="current-password" required></label>
+          <label>Kata sandi baru (minimal 8 karakter)<input name="next" type="password" autocomplete="new-password" minlength="8" required></label>
+          <label>Ulangi kata sandi baru<input name="again" type="password" autocomplete="new-password" minlength="8" required></label>
+          <div><button class="btn primary" type="submit">Simpan kata sandi</button></div>
+        </form>
+      </section>
+      <section class="card"><h2>Cadangan data</h2>
+        <p class="hint">Unduh seluruh data Ranperda, PROPEMPERDA, dan jawaban survei sebagai satu berkas JSON. Salinan harian otomatis juga disimpan server di folder <code>data/backup</code>. Berkas yang diunggah ada di folder <code>uploads</code>.</p>
+        <a class="btn" href="/api/admin/backup">Unduh cadangan (JSON)</a>
+      </section>`;
+  }
+
+  // ---------- Dialog ----------
+  const dlg = $('#dlg');
+  function openDialog(html, onSubmit, submitLabel = 'Simpan') {
+    dlg.innerHTML = `<form class="dlgform">${html}
+      <div class="dlgactions"><p class="err" role="alert"></p>
+        <button type="button" class="btn" data-act="close">Batal</button>
+        <button type="submit" class="btn primary">${submitLabel}</button></div></form>`;
+    const form = $('form', dlg);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = $('button[type=submit]', form);
+      const err = $('.err', form);
+      err.textContent = '';
+      btn.disabled = true;
+      try { await onSubmit(form); } catch (ex) { err.textContent = ex.message; }
+      btn.disabled = false;
+    });
+    dlg.showModal();
+  }
+  const closeDialog = () => dlg.open && dlg.close();
+
+  const acceptExt = () => (S.summary?.limits?.extensions || []).join(',');
+  const srcField = (url) => `
+    <div class="src">
+      <input class="d-url" placeholder="Tempel tautan, atau unggah berkas dari komputer" maxlength="2000" required value="${esc(url)}" aria-label="Tautan dokumen">
+      <label class="btn small" style="cursor:pointer">Unggah berkas<input class="d-file" type="file" hidden accept="${esc(acceptExt())}"></label>
+      <a class="btn small d-open" href="${esc(url)}" target="_blank" rel="noopener noreferrer" ${url ? '' : 'hidden'}>Buka</a>
+    </div>`;
+  const docRow = (d = {}) => `
+    <div class="doc">
+      <input class="d-label" placeholder="Nama dokumen, mis. Naskah Akademik" maxlength="200" required value="${esc(d.label)}" aria-label="Nama dokumen">
+      <input class="d-date" type="date" value="${esc(d.date)}" aria-label="Tanggal dokumen">
+      <button type="button" class="btn small danger" data-act="del-doc">Hapus</button>
+      <input class="d-note" placeholder="Keterangan (opsional)" maxlength="600" value="${esc(d.note)}" aria-label="Keterangan">
+      ${srcField(d.url || '')}
+    </div>`;
+  const collectDocs = (root) => Object.fromEntries(STAGES.map((s, i) => [s, $$(`fieldset[data-stage="${i}"] .doc`, root).map((el) => ({
+    label: $('.d-label', el).value, date: $('.d-date', el).value, note: $('.d-note', el).value, url: $('.d-url', el).value,
+  }))]));
+
+  async function uploadFile(file, src) {
+    const lim = S.summary.limits;
+    const ext = `.${file.name.split('.').pop().toLowerCase()}`;
+    if (!lim.extensions.includes(ext)) return toast(`Jenis berkas ${ext} tidak diizinkan. Gunakan: ${lim.extensions.join(', ')}`, true);
+    if (file.size > lim.maxUploadMB * 1048576) return toast(`Ukuran berkas maksimal ${lim.maxUploadMB} MB`, true);
+    const input = $('.d-url', src);
+    const prev = input.value;
+    input.value = 'Mengunggah...';
+    input.disabled = true;
+    try {
+      const res = await fetch(`/api/admin/upload?name=${encodeURIComponent(file.name)}`, {
+        method: 'POST', credentials: 'same-origin', body: file,
+        headers: { 'X-Requested-With': 'fetch', 'Content-Type': 'application/octet-stream' },
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(out.error || 'Gagal mengunggah berkas');
+      input.value = out.url;
+      const label = src.closest('.doc') && $('.d-label', src.closest('.doc'));
+      if (label && !label.value) label.value = file.name.replace(/\.[^.]+$/, '');
+      toast(`Berkas terunggah: ${out.name} (${fmtSize(out.size)})`);
+    } catch (e) {
+      input.value = prev;
+      toast(e.message, true);
+    }
+    input.disabled = false;
+    syncOpen(src);
+  }
+  function syncOpen(src) {
+    const a = $('.d-open', src);
+    const v = $('.d-url', src).value.trim();
+    a.hidden = !/^(https?:\/\/|\/uploads\/)/i.test(v);
+    a.href = v;
+  }
+  dlg.addEventListener('change', (e) => {
+    if (e.target.classList.contains('d-file') && e.target.files[0]) {
+      uploadFile(e.target.files[0], e.target.closest('.src'));
+      e.target.value = '';
+    }
+  });
+  dlg.addEventListener('input', (e) => { if (e.target.classList.contains('d-url')) syncOpen(e.target.closest('.src')); });
+
+  async function saved(msg) {
+    await refresh();
+    closeDialog();
+    render();
+    toast(msg);
+  }
+
+  function editRanperda(r) {
+    const isNew = !r;
+    r = r || { year: S.year, title: 'Ranperda tentang ', initiator: INITIATORS[0], completed: 0, docs: {} };
+    const boxes = STAGES.map((s, i) => `
+      <fieldset class="stagebox" data-stage="${i}"><legend>${s}</legend>
+        <div class="docs">${(r.docs?.[s] || []).map(docRow).join('')}</div>
+        <button type="button" class="btn small" data-act="add-doc">Tambah dokumen</button>
+      </fieldset>`).join('');
+    openDialog(`
+      <h2>${isNew ? 'Tambah' : 'Ubah'} Ranperda</h2>
+      <label>Judul Ranperda<textarea name="title" rows="2" maxlength="400" required>${esc(r.title)}</textarea></label>
+      <div class="grid3">
+        <label>Tahun<input name="year" type="number" min="2000" max="2100" required value="${r.year}"></label>
+        <label>NA dan Ranperda disiapkan oleh<select name="initiator">${INITIATORS.map((o) => `<option${o === r.initiator ? ' selected' : ''}>${o}</option>`).join('')}</select></label>
+        <label>Tahap yang sedang berjalan<select name="completed">${[0, 1, 2, 3, 4, 5].map((i) => `<option value="${i}"${i === r.completed ? ' selected' : ''}>${i < 5 ? STAGES[i] : 'Selesai (sudah diundangkan)'}</option>`).join('')}</select></label>
+      </div>
+      <h3>Dokumen per tahap</h3>
+      <p class="hint" style="margin:0">Dokumen tampil di halaman publik sesuai tahapnya. Tahap tanpa dokumen akan tampil kosong.</p>
+      ${boxes}`, async (f) => {
+      const payload = { title: f.elements.title.value, year: Number(f.elements.year.value), initiator: f.elements.initiator.value, completed: Number(f.elements.completed.value), docs: collectDocs(f) };
+      await api(isNew ? 'POST' : 'PUT', isNew ? '/api/admin/ranperda' : `/api/admin/ranperda/${r.id}`, payload);
+      S.year = payload.year;
+      await saved('Ranperda tersimpan');
+    });
+  }
+
+  function editProp(p) {
+    const isNew = !p;
+    p = p || { year: new Date().getFullYear(), title: '', date: '', url: '' };
+    openDialog(`
+      <h2>${isNew ? 'Tambah' : 'Ubah'} dokumen PROPEMPERDA</h2>
+      <label>Judul dokumen<input name="title" maxlength="200" required placeholder="Mis. SK Perubahan Keempat PROPEMPERDA 2026" value="${esc(p.title)}"></label>
+      <div class="grid3" style="grid-template-columns:110px 200px 1fr">
+        <label>Tahun<input name="year" type="number" min="2000" max="2100" required value="${p.year}"></label>
+        <label>Tanggal SK<input name="date" type="date" value="${esc(p.date)}"></label>
+        <label>Dokumen${srcField(p.url)}</label>
+      </div>`, async (f) => {
+      const payload = { title: f.elements.title.value, year: Number(f.elements.year.value), date: f.elements.date.value, url: $('.d-url', f).value };
+      await api(isNew ? 'POST' : 'PUT', isNew ? '/api/admin/propemperda' : `/api/admin/propemperda/${p.id}`, payload);
+      await saved('Dokumen PROPEMPERDA tersimpan');
+    });
+  }
+
+  function viewSurvey(s) {
+    const qs = S.data.survey.flatMap((g) => g.questions);
+    const open = [['Kelebihan', s.kelebihan], ['Kekurangan', s.kekurangan], ['Fitur yang perlu ditambahkan', s.fitur], ['Saran', s.saran]];
+    dlg.innerHTML = `<div class="dlgform"><h2>${esc(s.nama)}</h2>
+      <p class="hint" style="margin:0">${new Date(s.at).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' })} · rata-rata ${average(s.q).toFixed(2)}</p>
+      <dl class="ans">${qs.map((q, i) => `<dt>${i + 1}. ${esc(q)}</dt><dd>${s.q[i]}</dd>`).join('')}</dl>
+      ${open.map(([k, v]) => `<div class="open-ans"><b>${k}</b>${esc(v) || '-'}</div>`).join('')}
+      <div class="dlgactions"><span class="err"></span><button type="button" class="btn" data-act="close">Tutup</button></div></div>`;
+    dlg.showModal();
+  }
+
+  // ---------- Aksi ----------
+  const byId = (list, id) => list.find((x) => x.id === id);
+  const actions = {
+    logout: async () => { try { await api('POST', '/api/admin/logout'); } catch {} showLogin(); },
+    close: closeDialog,
+    'new-ranperda': () => editRanperda(null),
+    'edit-ranperda': (id) => editRanperda(byId(S.data.ranperda, id)),
+    'del-ranperda': async (id) => {
+      const r = byId(S.data.ranperda, id);
+      if (!confirm(`Hapus Ranperda ini beserta seluruh dokumennya?\n\n${r.title}`)) return;
+      await api('DELETE', `/api/admin/ranperda/${id}`); await refresh(); render(); toast('Ranperda dihapus');
+    },
+    up: async (id) => { await api('POST', `/api/admin/ranperda/${id}/move`, { dir: -1 }); await refresh(); render(); },
+    down: async (id) => { await api('POST', `/api/admin/ranperda/${id}/move`, { dir: 1 }); await refresh(); render(); },
+    'new-prop': () => editProp(null),
+    'edit-prop': (id) => editProp(byId(S.data.propemperda, id)),
+    'del-prop': async (id) => {
+      if (!confirm(`Hapus dokumen ini?\n\n${byId(S.data.propemperda, id).title}`)) return;
+      await api('DELETE', `/api/admin/propemperda/${id}`); await refresh(); render(); toast('Dokumen dihapus');
+    },
+    'view-survey': (id) => viewSurvey(byId(S.surveys, id)),
+    'del-survey': async (id) => {
+      if (!confirm('Hapus jawaban survei ini?')) return;
+      await api('DELETE', `/api/admin/surveys/${id}`); S.surveys = await api('GET', '/api/admin/surveys'); await refresh(); render(); toast('Jawaban dihapus');
+    },
+  };
+
+  document.addEventListener('click', async (e) => {
+    const nav = e.target.closest('[data-nav]');
+    if (nav) return go(nav.dataset.nav);
+    const el = e.target.closest('[data-act]');
+    if (!el) return;
+    const act = el.dataset.act;
+    if (act === 'add-doc') {
+      const box = el.closest('.stagebox');
+      $('.docs', box).insertAdjacentHTML('beforeend', docRow());
+      $('.docs .doc:last-child .d-label', box).focus();
+    } else if (act === 'del-doc') {
+      el.closest('.doc').remove();
+    } else if (actions[act]) {
+      try { await actions[act](el.dataset.id); } catch (ex) { toast(ex.message, true); }
+    }
+  });
+  document.addEventListener('change', (e) => { if (e.target.id === 'yearSel') { S.year = Number(e.target.value); render(); } });
+  document.addEventListener('submit', async (e) => {
+    const f = e.target.closest('[data-form="pw"]');
+    if (!f) return;
+    e.preventDefault();
+    if (f.next.value !== f.again.value) return toast('Kata sandi baru dan pengulangannya tidak sama', true);
+    try {
+      await api('POST', '/api/admin/password', { current: f.current.value, next: f.next.value });
+      f.reset();
+      toast('Kata sandi diperbarui');
+    } catch (ex) { toast(ex.message, true); }
+  });
+
+  boot();
+})();
+</script>
 </body>
 </html>
