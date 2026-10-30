@@ -1,0 +1,2885 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIPROPEMPERDA</title>
+    <meta name="description" content="Dashboard informasi pembentukan Peraturan Daerah" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0PG8S1PDKS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0PG8S1PDKS');
+    </script>
+    <!-- End Google Analytics -->
+    <style>
+      :root {
+        --blue: #0f4c81;
+        --blue-dark: #0b355a;
+        --header-height: 86px;
+        --blue-light: #7fb4ce;
+        --gold: #f0c96b;
+        --paper: #f8fbfd;
+        --line: #dce7ed;
+        --ink: #0f172a;
+        --muted: #5d6c76;
+        --shadow: 0 14px 40px rgba(4, 34, 58, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        color: var(--ink);
+        background: #f7fbfc;
+        line-height: 1.5;
+      }
+      a { color: inherit; }
+      button { font: inherit; }
+      .container { width: min(100% - 40px, 1120px); margin-inline: auto; }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: linear-gradient(90deg, var(--blue-dark), var(--blue));
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+      }
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 86px;
+        gap: 18px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        color: #fff;
+        text-decoration: none;
+      }
+      .brand__seal {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+          grid-auto-flow: row;
+          grid-template-columns: 1fr;
+        border: 2px solid rgba(255,255,255,.35);
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .brand__seal img {
+        display: block;
+        width: auto;
+        height: 38px;
+        object-fit: contain;
+      }
+      .brand strong { display: block; font-size: 17px; }
+      .brand small { display: block; color: rgba(255,255,255,.75); font-size: 11px; line-height: 1.4; }
+      .nav-toggle {
+        display: none;
+        border: 0;
+        color: #fff;
+        background: transparent;
+        font-weight: 700;
+      }
+      .main-nav { display: flex; gap: 2px; }
+      .nav-link {
+        padding: 15px 14px 14px;
+        border-bottom: 3px solid transparent;
+        color: rgba(255,255,255,.78);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .035em;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: color .15s ease, border-color .15s ease;
+      }
+      .nav-link:hover, .nav-link:focus-visible, .nav-link.active {
+        border-color: var(--gold);
+        color: #fff;
+        outline: 0;
+      }
+
+      .page { min-height: 560px; }
+      .hero {
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        background: linear-gradient(118deg, var(--blue-dark), var(--blue) 66%, #4d7187);
+      }
+      .hero__content {
+        position: relative;
+        z-index: 1;
+        padding-top: 80px;
+        padding-bottom: 92px;
+        animation: heroFadeUp 0.9s ease both;
+      }
+      .hero__shape {
+        position: absolute;
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 50%;
+        animation: heroFloat 10s ease-in-out infinite;
+      }
+      .hero__shape--one { right: -80px; bottom: -120px; width: 430px; height: 430px; box-shadow: 0 0 0 48px rgba(255,255,255,.04), 0 0 0 112px rgba(255,255,255,.03); }
+      .hero__shape--two { top: -170px; right: 30%; width: 280px; height: 280px; animation-duration: 12s; }
+      .hero .eyebrow,
+      .hero h1,
+      .hero__description {
+        opacity: 0;
+        animation: heroFadeUp 0.9s ease forwards;
+      }
+      .hero .eyebrow { animation-delay: 0.1s; }
+      .hero h1 { animation-delay: 0.2s; }
+      .hero__description { animation-delay: 0.35s; }
+      .eyebrow { margin: 0 0 15px; color: #f5ce7c; font-size: 12px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+      .eyebrow--blue { color: var(--blue-light); }
+      h1, h2, p { margin-top: 0; }
+      .hero h1 { max-width: 790px; margin-bottom: 23px; font-size: clamp(30px, 4.4vw, 50px); line-height: 1.1; letter-spacing: -.025em; }
+      .hero__description { max-width: 825px; margin-bottom: 0; color: rgba(255,255,255,.88); font-size: 16px; line-height: 1.74; }
+      @keyframes heroFadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes heroFloat {
+        0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+        50% { transform: translate3d(0, -16px, 0) scale(1.03); }
+      }
+      .hero__caption { display: inline-flex; gap: 9px; align-items: center; margin: 28px 0 0; color: rgba(255,255,255,.86); font-size: 13px; }
+      .hero__caption i { color: var(--gold); }
+
+      .section { padding-top: 66px; padding-bottom: 76px; }
+      .section-heading { display: flex; gap: 36px; align-items: end; justify-content: space-between; margin-bottom: 28px; }
+      .section-heading h2 { margin-bottom: 0; color: var(--blue); font-size: 28px; letter-spacing: -.02em; }
+      .section-heading > p { max-width: 500px; margin-bottom: 3px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+      .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .service-card {
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 28px;
+        border: 1px solid var(--line);
+        color: var(--blue);
+        background: var(--paper);
+        text-align: left;
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .service-card:hover, .service-card:focus-visible { border-color: #92a8b5; outline: 0; box-shadow: var(--shadow); transform: translateY(-5px); }
+      .service-card__icon { color: var(--gold); font-size: 24px; }
+      .service-card strong { font-size: 19px; line-height: 1.3; }
+      .service-card > span:last-child { color: var(--muted); font-size: 13px; }
+
+      .page-content { min-height: calc(100vh - 200px); }
+      .page-title { margin-bottom: 42px; }
+      .page-title h1 { margin-bottom: 9px; color: var(--blue); font-size: clamp(29px, 4vw, 43px); letter-spacing: -.025em; }
+      .page-title > p:last-child { margin-bottom: 0; color: var(--muted); font-size: 16px; }
+      .year-block + .year-block { margin-top: 40px; }
+      .year-block h2 { display: flex; gap: 15px; align-items: center; margin-bottom: 17px; color: var(--blue); font-size: 22px; }
+      .year-block h2::after { flex: 1; height: 1px; background: #cbd8de; content: ""; }
+      .document-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .document-card { min-height: 76px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 15px 17px; border: 1px solid var(--line); color: var(--ink); background: var(--paper); font-size: 14px; line-height: 1.35; text-decoration: none; transition: border-color .15s ease, background .15s ease, transform .15s ease; }
+      .document-card:hover, .document-card:focus-visible { border-color: #8aa5b5; background: #fbfdfe; outline: 0; transform: translateY(-2px); }
+      .document-card > i:first-child { color: var(--blue); font-size: 20px; }
+      .document-card > i:last-child { color: var(--muted); font-size: 12px; }
+
+      .year-choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+      .year-choice { min-height: 220px; display: flex; flex-direction: column; align-items: flex-start; padding: 28px; border: 1px solid var(--line); color: var(--ink); background: var(--paper); text-align: left; transition: transform .18s ease, box-shadow .18s ease; }
+      .year-choice:hover, .year-choice:focus-visible, .year-choice.selected { border-color: #92a8b5; outline: 0; box-shadow: var(--shadow); transform: translateY(-4px); }
+      .year-choice img { display: block; width: auto; max-height: 64px; margin-bottom: 20px; }
+      .year-choice strong { margin-top: 0; color: var(--blue); font-size: 30px; }
+      .year-choice span { margin-top: 0; color: var(--muted); font-size: 14px; }
+      .year-choice small { margin-top: 20px; color: var(--blue); font-size: 13px; font-weight: 700; }
+      .information-panel { display: flex; gap: 11px; align-items: flex-start; margin-top: 24px; padding: 16px 18px; border-left: 4px solid var(--gold); color: var(--muted); background: var(--paper); line-height: 1.55; }
+      .information-panel i { margin-top: 4px; color: var(--blue); }
+      .information-panel p { margin: 0; }
+
+      .year-panel { margin-top: 8px; }
+      .ranperda-list { display: grid; gap: 18px; }
+      .ranperda-row { padding: 22px 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); box-shadow: 0 8px 24px rgba(15, 76, 129, 0.05); }
+      .ranperda-row__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 22px; }
+      .ranperda-row__head h4 { margin: 0 0 6px; color: var(--blue); font-size: 18px; }
+      .meta { color: var(--muted); font-size: 13px; }
+      .badge { display: inline-flex; align-items: center; padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+      .badge-selesai { color: #0b6b3a; background: #e6f7ee; }
+      .stage-tracker-h { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+      .stage-h { position: relative; padding-top: 8px; text-align: center; color: var(--muted); font-size: 12px; font-weight: 600; }
+      .stage-h .node { display: grid; place-items: center; width: 34px; height: 34px; margin: 0 auto 10px; border-radius: 50%; background: #e5edf2; color: var(--muted); }
+      .stage-h .node i { font-size: 13px; }
+      .stage-h .line { position: absolute; top: 16px; left: calc(-50% + 17px); width: calc(100% - 34px); height: 2px; background: #cfdbe3; }
+      .stage-h:first-child .line { display: none; }
+      .stage-h.done .node { color: #fff; background: var(--blue); }
+      .stage-h.active .node {
+        color: #fff;
+        background: linear-gradient(135deg, #f5b13d 0%, #0f4c81 100%);
+        box-shadow: 0 0 0 4px rgba(245, 177, 61, 0.18);
+        animation: stagePulse 1.25s ease-in-out infinite;
+      }
+      .stage-h.active .line {
+        background: linear-gradient(90deg, var(--blue), #f5b13d);
+        animation: stageLineGlow 1.25s ease-in-out infinite;
+      }
+      .stage-h.active .stage-label {
+        color: var(--blue);
+        font-weight: 800;
+      }
+      .stage-h.pending .node { color: #95a4ad; background: #eef4f7; }
+      .stage-h.done .line { background: var(--blue); }
+      .stage-h.active[data-stage="Perencanaan"] .node { background: linear-gradient(135deg, #f59e0b 0%, #0f4c81 100%); }
+      .stage-h.active[data-stage="Penyusunan"] .node { background: linear-gradient(135deg, #14b8a6 0%, #0f4c81 100%); }
+      .stage-h.active[data-stage="Pembahasan"] .node { background: linear-gradient(135deg, #8b5cf6 0%, #0f4c81 100%); }
+      .stage-h.active[data-stage="Persetujuan Bersama"] .node { background: linear-gradient(135deg, #ef4444 0%, #0f4c81 100%); }
+      .stage-h.active[data-stage="Penetapan dan Pengundangan"] .node { background: linear-gradient(135deg, #3b82f6 0%, #0f4c81 100%); }
+      .stage-label { display: block; margin-top: 2px; }
+      @keyframes stagePulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 177, 61, 0.24); }
+        50% { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(245, 177, 61, 0.12); }
+      }
+      @keyframes stageLineGlow {
+        0%, 100% { opacity: 0.8; filter: brightness(1); }
+        50% { opacity: 1; filter: brightness(1.2); }
+      }
+      .ranperda-table-wrap { margin-top: 20px; overflow-x: auto; }
+      .ranperda-search { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+      .ranperda-search i { color: var(--blue); }
+      .ranperda-search input { flex: 1; border: 0; outline: 0; font: inherit; color: var(--ink); background: transparent; }
+      .ranperda-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); }
+      .ranperda-table th, .ranperda-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+      .ranperda-table thead th { color: var(--blue); background: #eef5f8; font-weight: 800; }
+      .ranperda-table tbody tr:nth-child(even) { background: #fbfdfe; }
+      .status-button { padding: 7px 12px; border: 0; border-radius: 999px; color: #fff; background: var(--blue); font-size: 12px; font-weight: 700; cursor: pointer; }
+      .status-button:hover, .status-button:focus-visible { background: var(--blue-dark); outline: 0; }
+      .ranperda-progress-panel { margin-bottom: 16px; padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 10px 24px rgba(15, 76, 129, 0.08); }
+      .ranperda-progress-head { display: grid; gap: 12px; margin-bottom: 18px; }
+      .ranperda-progress-title { margin: 0; color: var(--blue); font-size: 19px; line-height: 1.35; }
+      .ranperda-progress-caption { margin: 16px 0 10px; color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+      .ranperda-progress-meta { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+      .progress-meta-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 14px; }
+      .progress-meta-grid div { display: grid; gap: 6px; }
+      .progress-meta-grid strong { display: block; color: var(--blue); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+      .progress-meta-grid span { color: var(--ink); font-size: 14px; line-height: 1.4; }
+      .progress-link { display: block; margin-top: 16px; }
+      .progress-link .progress-document-card + .progress-document-card { margin-top: 12px; }
+      .progress-document-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        padding: 18px 20px;
+        border-radius: 16px;
+        border: 1px solid #da1e42;
+        background: #fff0f5;
+        color: #a60039;
+        text-decoration: none;
+        transition: background .2s ease, border-color .2s ease, transform .2s ease;
+      }
+      .progress-document-card:hover,
+      .progress-document-card:focus-visible { background: #ffe5f0; border-color: #b40f36; transform: translateY(-1px); outline: 0; }
+      .progress-document-label { display: block; font-weight: 700; letter-spacing: .02em; }
+      .progress-document-note { display: block; margin-top: 4px; color: #6b2232; font-size: 13px; }
+      .progress-document-icon { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(214, 0, 70, 0.1); color: #a60039; font-size: 14px; }
+      .progress-extra { display: grid; gap: 16px; margin-top: 18px; }
+      .progress-stage-selector { display: grid; gap: 14px; }
+      .stage-selector-title { margin: 0; color: var(--blue); font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+      .stage-selector-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+      .stage-selector-btn {
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--blue);
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 700;
+        transition: all .18s ease;
+      }
+      .stage-selector-btn.active,
+      .stage-selector-btn:hover,
+      .stage-selector-btn:focus-visible {
+        background: var(--blue);
+        color: #fff;
+        border-color: var(--blue);
+        outline: 0;
+      }
+      .stage-documents-grid { display: grid; gap: 12px; }
+      .stage-document-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        padding: 18px 20px;
+        border-radius: 16px;
+        border: 1px solid #d7e3ea;
+        background: #fff;
+        color: var(--ink);
+        text-decoration: none;
+        transition: background .2s ease, border-color .2s ease, transform .2s ease;
+      }
+      .stage-document-card:hover,
+      .stage-document-card:focus-visible { background: #f8fbfd; border-color: #a8c4d4; transform: translateY(-1px); outline: 0; }
+      .stage-document-label { display: block; font-weight: 700; }
+      .stage-document-note { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
+      .progress-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: #e8f6f1; color: #0b6b3a; font-size: 13px; font-weight: 700; text-transform: uppercase; }
+      .progress-badge--pending { background: #fff4e6; color: #b35c07; }
+      .progress-badge--active { background: #e8f3ff; color: #0f4c81; }
+      .progress-badge--done { background: #e8f6f1; color: #0b6b3a; }
+
+      .survey-content { max-width: 900px; }
+      .rating-guide { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 34px; }
+      .rating-guide span { padding: 8px 10px; color: var(--blue); background: #e6edf0; font-size: 12px; }
+      .rating-guide b { margin-right: 4px; }
+      .survey-group { margin: 0; padding: 0; border: 0; }
+      .survey-group + .survey-group { margin-top: 37px; }
+      .survey-group legend { width: 100%; margin-bottom: 12px; padding: 0 0 11px; border-bottom: 1px solid #bfcfd7; color: var(--blue); font-size: 19px; font-weight: 800; }
+      .survey-question { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid #d2dde2; }
+      .survey-question > span { font-size: 14px; line-height: 1.5; }
+      .rating-options { display: flex; gap: 6px; }
+      .rating-options input { position: absolute; opacity: 0; pointer-events: none; }
+      .rating-options label { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid #aabec8; color: var(--muted); background: var(--paper); font-size: 13px; cursor: pointer; transition: color .12s ease, background .12s ease, border-color .12s ease; }
+      .rating-options input:focus-visible + label { outline: 3px solid #bfd2dd; outline-offset: 2px; }
+      .rating-options input:checked + label { border-color: var(--blue); color: #fff; background: var(--blue); }
+      .survey-group--open { display: grid; gap: 17px; }
+      .survey-group--open label,
+      #survey-form > label { display: grid; gap: 8px; color: var(--blue); font-size: 14px; line-height: 1.45; }
+      textarea, input[type="text"] { width: 100%; padding: 11px; border: 1px solid #b6c7cf; color: var(--ink); background: var(--paper); }
+      textarea { min-height: 90px; resize: vertical; }
+      input[type="text"] { min-height: 48px; }
+      textarea:focus, input[type="text"]:focus { border-color: var(--blue); outline: 3px solid #c8d8df; }
+      .form-action { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; margin-top: 32px; }
+      .button { padding: 13px 18px; border: 0; font-size: 14px; font-weight: 800; }
+      .button--primary { color: #fff; background: var(--blue); }
+      .button--primary:hover, .button--primary:focus-visible { background: var(--blue-dark); outline: 3px solid #a9c0cc; outline-offset: 2px; }
+      #survey-feedback { margin: 0; color: var(--muted); font-size: 13px; }
+
+      .site-footer { color: #fff; background: var(--blue); }
+      .footer-grid { display: grid; grid-template-columns: 1.25fr .9fr .9fr; gap: 42px; padding-top: 48px; padding-bottom: 35px; }
+      .site-footer h2 { margin-bottom: 13px; color: #fff; font-size: 15px; line-height: 1.43; }
+      .site-footer p, .footer-list { margin: 0; color: rgba(255,255,255,.76); font-size: 13px; line-height: 1.75; }
+      .footer-clock-panel {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border: 1px solid rgba(255,255,255,0.16);
+        border-radius: 16px;
+        background: rgba(255,255,255,0.1);
+      }
+      .footer-clock-panel__title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      .footer-clock-panel__title i { color: var(--gold); }
+      .footer-clock-panel__date {
+        margin-bottom: 14px;
+        color: #f7fbfc;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.45;
+      }
+      .footer-clock-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-clock {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.16);
+      }
+      .footer-clock-label {
+        display: block;
+        margin-bottom: 4px;
+        color: rgba(255,255,255,.76);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      .footer-clock strong {
+        color: #fff;
+        font-size: 20px;
+        letter-spacing: .02em;
+      }
+      .footer-list { padding: 0; list-style: none; }
+      .footer-list a { display: inline-flex; gap: 10px; align-items: center; text-decoration: none; }
+      .footer-list a:hover, .footer-list a:focus-visible { color: #fff; outline: 0; text-decoration: underline; }
+      .footer-list i { width: 16px; color: #f5ce7c; text-align: center; }
+      .footer-list--plain li { display: flex; gap: 10px; align-items: center; }
+      .footer-logos { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; margin-top: 24px; }
+      .footer-logos img { max-height: 52px; max-width: 180px; object-fit: contain; }
+      .footer-bottom { padding-top: 19px; padding-bottom: 24px; border-top: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.58); font-size: 12px; }
+
+      @media (max-width: 800px) {
+        .service-grid { grid-template-columns: 1fr; }
+        .service-card { min-height: 170px; }
+        .footer-grid { grid-template-columns: 1fr 1fr; }
+        .footer-grid > :first-child { grid-column: 1 / -1; }
+      }
+
+      @media (max-width: 640px) {
+        .container { width: min(100% - 36px, 1120px); }
+        .header-top { min-height: 76px; }
+        .brand small { max-width: 220px; font-size: 10px; }
+        .brand strong { font-size: 17px; }
+        .brand__seal { width: 40px; height: 40px; }
+        .nav-toggle { display: block; }
+        .main-nav { display: none; padding-bottom: 9px; }
+        .main-nav.open { display: flex; flex-direction: column; }
+        .nav-link { width: 100%; padding: 12px 0; }
+        .hero__content { padding-top: 55px; padding-bottom: 64px; }
+        .hero h1 { font-size: 31px; }
+        .hero__description { font-size: 15px; }
+        .section { padding-top: 50px; padding-bottom: 60px; }
+        .section-heading { display: block; }
+        .section-heading > p { margin-top: 12px; }
+        .document-grid, .year-choice-grid, .footer-grid { grid-template-columns: 1fr; }
+        .footer-grid > :first-child { grid-column: auto; }
+        .survey-question { grid-template-columns: 1fr; gap: 12px; }
+        .rating-options { justify-content: flex-start; }
+      }
+      
+      /* Grafik Status Ranperda */
+      .chart-section { margin-top: 40px; margin-bottom: 40px; }
+      /* Sidebar tahun Informasi (desktop) */
+      .chart-controls { display: flex; gap: 12px; margin-bottom: 24px; justify-content: center; flex-wrap: wrap; }
+      .chart-btn { padding: 10px 20px; border: 2px solid var(--line); background: #fff; color: var(--blue); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all .2s ease; font-size: 14px; }
+      .chart-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+      .chart-btn:hover { border-color: var(--blue); }
+      .chart-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 24px; }
+      .chart-wrapper { background: #fff; padding: 24px; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+      .chart-wrapper h3 { margin: 0 0 16px; color: var(--blue); font-size: 16px; }
+      .chart-canvas { position: relative; height: 300px; }
+      .chart-summary { display: grid; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+      .chart-summary__item { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; }
+      .chart-summary__item strong { color: var(--ink); font-weight: 700; }
+      .chart-summary__value { color: var(--blue); font-weight: 800; }
+      
+      @media (max-width: 768px) {
+        .chart-container { grid-template-columns: 1fr; }
+      }
+
+      /* Status Dashboard */
+      .status-dashboard { margin-bottom: 40px; }
+      .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+      .status-header h2 { margin: 0; color: var(--ink); font-size: 24px; }
+      .status-toggle { display: flex; gap: 12px; }
+      .status-toggle button { padding: 8px 16px; border: 1px solid var(--line); background: #fff; color: var(--blue); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all .2s; }
+      .status-toggle button.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+      .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+      .status-card {
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .status-card--blue { background: #e6f0f7; border-color: #0f4c81; }
+      .status-card--gray { background: #f0f3f6; border-color: #8b95a3; }
+      .status-card--gold { background: #fef6e8; border-color: #f0c96b; }
+      .status-card--orange { background: #fee4d6; border-color: #eb7a3c; }
+      .status-card--green { background: #e8f6f1; border-color: #0b6b3a; }
+      .status-card--purple { background: #f0ebf8; border-color: #7c3aed; }
+      
+      .status-card__header { display: flex; justify-content: space-between; align-items: flex-start; }
+      .status-card__title { margin: 0; color: var(--ink); font-size: 16px; font-weight: 600; flex: 1; }
+      .status-card__icon { font-size: 28px; margin-left: 12px; }
+      .status-card__content { display: flex; flex-direction: column; gap: 14px; }
+      .status-card__desc { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+      .status-card__row { display: flex; gap: 16px; align-items: flex-end; }
+      .status-card__item { flex: 1; }
+      .status-card__label { margin: 0; color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+      .status-card__number { margin: 6px 0 0; color: var(--ink); font-size: 32px; font-weight: 800; }
+      
+      @media (max-width: 1200px) {
+        .status-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 768px) {
+        .status-grid { grid-template-columns: 1fr; }
+        .status-header { flex-direction: column; align-items: flex-start; }
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-top">
+        <a class="brand" href="#beranda" data-page-link="beranda">
+          <span class="brand__seal">
+            <img src="./Logo DPRD.png" alt="Logo DPRD NTT">
+            <img src="./Logo pemprov.png" alt="Logo Pemprov NTT">
+          </span>
+          <span class="brand__text">
+            <strong>SIPROPEMPERDA</strong>
+            <small>Sistem Informasi Progres Pembentukan Peraturan Daerah</small>
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-label="Buka menu navigasi" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <nav class="main-nav" aria-label="Navigasi utama">
+          <a class="nav-link active" href="#beranda" data-page-link="beranda">Beranda</a>
+          <a class="nav-link" href="#propemperda" data-page-link="propemperda">PROPEMPERDA</a>
+          <a class="nav-link" href="#informasi" data-page-link="informasi">Informasi Pembentukan Perda</a>
+          <a class="nav-link" href="#survei" data-page-link="survei">Survei Pengguna</a>
+          <a class="nav-link" href="#lainnya" data-page-link="lainnya">Lainnya</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="beranda" class="page hero" aria-labelledby="beranda-title">
+        <div class="hero__shape hero__shape--one"></div>
+        <div class="hero__shape hero__shape--two"></div>
+        <div class="container hero__content">
+          <p class="eyebrow eyebrow--blue">Selamat datang di SIPROPEMPERDA</p>
+          <h1 id="beranda-title">Sistem Informasi Progres Pembentukan Peraturan Daerah</h1>
+          <p class="hero__description">Pusat informasi dan pemantauan pelaksanaan Program Pembentukan Peraturan Daerah (Propemperda) pada Sekretariat DPRD Provinsi Nusa Tenggara Timur. Dashboard ini menyediakan informasi perkembangan pembentukan Peraturan Daerah secara terintegrasi, transparan, akuntabel, dan mudah diakses untuk mendukung pengambilan keputusan, meningkatkan koordinasi antar pemangku kepentingan, serta mewujudkan pelayanan publik yang lebih efektif melalui transformasi digital.</p>
+        </div>
+      </section>
+
+      <section class="page" id="beranda-content" aria-labelledby="beranda-services-title">
+        <div class="container section">
+          <!-- Grafik Status Ranperda -->
+          <div class="chart-section" id="chart-section">
+            <div class="section-heading">
+              <h2>Status Ranperda</h2>
+              <p>Analisis status pembentukan Peraturan Daerah berdasarkan tahun yang dipilih.</p>
+            </div>
+            
+            <div class="chart-controls">
+              <button class="chart-btn active" type="button" data-chart-year="2025">Tahun 2025</button>
+              <button class="chart-btn" type="button" data-chart-year="2026">Tahun 2026</button>
+            </div>
+            
+            <div class="chart-container">
+              <div class="chart-wrapper">
+                <h3>Pengusul Ranperda</h3>
+                <div class="chart-canvas">
+                  <canvas id="chart-pengusul"></canvas>
+                </div>
+                <div class="chart-summary" id="pengusul-summary" aria-live="polite"></div>
+              </div>
+              <div class="chart-wrapper">
+                <h3>Status Pembahasan Ranperda</h3>
+                <div class="chart-canvas">
+                  <canvas id="chart-status"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-heading">
+            <h2 id="beranda-services-title">Fitur utama</h2>
+            <p>Jelajahi informasi penting mengenai PROPEMPERDA, pemantauan pembentukan Perda, dan survei pengguna.</p>
+          </div>
+          <div class="service-grid">
+            <a class="service-card" href="#propemperda" data-go-to="propemperda">
+              <i class="service-card__icon fa-solid fa-file-contract"></i>
+              <strong>Dokumen PROPEMPERDA</strong>
+              <span>Akses dokumen dan perubahan PROPEMPERDA dari berbagai tahun.</span>
+            </a>
+            <a class="service-card" href="#informasi" data-go-to="informasi">
+              <i class="service-card__icon fa-solid fa-chart-line"></i>
+              <strong>Informasi Pembentukan Perda</strong>
+              <span>Temukan informasi status pembentukan Perda untuk tahun yang dipilih.</span>
+            </a>
+            <a class="service-card" href="#survei" data-go-to="survei">
+              <i class="service-card__icon fa-solid fa-comments"></i>
+              <strong>Survei Pengguna</strong>
+              <span>Berikan penilaian dan saran untuk pengembangan dashboard ke depan.</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="propemperda" class="page" aria-labelledby="propemperda-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Dokumen</p>
+            <h1 id="propemperda-title">PROPEMPERDA</h1>
+            <p>Program Pembentukan Peraturan Daerah Provinsi Nusa Tenggara Timur</p>
+          </div>
+
+          <section class="year-block" aria-labelledby="year-2025-title">
+            <h2 id="year-2025-title">2025</h2>
+            <div class="document-grid">
+              <a class="document-card" href="https://drive.google.com/file/d/1ZtJNNpHjtTU3ntNonpqhxlvpJuGMjAIZ/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK PROPEMPERDA 2025 <small>(Senin, 18 November 2024)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1kpMRhh_jL4lyiiQ8FE9p8PEGn6r16Dr8/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan PROPEMPERDA 2025 <small>(Jum'at, 16 Mei 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1FcOLje_N0bFBKSCUZww8IM7Slnnrb3nt/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Kedua PROPEMPERDA 2025 <small>(Senin, 30 Juni 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1xv8uF__TpXhqOZMHVmj0rVrPkC6JzGWq/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Ketiga PROPEMPERDA 2025 <small>(Senin, 29 September 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1HzzoX-dKFpY8Yopz621pCNX5zg9cbo8i/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Keempat PROPEMPERDA 2025 <small>(Senin, 20 Oktober 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/1EBVU_iJKOXyrfIbKt2VWToqbhIpa1bfD/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Kelima PROPEMPERDA 2025 <small>(Senin, 12 November 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            </div>
+          </section>
+
+          <section class="year-block" aria-labelledby="year-2026-title">
+            <h2 id="year-2026-title">2026</h2>
+            <div class="document-grid">
+              <a class="document-card" href="https://drive.google.com/file/d/1k3OX4WMGW3C1K_awW2EzOhB6p6Vn3XRk/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK PROPEMPERDA 2026 <small>(Senin, 29 September 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/16gSW1YIpyvR0VWvQ4eQEhxhm_73UMeE6/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan PROPEMPERDA 2026 <small>(Rabu, 29 Oktober 2025)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              <a class="document-card" href="https://drive.google.com/file/d/12PbafsdgBMj7-oRFH-C7nG68te6bLb8v/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Kedua PROPEMPERDA 2026 <small>(Rabu, 14 Januari 2026)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            <a class="document-card" href="https://drive.google.com/file/d/1LagqGJnMHLgY8ry_CAGFSv4JYufiQyvp/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Ketiga PROPEMPERDA 2026 <small>(Kamis, 26 Maret 2026)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            <a class="document-card" href="https://drive.google.com/file/d/1TVGizFuj-rgmqdTaYmIW7iPvmWB17Fmq/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-file-pdf" aria-hidden="true"></i><span>SK Perubahan Keempat PROPEMPERDA 2026 <small>(Senin, 21 September 2026)</small></span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="informasi" class="page" aria-labelledby="informasi-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Pemantauan</p>
+            <h1 id="informasi-title">INFORMASI PEMBENTUKAN PERDA</h1>
+            <p>Pilih tahun untuk mengakses informasi pembentukan Peraturan Daerah.</p>
+          </div>
+
+          <div class="year-choice-grid" role="group" aria-label="Pilih tahun informasi">
+            <button class="year-choice" type="button" data-information-year="2025">
+              <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+              <strong>2025</strong>
+              <span>Informasi pembentukan Perda Tahun 2025</span>
+              <small>Lihat informasi <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></small>
+            </button>
+            <button class="year-choice" type="button" data-information-year="2026">
+              <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+              <strong>2026</strong>
+              <span>Informasi pembentukan Perda Tahun 2026</span>
+              <small>Lihat informasi <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></small>
+            </button>
+          </div>
+
+          <div id="information-panel" class="information-panel" aria-live="polite">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <p>Pilih salah satu tahun untuk menampilkan informasi pembentukan Perda</p>
+          </div>
+        </div>
+      </section>
+      <section id="Informasi2025" class="page" aria-labelledby="informasi-2025-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Pemantauan Progres Pembentukan Perda</p>
+            <h1 id="informasi-2025-title">Informasi Pembentukan Peraturan Daerah Tahun 2025</h1>
+          </div>
+      
+          <div class="chart-controls" style="justify-content:flex-start; margin-bottom:12px;">
+            <button class="chart-btn" type="button" data-information-year="2025">2025</button>
+            <button class="chart-btn" type="button" data-information-year="2026">2026</button>
+          </div>
+          <div class="ranperda-table-wrap">
+            <div class="ranperda-search">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input type="search" placeholder="Cari ranperda..." aria-label="Cari ranperda" />
+            </div>
+            <div class="ranperda-progress-panel" hidden>
+              <div class="ranperda-progress-head">
+                <h5 class="ranperda-progress-title">Pilih status untuk melihat progres</h5>
+                <p class="ranperda-progress-meta">Klik tombol “Lihat Progres” pada tabel untuk membuka indikator tahap pembahasan.</p>
+              </div>
+              <div class="progress-meta-grid">
+                <div>
+                  <strong>Pengusul</strong>
+                  <span class="progress-meta-text">-</span>
+                </div>
+              </div>
+              <div class="progress-extra">
+                <div class="progress-stage-selector">
+                  <p class="stage-selector-title">Dokumen Tahapan Pembentukan Perda</p>
+                  <div class="stage-selector-buttons" role="tablist" aria-label="Pilih tahapan pembentukan perda">
+                      <button type="button" class="stage-selector-btn active" data-stage="Perencanaan">Perencanaan</button>
+                      <button type="button" class="stage-selector-btn" data-stage="Penyusunan">Penyusunan</button>
+                      <button type="button" class="stage-selector-btn" data-stage="Pembahasan">Pembahasan</button>
+                      <button type="button" class="stage-selector-btn" data-stage="Persetujuan Bersama">Persetujuan Bersama</button>
+                      <button type="button" class="stage-selector-btn" data-stage="Penetapan dan Pengundangan">Penetapan dan Pengundangan</button>
+                  </div>
+                </div>
+                <div class="stage-documents-grid"></div>
+              </div>
+              <div class="ranperda-progress-caption">Indikator Progres</div>
+              <div class="ranperda-progress-tracker stage-tracker-h" aria-live="polite"></div>
+            </div>
+            <table class="ranperda-table">
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>Judul Ranperda</th>
+                        <th>NA dan Ranperda disiapkan oleh</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody class="ranperda-table-body">
+                      <tr>
+                        <td>1.</td>
+                        <td>Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 1|https://docs.google.com/document/d/example1/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>2.</td>
+                        <td>Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 2|https://docs.google.com/document/d/example2/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>3.</td>
+                        <td>Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 3|https://docs.google.com/document/d/example3/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>4.</td>
+                        <td>Ranperda tentang Penyelenggaraan Penanaman Modal</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penyelenggaraan Penanaman Modal" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 4|https://docs.google.com/document/d/example4/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>5.</td>
+                        <td>Ranperda tentang Penyelenggaraan Transportasi</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penyelenggaraan Transportasi" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 5|https://docs.google.com/document/d/example5/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>6.</td>
+                        <td>Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 6|https://docs.google.com/document/d/example6/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>7.</td>
+                        <td>Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 7|https://docs.google.com/document/d/example7/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>8.</td>
+                        <td>Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 8|https://docs.google.com/document/d/example8/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>9.</td>
+                        <td>Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 9|https://docs.google.com/document/d/example9/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>10.</td>
+                        <td>Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda)" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 10|https://docs.google.com/document/d/example10/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>11.</td>
+                        <td>Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda)" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 11|https://docs.google.com/document/d/example11/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>12.</td>
+                        <td>Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda)" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 12|https://docs.google.com/document/d/example12/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>13.</td>
+                        <td>Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda)" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 13|https://docs.google.com/document/d/example13/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>14.</td>
+                        <td>Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda)</td>
+                        <td>Pemerintah Daerah</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda)" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 14|https://docs.google.com/document/d/example14/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>15.</td>
+                        <td>Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut</td>
+                        <td>DPRD</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut" data-initiator="DPRD"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 15|https://docs.google.com/document/d/example15/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>16.</td>
+                        <td>Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah</td>
+                        <td>DPRD</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah" data-initiator="DPRD"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 16|https://docs.google.com/document/d/example16/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                      <tr>
+                        <td>17.</td>
+                        <td>Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan</td>
+                        <td>DPRD</td>
+                        <td><button class="status-button" type="button" data-title="Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan" data-initiator="DPRD"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 17|https://docs.google.com/document/d/example17/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="Informasi2026" class="page" aria-labelledby="informasi-2026-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Pemantauan Progres Pembentukan Perda</p>
+            <h1 id="informasi-2026-title">Informasi Pembentukan Peraturan Daerah Tahun 2026</h1>
+          </div>
+      
+          <div class="chart-controls" style="justify-content:flex-start; margin-bottom:12px;">
+            <button class="chart-btn" type="button" data-information-year="2025">2025</button>
+            <button class="chart-btn" type="button" data-information-year="2026">2026</button>
+          </div>
+          <div class="ranperda-table-wrap">
+            <div class="ranperda-search">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input type="search" placeholder="Cari ranperda..." aria-label="Cari ranperda" />
+            </div>
+            <div class="ranperda-progress-panel" hidden>
+              <div class="ranperda-progress-head">
+                <h5 class="ranperda-progress-title">Pilih status untuk melihat progres</h5>
+                <p class="ranperda-progress-meta">Klik tombol “Lihat Progres” pada tabel untuk membuka indikator tahap pembahasan.</p>
+              </div>
+              <div class="progress-meta-grid">
+                <div>
+                  <strong>Pengusul</strong>
+                  <span class="progress-meta-text">-</span>
+                </div>
+              </div>
+              <div class="progress-extra">
+                <div class="progress-stage-selector">
+                  <p class="stage-selector-title">Dokumen Tahapan Pembentukan Perda</p>
+                  <div class="stage-selector-buttons" role="tablist" aria-label="Pilih tahapan pembentukan perda">
+                      <button type="button" class="stage-selector-btn active" data-stage="Perencanaan">Perencanaan</button>
+                      <button type="button" class="stage-selector-btn" data-stage="Penyusunan">Penyusunan</button>
+                      <button type="button" class="stage-selector-btn" data-stage="Pembahasan">Pembahasan</button>
+                      <button type="button" class="stage-selector-btn" data-stage="Persetujuan Bersama">Persetujuan Bersama</button>
+                      <button type="button" class="stage-selector-btn" data-stage="Penetapan dan Pengundangan">Penetapan dan Pengundangan</button>
+                  </div>
+                </div>
+                <div class="stage-documents-grid"></div>
+              </div>
+              <div class="ranperda-progress-caption">Indikator Progres</div>
+              <div class="ranperda-progress-tracker stage-tracker-h" aria-live="polite"></div>
+            </div>
+            <table class="ranperda-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Judul Ranperda</th>
+                  <th>NA dan Ranperda disiapkan oleh</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody class="ranperda-table-body">
+                <tr>
+                  <td>1.</td>
+                  <td>Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut" data-initiator="DPRD"  data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah" data-initiator="DPRD"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 19|https://docs.google.com/document/d/example19/edit"data-progress="done,done,done,done">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td>Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan" data-initiator="DPRD"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 20|https://docs.google.com/document/d/example20/edit" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td>Ranperda tentang Penyelenggaraan Jasa Konstruksi</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Penyelenggaraan Jasa Konstruksi" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 21|https://docs.google.com/document/d/example21/edit" data-progress="done,done,pending,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>5.</td>
+                  <td>Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 22|https://docs.google.com/document/d/example22/edit" data-progress="done,done,pending,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>6.</td>
+                  <td>Ranperda tentang Pengelolaan Cendana</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Pengelolaan Cendana" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 23|https://docs.google.com/document/d/example23/edit" data-progress="done,done,pending,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>7.</td>
+                  <td>Ranperda tentang Pengelolaan Perhutanan Sosial</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Pengelolaan Perhutanan Sosial" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 24|https://docs.google.com/document/d/example24/edit" data-progress="done,done,pending,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>8.</td>
+                  <td>Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur" data-initiator="DPRD"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda |https://docs.google.com/document/d/1yYtrgRaLAQ3vFjFy8acl8z9W9xvH-yfj/edit?usp=sharing&ouid=113953178339488043391&rtpof=true&sd=true" data-progress="done,done,done,pending">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>9.</td>
+                  <td>Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda)</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda)" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 26|https://docs.google.com/document/d/example26/edit"data-progress="done,done,done,done">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>10.</td>
+                  <td>Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur</td>
+                  <td>Pemerintah Daerah</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur" data-initiator="Pemerintah Daerah"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 27|https://docs.google.com/document/d/example27/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                </tr>
+                <tr>
+                  <td>11.</td>
+                  <td>Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat</td>
+                  <td>DPRD</td>
+                  <td><button class="status-button" type="button" data-title="Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat" data-initiator="DPRD"  data-penetapan="12 Januari 2026" data-updated="20 Juli 2026" data-perkembangan="5 April 2026|Dokumen Ranperda 28|https://docs.google.com/document/d/example28/edit" data-progress="done,done,done,done">Lihat Progres</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="survei" class="page" aria-labelledby="survei-title" hidden>
+        <div class="container section page-content survey-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Partisipasi pengguna</p>
+            <h1 id="survei-title">SURVEI PENGGUNA</h1>
+            <p>Penilaian Anda membantu pengembangan Dashboard SIPROPEMPERDA.</p>
+          </div>
+
+          <div class="rating-guide" aria-label="Petunjuk penilaian">
+            <span><b>1</b> Sangat Tidak Setuju</span>
+            <span><b>2</b> Tidak Setuju</span>
+            <span><b>3</b> Cukup Setuju</span>
+            <span><b>4</b> Setuju</span>
+            <span><b>5</b> Sangat Setuju</span>
+          </div>
+
+          <form id="survey-form">
+            <label>Nama <input name="nama" type="text" placeholder="Nama lengkap" required></label>
+            <div id="survey-questions"></div>
+
+            <fieldset class="survey-group survey-group--open">
+              <legend>F. Pertanyaan Terbuka</legend>
+              <label>1. Apa kelebihan Dashboard SIPROPEMPERDA?<textarea name="kelebihan" rows="4" required></textarea></label>
+              <label>2. Apa kekurangan Dashboard SIPROPEMPERDA?<textarea name="kekurangan" rows="4" required></textarea></label>
+              <label>3. Fitur apa yang perlu ditambahkan?<textarea name="fitur" rows="4" required></textarea></label>
+              <label>4. Saran untuk pengembangan SIPROPEMPERDA ke depan.<textarea name="saran" rows="4" required></textarea></label>
+            </fieldset>
+
+            <div class="form-action">
+              <button class="button button--primary" type="submit">Kirim Penilaian</button>
+              <p id="survey-feedback" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section id="lainnya" class="page" aria-labelledby="lainnya-title" hidden>
+        <div class="container section page-content">
+          <div class="page-title">
+            <p class="eyebrow eyebrow--blue">Informasi tambahan</p>
+            <h1 id="lainnya-title">LAINNYA</h1>
+            <p>Informasi tambahan terkait pembentukan Peraturan Daerah.</p>
+          </div>
+
+          <div class="year-choice-grid" role="group" aria-label="Pilih tahun informasi">
+            <button class="year-choice" type="button" data-information-year="2025">
+              <img src="./Logo DPRD.png" alt="Logo DPRD NTT">
+              <strong>WEBSITE DPRD PROVINSI NUSA TENGGARA TIMUR</strong>
+              <span>Website Resmi Dewan Perwakilan Rakyat Daerah Provinsi Nusa Tenggara Timur</span>
+              <a href="https://dprd.nttprov.go.id/" target="_blank" rel="noopener noreferrer" class="button button--primary" style="margin-top: 12px;">Kunjungi Website</a>
+            </button>
+            <button class="year-choice" type="button" data-information-year="2026">
+              <img src="./logo-badekat.png" alt="logo-badekat">
+              <strong>WEBSITE BaDEKAT</strong>
+              <span>Bangun Dedikasi, Efisiensi Efektifitas, Kolaboratif, Adaptif dan Transparansi</span>
+              <a href="https://dprd.nttprov.go.id/badekat/" target="_blank" rel="noopener noreferrer" class="button button--primary" style="margin-top: 12px;">Kunjungi Website</a>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="kontak" class="site-footer">
+      <div class="container footer-grid">
+        <section>
+          <h2>SEKRETARIAT DEWAN PERWAKILAN RAKYAT DAERAH<br />PROVINSI NUSA TENGGARA TIMUR</h2>
+          <p>SIPROPEMPERDA — Sistem Informasi Progres Pembentukan Peraturan Daerah</p>
+          <div class="footer-clock-panel" aria-label="Kalender dan jam">
+            <div class="footer-clock-panel__title"><i class="fa-solid fa-calendar-days"></i> Kalender &amp; Jam</div>
+            <div class="footer-clock-panel__date" id="footer-date">Loading...</div>
+            <div class="footer-clock-group">
+              <div class="footer-clock">
+                <span class="footer-clock-label">WIB</span>
+                <strong id="footer-clock-wib">--:--:--</strong>
+              </div>
+              <div class="footer-clock">
+                <span class="footer-clock-label">WITA</span>
+                <strong id="footer-clock-wita">--:--:--</strong>
+              </div>
+              <div class="footer-clock">
+                <span class="footer-clock-label">WIT</span>
+                <strong id="footer-clock-wit">--:--:--</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>Media Sosial</h2>
+          <ul class="footer-list">
+            <li><a href="https://www.instagram.com/setwan.ntt/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+            <li><a href="https://web.facebook.com/humas.provntt?locale=id_ID&_rdc=1&_rdr" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i> Facebook</a></li>
+            <li><a href="https://www.tiktok.com/@setwan.ntt" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</a></li>
+            <li><a href="https://www.youtube.com/@SekretariatDPRDProvNTT" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+            <li><a href="https://dprd.nttprov.go.id/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe" aria-hidden="true"></i> Website DPRD NTT</a></li>
+          </ul>
+        </section>
+        <section>
+          <h2>Kontak</h2>
+          <ul class="footer-list footer-list--plain">
+            <li><i class="fa-solid fa-phone" aria-hidden="true"></i> 082145676564</li>
+            <li><i class="fa-solid fa-envelope" aria-hidden="true"></i> nttsetwan@gmail.com</li>
+            <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Jl. El Tari No. 52</li>
+          </ul>
+        </section>
+      </div>
+      <div class="container footer-bottom">
+        © <span id="current-year"></span> Sekretariat DPRD Provinsi Nusa Tenggara Timur
+        <span class="footer-visitors">| Pengunjung: <span id="visitor-count">0</span></span>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const pages = document.querySelectorAll('.page');
+        const pageLinks = document.querySelectorAll('[data-page-link]');
+        const mainNav = document.querySelector('.main-nav');
+        const navToggle = document.querySelector('.nav-toggle');
+
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzS0RvXE4flV2xpzSdBY2vvuClQoND9kdNgcsXTh6C_6VUkEdMQ8aWxHnWLX-WWGxf9/exec';
+
+      const updateInformationPanel = (message) => {
+        const panel = document.querySelector('#information-panel');
+        if (!panel) return;
+
+        panel.innerHTML = `
+          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          <p>${message}</p>
+        `;
+      };
+
+      const showPage = (pageId) => {
+        const page = document.getElementById(pageId);
+        const visiblePageIds = pageId === 'beranda' ? ['beranda', 'beranda-content'] : [pageId];
+        const navPageId = pageId.startsWith('Informasi') ? 'informasi' : pageId;
+
+        if (!page && pageId !== 'beranda') return;
+
+        pages.forEach((item) => {
+          const isActive = visiblePageIds.includes(item.id);
+          item.hidden = !isActive;
+          item.classList.toggle('page--active', isActive);
+        });
+
+        pageLinks.forEach((link) => {
+          link.classList.toggle('active', link.dataset.pageLink === navPageId);
+        });
+
+        if (mainNav) mainNav.classList.remove('open');
+        if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+
+        document.querySelectorAll('[data-information-year]').forEach((btn) => {
+          const isSelected = pageId === 'Informasi2025'
+            ? btn.dataset.informationYear === '2025'
+            : pageId === 'Informasi2026'
+              ? btn.dataset.informationYear === '2026'
+              : false;
+          btn.classList.toggle('selected', isSelected);
+        });
+
+        if (pageId === 'informasi') {
+          updateInformationPanel('Pilih salah satu tahun untuk menampilkan informasi pembentukan Perda.');
+        } else if (pageId === 'Informasi2025') {
+          updateInformationPanel('Menampilkan informasi pembentukan Perda Tahun 2025.');
+        } else if (pageId === 'Informasi2026') {
+          updateInformationPanel('Menampilkan informasi pembentukan Perda Tahun 2026.');
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      pageLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const pageId = link.dataset.pageLink;
+          if (!pageId) return;
+          event.preventDefault();
+          history.replaceState(null, '', `#${pageId}`);
+          showPage(pageId);
+        });
+      });
+
+      document.querySelectorAll('[data-go-to]').forEach((button) => {
+        button.addEventListener('click', (event) => {
+          event.preventDefault();
+          const pageId = button.dataset.goTo;
+          history.replaceState(null, '', `#${pageId}`);
+          showPage(pageId);
+        });
+      });
+
+      if (navToggle) {
+        navToggle.addEventListener('click', () => {
+          const isOpen = mainNav.classList.toggle('open');
+          navToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+      }
+
+      const surveyGroups = [
+        {
+          title: 'A. Kemudahan Penggunaan',
+          questions: [
+            'Dashboard SIPROPEMPERDA mudah dipahami.',
+            'Menu dan fitur mudah digunakan.',
+            'Informasi dapat ditemukan dengan cepat.'
+          ]
+        },
+        {
+          title: 'B. Kualitas Informasi',
+          questions: [
+            'Informasi yang ditampilkan lengkap.',
+            'Data yang tersedia mudah dipahami.',
+            'Informasi yang disajikan sesuai kebutuhan pekerjaan.'
+          ]
+        },
+        {
+          title: 'C. Efektivitas Pemantauan',
+          questions: [
+            'Dashboard memudahkan pemantauan perkembangan Propemperda.',
+            'Dashboard mempercepat proses monitoring dibanding cara manual.',
+            'Dashboard membantu mengetahui status setiap Ranperda secara lebih cepat.'
+          ]
+        },
+        {
+          title: 'D. Manfaat',
+          questions: [
+            'Dashboard membantu meningkatkan efisiensi pekerjaan.',
+            'Dashboard mempermudah penyusunan laporan atau penyampaian informasi.',
+            'Dashboard mendukung koordinasi antarbagian.'
+          ]
+        },
+        {
+          title: 'E. Kepuasan Pengguna',
+          questions: [
+            'Saya puas dengan tampilan Dashboard SIPROPEMPERDA.',
+            'Dashboard layak digunakan sebagai media monitoring Propemperda.',
+            'Saya merekomendasikan Dashboard SIPROPEMPERDA untuk digunakan secara berkelanjutan.'
+          ]
+        }
+      ];
+
+      let questionNumber = 1;
+      const questionsContainer = document.querySelector('#survey-questions');
+
+      surveyGroups.forEach((group) => {
+        const groupElement = document.createElement('fieldset');
+        groupElement.className = 'survey-group';
+        groupElement.innerHTML = `<legend>${group.title}</legend>`;
+
+        group.questions.forEach((question) => {
+          const currentNumber = questionNumber;
+          const questionElement = document.createElement('div');
+          questionElement.className = 'survey-question';
+
+          const options = [1, 2, 3, 4, 5]
+            .map((value) => `
+              <input id="q${currentNumber}-${value}" name="q${currentNumber}" type="radio" value="${value}" required />
+              <label for="q${currentNumber}-${value}" aria-label="Nilai ${value}">${value}</label>
+            `)
+            .join('');
+
+          questionElement.innerHTML = `
+            <span>${currentNumber}. ${question}</span>
+            <div class="rating-options" aria-label="Nilai pertanyaan ${currentNumber}">${options}</div>
+          `;
+          groupElement.appendChild(questionElement);
+          questionNumber += 1;
+        });
+
+        questionsContainer.appendChild(groupElement);
+      });
+
+      document.querySelectorAll('[data-information-year]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const year = button.dataset.informationYear;
+          const targetPageId = year === '2026' ? 'Informasi2026' : 'Informasi2025';
+          document.querySelectorAll('[data-information-year]').forEach((item) => item.classList.remove('selected'));
+          button.classList.add('selected');
+          updateInformationPanel(`Menampilkan informasi pembentukan Perda Tahun ${year}.`);
+          history.replaceState(null, '', `#${targetPageId}`);
+          showPage(targetPageId);
+        });
+      });
+
+      document.querySelector('#survey-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const form = event.target;
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const formData = new FormData(form);
+        const payload = new URLSearchParams(formData);
+
+        try {
+          const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: payload
+          });
+
+          const result = await response.json();
+          document.querySelector('#survey-feedback').textContent = result.status === 'success'
+            ? 'Terima kasih! Data survei berhasil dikirim.'
+            : 'Gagal mengirim survei. Coba lagi nanti.';
+        } catch (error) {
+          document.querySelector('#survey-feedback').textContent = 'Terjadi kesalahan saat mengirim survei. Silakan coba lagi.';
+          console.error(error);
+        }
+      });
+
+      const stageLabels = ['Perencanaan', 'Penyusunan', 'Pembahasan', 'Persetujuan Bersama', 'Penetapan dan Pengundangan'];
+
+      const normalizeStages = (progressStr) => {
+        const stages = (typeof progressStr === 'string' ? progressStr : progressStr?.join(',')) || 'pending,pending,pending,pending,pending';
+        const stageArray = stages.split(',');
+        if (stageArray.length < stageLabels.length) {
+          return [...stageArray, ...Array(stageLabels.length - stageArray.length).fill('pending')];
+        }
+        return stageArray.slice(0, stageLabels.length);
+      };
+
+      const renderProgressTracker = (trackerElement, stageInput) => {
+        if (!trackerElement) return;
+        const normalizedStages = Array.isArray(stageInput) ? normalizeStages(stageInput.join(',')) : normalizeStages(stageInput);
+        const activeIndex = normalizedStages.findIndex((state) => state !== 'done');
+        const resolvedStates = normalizedStages.map((state, index) => {
+          if (state === 'done') return 'done';
+          if (activeIndex !== -1 && index === activeIndex) return 'active';
+          return 'pending';
+        });
+
+        trackerElement.innerHTML = resolvedStates.map((state, index) => {
+          let icon;
+          if (state === 'done') icon = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
+          else if (state === 'active') icon = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>';
+          else icon = '<i class="fa-regular fa-circle" aria-hidden="true"></i>';
+          return `
+            <div class="stage-h ${state}" data-stage="${stageLabels[index]}">
+              ${index > 0 ? '<span class="line"></span>' : ''}
+              <span class="node">${icon}</span>
+              <span class="stage-label">${stageLabels[index]}</span>
+            </div>
+          `;
+        }).join('');
+      };
+
+      const stageDocumentsByRanperda = {
+        "Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 29 September 2025 - Perubahan Ketiga Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1xv8uF__TpXhqOZMHVmj0rVrPkC6JzGWq/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah.",
+              url: "https://docs.google.com/document/d/example01-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah.",
+              url: "https://docs.google.com/document/d/example01-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah.",
+              url: "https://docs.google.com/document/d/example01-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Senin, 4 Mei 2026 - Pengundangan Perda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah.",
+                url: "https://drive.google.com/file/d/1sEeeENVWJ0tYYyMhzHxYnz5m4dAJ14Gr/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 18 November 2024 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1ZtJNNpHjtTU3ntNonpqhxlvpJuGMjAIZ/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum.",
+              url: "https://docs.google.com/document/d/example02-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum.",
+              url: "https://docs.google.com/document/d/example02-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum.",
+              url: "https://docs.google.com/document/d/example02-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Senin, 3 Maret 2025, pengundangan Perda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum.",
+                url: "https://drive.google.com/file/d/1G8i6i7RgFLxEptal66r1L_0zkKSoyJtZ/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 18 November 2024 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025",
+              url: "https://drive.google.com/file/d/1ZtJNNpHjtTU3ntNonpqhxlvpJuGMjAIZ/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar.",
+              url: "https://docs.google.com/document/d/example03-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar.",
+              url: "https://docs.google.com/document/d/example03-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar.",
+              url: "https://docs.google.com/document/d/example03-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Rabu, 26 Maret 2025 - Pengundangan Perda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar.",
+                url: "https://drive.google.com/file/d/1e8aYAq6xIL9-9dd_O0bSG4A7ocNlWV30/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Penyelenggaraan Penanaman Modal": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 18 November 2024 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1ZtJNNpHjtTU3ntNonpqhxlvpJuGMjAIZ/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Penyelenggaraan Penanaman Modal.",
+              url: "https://docs.google.com/document/d/example04-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penyelenggaraan Penanaman Modal.",
+              url: "https://docs.google.com/document/d/example04-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Penyelenggaraan Penanaman Modal.",
+              url: "https://docs.google.com/document/d/example04-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Kamis, 27 Maret 2025 - Pengundangan Perda tentang Penyelenggaraan Penanaman Modal.",
+                url: "https://drive.google.com/file/d/1KmKv5Rbt3d5ktiKGsBfFJdnCgZcnGE6V/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Penyelenggaraan Transportasi": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 18 November 2024 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1ZtJNNpHjtTU3ntNonpqhxlvpJuGMjAIZ/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Penyelenggaraan Transportasi.",
+              url: "https://docs.google.com/document/d/example05-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penyelenggaraan Transportasi.",
+              url: "https://docs.google.com/document/d/example05-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Penyelenggaraan Transportasi.",
+              url: "https://docs.google.com/document/d/example05-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Kamis, 10 April 2025 - Pengundangan Perda tentang Penyelenggaraan Perhubungan.",
+                url: "https://drive.google.com/file/d/1jY5XFyPUAQqX_b1x_8YcJgIKV6r3oOSW/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 18 November 2024 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1ZtJNNpHjtTU3ntNonpqhxlvpJuGMjAIZ/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example06-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example06-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example06-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan Belum Tersedia",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Jum'at, 16 Mei 2025 - Perubahan Atas Lampiran Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1kpMRhh_jL4lyiiQ8FE9p8PEGn6r16Dr8/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029.",
+              url: "https://docs.google.com/document/d/example07-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029.",
+              url: "https://docs.google.com/document/d/example07-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029.",
+              url: "https://docs.google.com/document/d/example07-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Selasa, 22 Agustus 2025 - Pengundangan Perda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029.",
+                url: "https://drive.google.com/file/d/1iUFIhSUtajEQAirnkjMuWYbOVj9NCykU/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 20 Oktober 2025 - Perubahan Keempat Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1HzzoX-dKFpY8Yopz621pCNX5zg9cbo8i/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028.",
+              url: "https://docs.google.com/document/d/example08-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028.",
+              url: "https://docs.google.com/document/d/example08-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Senin, 24 November 2025 - Dokumen penetapan untuk Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028.",
+              url: "https://drive.google.com/file/d/1L5J3grW5ScuOLeY3Z5iTJXrE5gYd5flg/view?usp=sharing"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Senin, 29 Desember 2025 - Pengundangan Perda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028.",
+                url: "https://drive.google.com/file/d/1Vi1L8oT57bCJJSHES50-25aj8V68beCx/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 12 November 2025 - Perubahan Kelima Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1EBVU_iJKOXyrfIbKt2VWToqbhIpa1bfD/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example09-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example09-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Senin, 24 November 2025 - Dokumen penetapan untuk Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur.",
+              url: "https://drive.google.com/file/d/1L5J3grW5ScuOLeY3Z5iTJXrE5gYd5flg/view?usp=sharing"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Senin, 29 Desember 2025 - Pengundangan Perda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur.",
+                url: "https://drive.google.com/file/d/1xwRuPU-4w6QhnEUzQt0JwC2vQxBW5pSj/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda)": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 12 November 2025 - Perubahan Kelima Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1EBVU_iJKOXyrfIbKt2VWToqbhIpa1bfD/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda).",
+              url: "https://docs.google.com/document/d/example10-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda).",
+              url: "https://docs.google.com/document/d/example10-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Senin, 24 November 2025 - Dokumen penetapan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda).",
+              url: "https://drive.google.com/file/d/1L5J3grW5ScuOLeY3Z5iTJXrE5gYd5flg/view?usp=sharing"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Selasa, 23 Desember 2025 - Pengundangan Perda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda).",
+                url: "https://drive.google.com/file/d/18RAFSLyQ45k7rVfq0V289Xd8gbaaE6lV/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda)": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 12 November 2025 - Perubahan Kelima Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1EBVU_iJKOXyrfIbKt2VWToqbhIpa1bfD/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda).",
+              url: "https://docs.google.com/document/d/example11-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda).",
+              url: "https://docs.google.com/document/d/example11-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Senin, 24 November 2025 - Dokumen penetapan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda).",
+              url: "https://drive.google.com/file/d/1L5J3grW5ScuOLeY3Z5iTJXrE5gYd5flg/view?usp=sharing"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Senin, 29 Desember 2025 - Pengundangan Perda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda).",
+                url: "https://drive.google.com/file/d/1fGfdlTrem7nbyO5uAxHY64qiVHLtVoI5/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda)": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 12 November 2025 - Perubahan Kelima Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1EBVU_iJKOXyrfIbKt2VWToqbhIpa1bfD/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda).",
+              url: "https://docs.google.com/document/d/example12-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda).",
+              url: "https://docs.google.com/document/d/example12-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Senin, 24 November 2025 - Dokumen penetapan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda).",
+              url: "https://drive.google.com/file/d/1L5J3grW5ScuOLeY3Z5iTJXrE5gYd5flg/view?usp=sharing"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Senin, 29 Desember 2025 - Pengundangan Perda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda).",
+                url: "https://drive.google.com/file/d/1jvo5VaMNUbbJcKAemUErOSJCLCrfhuVU/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda)": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 12 November 2025 - Perubahan Kelima Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1EBVU_iJKOXyrfIbKt2VWToqbhIpa1bfD/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda).",
+              url: "https://docs.google.com/document/d/example13-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda).",
+              url: "https://docs.google.com/document/d/example13-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Senin, 24 November 2025 - Dokumen penetapan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda).",
+              url: "https://drive.google.com/file/d/1L5J3grW5ScuOLeY3Z5iTJXrE5gYd5flg/view?usp=sharing"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Senin, 29 Desember 2025 - Pengundangan Perda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda).",
+                url: "https://drive.google.com/file/d/1sKXTu_AQnQvzHAJgJ75q9KP5ZuaL7qPP/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda)": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 12 November 2025 - Perubahan Kelima Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1EBVU_iJKOXyrfIbKt2VWToqbhIpa1bfD/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda).",
+              url: "https://docs.google.com/document/d/example14-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda).",
+              url: "https://docs.google.com/document/d/example14-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Senin, 24 November 2025 - Dokumen penetapan untuk Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda).",
+              url: "https://drive.google.com/file/d/1L5J3grW5ScuOLeY3Z5iTJXrE5gYd5flg/view?usp=sharing"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Senin, 29 Desember 2025 - Pengundangan Perda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda).",
+                url: "https://drive.google.com/file/d/1K48gzI8oWHg6QJC1-Sg67bjMzFmg_vdE/view?usp=sharing"
+              }
+            ]
+        },
+        "Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 30 Juni 2025 - Perubahan Kedua Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1FcOLje_N0bFBKSCUZww8IM7Slnnrb3nt/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut.",
+              url: "https://docs.google.com/document/d/example15-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut.",
+              url: "https://docs.google.com/document/d/example15-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut.",
+              url: "https://docs.google.com/document/d/example15-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 30 Juni 2025 - Perubahan Kedua Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1FcOLje_N0bFBKSCUZww8IM7Slnnrb3nt/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah.",
+              url: "https://docs.google.com/document/d/example16-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah.",
+              url: "https://docs.google.com/document/d/example16-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah.",
+              url: "https://docs.google.com/document/d/example16-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 30 Juni 2025 - Perubahan Kedua Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2025.",
+              url: "https://drive.google.com/file/d/1FcOLje_N0bFBKSCUZww8IM7Slnnrb3nt/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan.",
+              url: "https://docs.google.com/document/d/example17-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan.",
+              url: "https://docs.google.com/document/d/example17-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan.",
+              url: "https://docs.google.com/document/d/example17-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Dokumen perencanaan untuk Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan.",
+              url: "https://docs.google.com/document/d/example18-perencanaan/edit"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan 18",
+              note: "Dokumen penyusunan untuk Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan.",
+              url: "https://docs.google.com/document/d/example18-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan 18",
+              note: "Dokumen pembahasan untuk Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan.",
+              url: "https://docs.google.com/document/d/example18-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama 18",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan.",
+              url: "https://docs.google.com/document/d/example18-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Penyelenggaraan Jasa Konstruksi": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 29 September 2025 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2026.",
+              url: "https://drive.google.com/file/d/1k3OX4WMGW3C1K_awW2EzOhB6p6Vn3XRk/view"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Penyelenggaraan Jasa Konstruksi.",
+              url: "https://docs.google.com/document/d/example19-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penyelenggaraan Jasa Konstruksi.",
+              url: "https://docs.google.com/document/d/example19-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Penyelenggaraan Jasa Konstruksi.",
+              url: "https://docs.google.com/document/d/example19-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan Belum Tersedia",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 29 September 2025 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2026.",
+              url: "https://drive.google.com/file/d/1k3OX4WMGW3C1K_awW2EzOhB6p6Vn3XRk/view"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman.",
+              url: "https://docs.google.com/document/d/example20-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman.",
+              url: "https://docs.google.com/document/d/example20-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman.",
+              url: "https://docs.google.com/document/d/example20-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan Belum Tersedia",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Pengelolaan Cendana": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 29 September 2025 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2026.",
+              url: "https://drive.google.com/file/d/1k3OX4WMGW3C1K_awW2EzOhB6p6Vn3XRk/view"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Pengelolaan Cendana.",
+              url: "https://docs.google.com/document/d/example21-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Pengelolaan Cendana.",
+              url: "https://docs.google.com/document/d/example21-pembahasan/edit"
+            }
+          ],
+          Penetapan: [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Pengelolaan Cendana.",
+              url: "https://docs.google.com/document/d/example21-penetapan/edit"
+            }
+          ],
+          Pengundangan: [
+              {
+                label: "Dokumen Penetapan dan Pengundangan Belum Tersedia",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Pengelolaan Perhutanan Sosial": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 29 September 2025 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2026.",
+              url: "https://drive.google.com/file/d/1k3OX4WMGW3C1K_awW2EzOhB6p6Vn3XRk/view"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan Belum Tersedia",
+              note: "Dokumen penyusunan untuk Ranperda tentang Pengelolaan Perhutanan Sosial.",
+              url: "https://docs.google.com/document/d/example22-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Pengelolaan Perhutanan Sosial.",
+              url: "https://docs.google.com/document/d/example22-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Pengelolaan Perhutanan Sosial.",
+              url: "https://docs.google.com/document/d/example22-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan Belum Tersedia",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Senin, 29 September 2025 - Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2026.",
+              url: "https://drive.google.com/file/d/1k3OX4WMGW3C1K_awW2EzOhB6p6Vn3XRk/view"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Ranperda",
+              note: "Jum'at, 17 April 2026 - Draft 00 Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://drive.google.com/file/d/1s9M2B1vH0hpeKXNDwscdH1ZOzSxyHH9X/view?usp=sharing"
+            },
+            {
+              label: "Dokumen Naskah Akademik",
+              note: "Jum'at, 17 April 2026 - Naskah Akademik Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://drive.google.com/file/d/1oQZQ28TpA7ZSWdGPbCvQkFQ68s4NZaDr/view?usp=sharing"
+            },
+            {
+              label: "Dokumen Notula Rapat Badan Pembentukan Peraturan Daerah",
+              note: "Senin, 4 Mei 2026 - Notula Rapat Badan Pembentukan Peraturan Daerah terkait Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://drive.google.com/file/d/1ySf4OwdwMsVYnvBrVQZu9mjL-sArDs6N/view?usp=sharing"
+            },
+            {
+              label: "Dokumen Notula Rapat Badan Pembentukan Peraturan Daerah",
+              note: "Selasa, 5 Mei 2026 - Notula Rapat Badan Pembentukan Peraturan Daerah terkait Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://drive.google.com/file/d/1GzGUHFgNAO66brqVqYSCPcCHDou4RRdE/view?usp=sharing"
+            },
+            {
+              label: "Dokumen Notula Rapat Badan Pembentukan Peraturan Daerah",
+              note: "Rabu, 6 Mei 2026 - Notula Rapat Badan Pembentukan Peraturan Daerah terkait Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://drive.google.com/file/d/1KQq12FurnLf23hQZZTgnhvdDGweah-n9/view?usp=sharing"
+            },
+            {
+              label: "Dokumen Ranperda",
+              note: "Rabu, 13 Mei 2026 - Draft 01 Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://drive.google.com/file/d/1Ww2qD_9HRPcWFdsFTwmutaNETJOOr0tm/view?usp=sharing"
+            },
+            {
+              label: "Dokumen Notula Rapat Badan Pembentukan Peraturan Daerah",
+              note: "Senin, 25 Mei 2026 - Notula Rapat Badan Pembentukan Peraturan Daerah terkait Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://drive.google.com/file/d/1ENKrc2WhCkO5BtKTtj-ACUlnleT0nhvI/view?usp=sharing"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example23-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example23-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan Belum Tersedia",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda)": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Dokumen perencanaan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda).",
+              url: "https://docs.google.com/document/d/example24-perencanaan/edit"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan",
+              note: "Dokumen penyusunan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda).",
+              url: "https://docs.google.com/document/d/example24-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan",
+              note: "Dokumen pembahasan untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda).",
+              url: "https://docs.google.com/document/d/example24-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda).",
+              url: "https://docs.google.com/document/d/example24-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Dokumen perencanaan untuk Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example25-perencanaan/edit"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Penyusunan",
+              note: "Dokumen penyusunan untuk Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example25-penyusunan/edit"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example25-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur.",
+              url: "https://docs.google.com/document/d/example25-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example-pengundangan/edit"
+              }
+            ]
+        },
+        "Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat": {
+          Perencanaan: [
+            {
+              label: "Dokumen Perencanaan",
+              note: "Kamis, 26 Maret 2026 - Perubahan Ketiga Atas Keputusan DPRD Provinsi NTT tentang Program Pembentukan Peraturan Daerah Tahun 2026.",
+              url: "https://drive.google.com/file/d/1LagqGJnMHLgY8ry_CAGFSv4JYufiQyvp/view?usp=sharing"
+            }
+          ],
+          Penyusunan: [
+            {
+              label: "Dokumen Naskah Akademik",
+              note: "Dokumen Naskah Akademik Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat.",
+              url: "https://drive.google.com/file/d/1zAkZRdkiYHq7NBWcBImUC-G9heqhoMuy/view?usp=sharing"
+            },
+             {
+              label: "Dokumen Ranperda",
+              note: "Dokumen Draft 00 Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat.",
+              url: "https://drive.google.com/file/d/1i-aRD0pocAtWcCpCJd0Q9uXHJ-M3Lz2V/view?usp=sharing"
+            },
+            {
+              label: "Dokumen Notula Rapat Badan Pembentukan Peraturan Daerah",
+              note: "Senin, 3 Agustus 2026 - Rapat BAPEMPERDA terkait Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat.",
+              url: "https://drive.google.com/file/d/1IIHy6-jTjtFdhUOACONwj1MJ3Bmo03bJ/view?usp=sharing"
+            },
+            {
+              label: "Dokumen Notula Rapat Badan Pembentukan Peraturan Daerah",
+              note: "Selasa, 4 Agustus 2026 - Rapat BAPEMPERDA terkait Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat.",
+              url: "https://drive.google.com/file/d/1YWB539jzKe5dJ8SI9L8esxWy9Grjz9jX/view?usp=sharing"
+            }
+          ],
+          Pembahasan: [
+            {
+              label: "Dokumen Pembahasan Belum Tersedia",
+              note: "Dokumen pembahasan untuk Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat.",
+              url: "https://docs.google.com/document/d/example28-pembahasan/edit"
+            }
+          ],
+          "Persetujuan Bersama": [
+            {
+              label: "Dokumen Persetujuan Bersama Belum Tersedia",
+              note: "Dokumen persetujuan bersama untuk Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat.",
+              url: "https://docs.google.com/document/d/example28-penetapan/edit"
+            }
+          ],
+          "Penetapan dan Pengundangan": [
+              {
+                label: "Dokumen Penetapan dan Pengundangan Belum Tersedia",
+                note: "Dokumen penetapan dan pengundangan untuk tahap akhir pembentukan Perda.",
+                url: "https://docs.google.com/document/d/example28-pengundangan/edit"
+              }
+            ]
+        }
+      };
+
+      const ranperdaProfiles = {
+        "Ranperda tentang Perubahan Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 1 Tahun 2024 tentang Pajak Daerah dan Retribusi Daerah": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 1',
+          documentUrl: 'https://docs.google.com/document/d/example1/edit'
+        },
+        "Ranperda tentang Pengalokasian Anggaran Penyelenggaraan Bantuan Hukum": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 2',
+          documentUrl: 'https://docs.google.com/document/d/example2/edit'
+        },
+        "Ranperda tentang Tugas Belajar, Ijin Belajar dan Bantuan Belajar": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 3',
+          documentUrl: 'https://docs.google.com/document/d/example3/edit'
+        },
+        "Ranperda tentang Penyelenggaraan Penanaman Modal": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 4',
+          documentUrl: 'https://docs.google.com/document/d/example4/edit'
+        },
+        "Ranperda tentang Penyelenggaraan Transportasi": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 5',
+          documentUrl: 'https://docs.google.com/document/d/example5/edit'
+        },
+        "Ranperda tentang Penyertaan Modal Daerah pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur": {
+          progress: 'done,done,done,done,pending',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 6',
+          documentUrl: 'https://docs.google.com/document/d/example6/edit'
+        },
+        "Ranperda tentang Rencana Pembangunan Jangka Menengah Daerah Provinsi Nusa Tenggara Timur Tahun 2025-2029": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 7',
+          documentUrl: 'https://docs.google.com/document/d/example7/edit'
+        },
+        "Ranperda tentang Pembentukan Dana Cadangan Pekan Olahraga Nasional XXII Tahun 2028": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 8',
+          documentUrl: 'https://docs.google.com/document/d/example8/edit'
+        },
+        "Ranperda tentang Perubahan Keempat Atas Peraturan Daerah Provinsi Nusa Tenggara Timur Nomor 9 Tahun 2006 tentang Pembentukan dan Susunan Perangkat Daerah Provinsi Nusa Tenggara Timur": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 9',
+          documentUrl: 'https://docs.google.com/document/d/example9/edit'
+        },
+        "Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Flobamor Menjadi PT. Flobamor (Perseroda)": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 10',
+          documentUrl: 'https://docs.google.com/document/d/example10/edit'
+        },
+        "Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Penjaminan Kredit Daerah Nusa Tenggara Timur Menjadi PT. Jamkrida NTT (Perseroda)": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 11',
+          documentUrl: 'https://docs.google.com/document/d/example11/edit'
+        },
+        "Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Flobamor (Perseroda)": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 12',
+          documentUrl: 'https://docs.google.com/document/d/example12/edit'
+        },
+        "Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Jamkrida NTT (Perseroda)": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 13',
+          documentUrl: 'https://docs.google.com/document/d/example13/edit'
+        },
+        "Ranperda tentang Penambahan Penyertaan Modal Daerah pada PT. Kawasan Industri Bolok (Perseroda)": {
+          progress: 'done,done,done,done,done',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 14',
+          documentUrl: 'https://docs.google.com/document/d/example14/edit'
+        },
+        "Ranperda tentang Penyelenggaraan Ketertiban Umum Dan Ketentraman Masyarakat Serta Pelindungan Masyarakat": {
+          progress: 'done,pending,pending,pending,pending',
+          initiator: 'DPRD',
+          documentLabel: 'Dokumen Ranperda 28',
+          documentUrl: 'https://docs.google.com/document/d/example28/edit'
+        },
+        "Ranperda tentang Pemajuan Kearifan Lokal Dalam Pengelolaan Sumber Daya Pesisir dan Laut": {
+          progress: 'done,done,done,done,pending',
+          initiator: 'DPRD',
+          documentLabel: 'Dokumen Ranperda 15',
+          documentUrl: 'https://docs.google.com/document/d/example15/edit'
+        },
+        "Ranperda tentang Perlindungan Tenaga Kerja Informal Bukan Penerima Upah": {
+          progress: 'done,done,done,done,done',
+          initiator: 'DPRD',
+          documentLabel: 'Dokumen Ranperda 16',
+          documentUrl: 'https://docs.google.com/document/d/example16/edit'
+        },
+        "Ranperda tentang Tanggungjawab Sosial dan Lingkungan Perusahaan": {
+          progress: 'done,done,done,done,pending',
+          initiator: 'DPRD',
+          documentLabel: 'Dokumen Ranperda 17',
+          documentUrl: 'https://docs.google.com/document/d/example17/edit'
+        },
+        "Ranperda tentang Tanggung Jawab Sosial dan Lingkungan Perusahaan": {
+          progress: 'done,done,done,done,pending',
+          initiator: 'DPRD',
+          documentLabel: 'Dokumen Ranperda 18',
+          documentUrl: 'https://docs.google.com/document/d/example18/edit'
+        },
+        "Ranperda tentang Penyelenggaraan Jasa Konstruksi": {
+          progress: 'done,pending,pending,pending,pending',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 19',
+          documentUrl: 'https://docs.google.com/document/d/example19/edit'
+        },
+        "Ranperda tentang Rencana Pembangunan dan Pengembangan Perumahan dan Kawasan Pemukiman": {
+          progress: 'done,pending,pending,pending,pending',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 20',
+          documentUrl: 'https://docs.google.com/document/d/example20/edit'
+        },
+        "Ranperda tentang Pengelolaan Cendana": {
+          progress: 'done,pending,pending,pending,pending',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 21',
+          documentUrl: 'https://docs.google.com/document/d/example21/edit'
+        },
+        "Ranperda tentang Pengelolaan Perhutanan Sosial": {
+          progress: 'done,pending,pending,pending,pending',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 22',
+          documentUrl: 'https://docs.google.com/document/d/example22/edit'
+        },
+        "Ranperda tentang Pengelolaan Daerah Aliran Sungai di Provinsi Nusa Tenggara Timur": {
+          progress: 'done,pending,pending,pending,pending',
+          initiator: 'DPRD',
+          documentLabel: 'Dokumen Ranperda 23',
+          documentUrl: 'https://docs.google.com/document/d/1yYtrgRaLAQ3vFjFy8acl8z9W9xvH-yfj/edit?usp=sharing&ouid=113953178339488043391&rtpof=true&sd=true'
+        },
+        "Ranperda tentang Perubahan Bentuk Hukum Perseroan Terbatas Bank Nusa Tenggara Timur Menjadi PT. Bank NTT (Perseroda)": {
+          progress: 'done,done,done,done,pending',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 24',
+          documentUrl: 'https://docs.google.com/document/d/example24/edit'
+        },
+        "Ranperda tentang Penyertaan Modal Pada Perseroan Terbatas Bank Pembangunan Daerah Nusa Tenggara Timur": {
+          progress: 'done,done,done,done,pending',
+          initiator: 'Pemerintah Daerah',
+          documentLabel: 'Dokumen Ranperda 25',
+          documentUrl: 'https://docs.google.com/document/d/example25/edit'
+        }
+      };
+
+      const genericStageDocuments = {
+        Perencanaan: [
+          {
+            label: 'Dokumen PROPEMPERDA',
+            note: 'Dokumen program pembentukan Perda untuk tahap perencanaan.',
+            url: 'https://drive.google.com/file/d/1ZtJNNpHjtTU3ntNonpqhxlvpJuGMjAIZ/view?usp=sharing'
+          }
+        ],
+        Penyusunan: [
+          {
+            label: 'Draft Ranperda',
+            note: 'Dokumen hasil penyusunan ranperda.',
+            url: 'https://docs.google.com/document/d/example-approval/edit'
+          }
+        ],
+        Pembahasan: [
+          {
+            label: 'Draft Ranperda',
+            note: 'Dokumen Ranperda yang sedang dibahas.',
+            url: 'https://docs.google.com/document/d/example1/edit'
+          },
+          {
+            label: 'Naskah Akademik',
+            note: 'Dokumen pendukung naskah akademik.',
+            url: 'https://docs.google.com/document/d/exampleNA/edit'
+          }
+        ],
+        "Persetujuan Bersama": [
+          {
+            label: 'Dokumen Persetujuan Bersama',
+            note: 'Surat keputusan penetapan Perda.',
+            url: 'https://docs.google.com/document/d/example-sk/edit'
+          }
+        ],
+        Penetapan: [
+          {
+            label: 'Dokumen Persetujuan Bersama',
+            note: 'Surat keputusan penetapan Perda.',
+            url: 'https://docs.google.com/document/d/example-sk/edit'
+          }
+        ],
+        Pengundangan: [
+          {
+            label: 'Dokumen Penetapan dan Pengundangan',
+            note: 'Berita acara dan dokumen pengundangan Perda.',
+            url: 'https://docs.google.com/document/d/example-undang/edit'
+          }
+        ]
+      };
+
+      const getStageDocumentsForRanperda = (title, stage) => {
+        const specificDocuments = stageDocumentsByRanperda[title];
+        const documentsByStage = specificDocuments ? { ...genericStageDocuments, ...specificDocuments } : genericStageDocuments;
+
+        if (stage === 'Persetujuan Bersama') {
+          return documentsByStage['Persetujuan Bersama'] || documentsByStage['Penetapan'] || [];
+        }
+
+        if (stage === 'Penetapan dan Pengundangan') {
+          return documentsByStage['Penetapan dan Pengundangan'] || documentsByStage['Pengundangan'] || [];
+        }
+
+        return documentsByStage[stage] || [];
+      };
+
+      const getStageLabel = (progressStr) => {
+        const stages = normalizeStages(progressStr);
+        for (let i = 0; i < stages.length; i += 1) {
+          if (stages[i] !== 'done') return stageLabels[i];
+        }
+        return stageLabels[stageLabels.length - 1];
+      };
+
+      const renderStageDocuments = (container, stage, title) => {
+        if (!container) return;
+        const documents = getStageDocumentsForRanperda(title, stage);
+        container.innerHTML = documents.length ? documents.map((doc) => {
+          const label = stage === 'Persetujuan Bersama'
+            ? doc.label
+                .replace(/Dokumen Penetapan Belum Tersedia/i, 'Dokumen Persetujuan Bersama Belum Tersedia')
+                .replace(/^Dokumen Penetapan$/i, 'Dokumen Persetujuan Bersama')
+                .replace(/^SK Penetapan$/i, 'Dokumen Persetujuan Bersama')
+            : doc.label;
+          const note = stage === 'Persetujuan Bersama'
+            ? doc.note.replace(/\bpenetapan\b/i, 'persetujuan bersama')
+            : doc.note;
+          return `
+            <a href="${doc.url}" target="_blank" rel="noopener noreferrer" class="stage-document-card">
+              <div>
+                <span class="stage-document-label">${label}</span>
+                <span class="stage-document-note">${note}</span>
+              </div>
+              <span class="progress-document-icon"><i class="fa-solid fa-file-lines"></i></span>
+            </a>
+          `;
+        }).join('') : '<p class="stage-document-note">Tidak ada dokumen tahap yang tersedia.</p>';
+      };
+
+      const updateStageSelection = (panel, selectedStage) => {
+        if (!panel) return;
+        panel.querySelectorAll('.stage-selector-btn').forEach((button) => {
+          button.classList.toggle('active', button.dataset.stage === selectedStage);
+        });
+        const stageGrid = panel.querySelector('.stage-documents-grid');
+        const ranperdaTitle = panel.dataset.currentRanperda || '';
+        renderStageDocuments(stageGrid, selectedStage, ranperdaTitle);
+      };
+
+      document.querySelectorAll('.ranperda-table-wrap').forEach((wrap) => {
+        const searchInput = wrap.querySelector('.ranperda-search input[type="search"]');
+        const tableBody = wrap.querySelector('.ranperda-table-body');
+        const rows = Array.from(tableBody ? tableBody.querySelectorAll('tr') : []);
+        const progressPanel = wrap.querySelector('.ranperda-progress-panel');
+        const progressTitle = wrap.querySelector('.ranperda-progress-title');
+        const progressMeta = wrap.querySelector('.ranperda-progress-meta');
+        const progressTracker = wrap.querySelector('.ranperda-progress-tracker');
+
+        wrap.querySelectorAll('.status-button').forEach((button) => {
+          button.addEventListener('click', () => {
+            if (progressPanel) progressPanel.hidden = false;
+            if (progressTitle) progressTitle.textContent = button.dataset.title;
+            const progressCard = progressPanel;
+            const metaText = progressCard.querySelector('.progress-meta-text');
+            const documentCard = progressCard.querySelector('.progress-document-card');
+            const extraContainer = progressCard.querySelector('.progress-extra');
+
+            const title = button.dataset.title || '';
+            const profile = ranperdaProfiles[title] || {};
+            const initiator = profile.initiator || button.dataset.initiator || '-';
+            const progressValue = profile.progress || button.dataset.progress || 'pending,pending,pending,pending,pending';
+            const documentLabel = profile.documentLabel || 'Dokumen Sidang - Dokumen Pendukung Lain';
+            const documentUrl = profile.documentUrl || 'https://docs.google.com/document/d/19Tg8tpcHWz6nTFcWFVWv8Y2Fyq3P4Nzr/edit?usp=drive_link&ouid=113953178339488043391&rtpof=true&sd=true';
+
+            if (metaText) metaText.textContent = initiator;
+            if (documentCard) {
+              const labelElement = documentCard.querySelector('.progress-document-label');
+              if (labelElement) labelElement.textContent = documentLabel;
+              documentCard.href = documentUrl;
+            }
+            if (progressPanel) {
+              progressPanel.dataset.currentRanperda = title;
+            }
+            renderProgressTracker(progressTracker, progressValue);
+            if (progressPanel) {
+              const activeStage = getStageLabel(progressValue);
+              updateStageSelection(progressPanel, activeStage);
+            }
+            progressPanel?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          });
+        });
+
+        if (progressPanel) {
+          progressPanel.querySelectorAll('.stage-selector-btn').forEach((button) => {
+            button.addEventListener('click', () => updateStageSelection(progressPanel, button.dataset.stage));
+          });
+        }
+
+        if (searchInput && tableBody) {
+          searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim().toLowerCase();
+            rows.forEach((row) => {
+              const text = row.textContent.toLowerCase();
+              row.style.display = text.includes(query) ? '' : 'none';
+            });
+          });
+        }
+      });
+
+      const updateVisitorCount = () => {
+        const storageKey = 'okesipVisitorCount';
+        const storedCount = Number(localStorage.getItem(storageKey) || 0);
+        const newCount = storedCount + 1;
+        localStorage.setItem(storageKey, String(newCount));
+        const visitorCountEl = document.querySelector('#visitor-count');
+        if (visitorCountEl) visitorCountEl.textContent = newCount.toLocaleString('id-ID');
+      };
+
+      const updateFooterTime = () => {
+        const now = new Date();
+        const dateFormatter = new Intl.DateTimeFormat('id-ID', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'Asia/Jakarta'
+        });
+        const timeFormatter = (timeZone) => new Intl.DateTimeFormat('id-ID', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          timeZone
+        });
+
+        const footerDate = document.getElementById('footer-date');
+        const footerClockWib = document.getElementById('footer-clock-wib');
+        const footerClockWita = document.getElementById('footer-clock-wita');
+        const footerClockWit = document.getElementById('footer-clock-wit');
+
+        if (footerDate) footerDate.textContent = dateFormatter.format(now);
+        if (footerClockWib) footerClockWib.textContent = timeFormatter('Asia/Jakarta').format(now);
+        if (footerClockWita) footerClockWita.textContent = timeFormatter('Asia/Makassar').format(now);
+        if (footerClockWit) footerClockWit.textContent = timeFormatter('Asia/Jayapura').format(now);
+      };
+
+      document.querySelector('#current-year').textContent = new Date().getFullYear();
+      updateVisitorCount();
+      updateFooterTime();
+      setInterval(updateFooterTime, 1000);
+
+      // Grafik Status Ranperda
+      let chartPengusul, chartStatus;
+
+      const renderPengusulSummary = (pengusulData) => {
+        const summaryEl = document.getElementById('pengusul-summary');
+        if (!summaryEl) return;
+
+        const labels = ['Pemerintah Daerah', 'DPRD'];
+        const values = labels.map((label) => Number(pengusulData?.[label] || 0));
+        const total = values.reduce((sum, value) => sum + value, 0);
+        const colors = ['#0f4c81', '#f0c96b'];
+
+        summaryEl.innerHTML = labels.map((label, index) => {
+          const value = values[index];
+          const percent = total > 0 ? Math.round((value / total) * 100) : 0;
+          return `
+            <div class="chart-summary__item">
+              <span><span style="display:inline-block;width:10px;height:10px;border-radius:999px;background:${colors[index]};margin-right:8px;"></span>${label}</span>
+              <span class="chart-summary__value">${value} (${percent}%)</span>
+            </div>
+          `;
+        }).join('');
+      };
+      
+      const initializeCharts = () => {
+        if (typeof Chart === 'undefined') {
+          const summaryEl = document.getElementById('pengusul-summary');
+          if (summaryEl) summaryEl.textContent = 'Grafik tidak tersedia karena library Chart.js gagal dimuat.';
+          return;
+        }
+
+        const defaultYear = document.querySelector('[data-chart-year].active')?.dataset.chartYear || '2025';
+        const currentData = getChartData(defaultYear);
+        
+        // Inisialisasi Chart Pengusul (Pie Chart)
+        const ctxPengusul = document.getElementById('chart-pengusul');
+        if (chartPengusul) chartPengusul.destroy();
+        
+        chartPengusul = new Chart(ctxPengusul, {
+          type: 'doughnut',
+          data: {
+            labels: ['Pemerintah Daerah', 'DPRD'],
+            datasets: [{
+              data: [currentData.pengusul['Pemerintah Daerah'], currentData.pengusul['DPRD']],
+              backgroundColor: ['#0f4c81', '#f0c96b'],
+              borderColor: '#fff',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  font: { size: 13, weight: '600' },
+                  padding: 15,
+                  usePointStyle: true
+                }
+              }
+            }
+          }
+        });
+        renderPengusulSummary(currentData.pengusul);
+        
+        // Inisialisasi Chart Status (Bar Chart)
+        const ctxStatus = document.getElementById('chart-status');
+        if (chartStatus) chartStatus.destroy();
+        
+        chartStatus = new Chart(ctxStatus, {
+          type: 'bar',
+          data: {
+            labels: currentData.labels,
+            datasets: [{
+              label: 'Jumlah Ranperda',
+              data: currentData.labels.map((label) => currentData.status[label]),
+              backgroundColor: '#0f4c81',
+              borderColor: '#0b355a',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            indexAxis: 'x',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  font: { size: 12, weight: '600' },
+                  usePointStyle: true
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1
+                }
+              }
+            }
+          }
+        });
+      };
+      
+      // Event listener untuk tombol tahun
+      document.querySelectorAll('[data-chart-year]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (typeof Chart === 'undefined' || !chartPengusul || !chartStatus) return;
+
+          document.querySelectorAll('[data-chart-year]').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const year = btn.dataset.chartYear;
+          const data = getChartData(year);
+          
+          // Update Chart Pengusul
+          chartPengusul.data.datasets[0].data = [
+            data.pengusul['Pemerintah Daerah'],
+            data.pengusul['DPRD']
+          ];
+          chartPengusul.update();
+          renderPengusulSummary(data.pengusul);
+          
+          // Update Chart Status
+          chartStatus.data.labels = data.labels;
+          chartStatus.data.datasets[0].data = data.labels.map((label) => data.status[label]);
+          chartStatus.update();
+        });
+      });
+      
+      const chartStatusDataByYear = {
+        '2025': {
+          Perencanaan: 17,
+          Penyusunan: 17,
+          Pembahasan: 17,
+          'Persetujuan Bersama': 17,
+          'Penetapan dan Pengundangan': 14
+        },
+        '2026': {
+          Perencanaan: 11,
+          Penyusunan: 6,
+          Pembahasan: 5,
+          'Persetujuan Bersama': 5,
+          'Penetapan dan Pengundangan': 1
+        }
+      };
+
+      // Helper function untuk mendapatkan data
+      const getChartData = (year) => {
+        const pageId = year === '2025' ? 'Informasi2025' : 'Informasi2026';
+        const page = document.getElementById(pageId);
+        const pengusul = { 'Pemerintah Daerah': 0, 'DPRD': 0 };
+        const status = chartStatusDataByYear[year]
+          ? { ...chartStatusDataByYear[year] }
+          : { Perencanaan: 0, Penyusunan: 0, Pembahasan: 0, 'Persetujuan Bersama': 0, 'Penetapan dan Pengundangan': 0 };
+
+        if (!page) return { pengusul, status, labels: stageLabels };
+        
+        const tableBody = page.querySelector('.ranperda-table-body');
+        if (!tableBody) return { pengusul, status, labels: stageLabels };
+        
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach((row) => {
+          const cells = row.querySelectorAll('td');
+          if (cells.length >= 4) {
+            // Kolom 3: Pengusul
+            const pengusulCell = cells[2].textContent.trim();
+            if (pengusulCell === 'Pemerintah Daerah') pengusul['Pemerintah Daerah']++;
+            else if (pengusulCell === 'DPRD') pengusul['DPRD']++;
+          }
+        });
+        
+        return { pengusul, status, labels: stageLabels };
+      };
+      
+      // Inisialisasi grafik saat halaman dimuat
+      initializeCharts();
+
+      const pageFromHash = window.location.hash.replace('#', '');
+      if (pageFromHash && document.getElementById(pageFromHash)) showPage(pageFromHash);
+      else showPage('beranda');
+    });
+    </script>
+  </body>
+</html>

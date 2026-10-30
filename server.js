@@ -21,6 +21,10 @@ const HOST = env.HOST || '0.0.0.0';
 const DATA_DIR = path.resolve(env.DATA_DIR || path.join(ROOT, 'data'));
 const UPLOAD_DIR = path.resolve(env.UPLOAD_DIR || path.join(ROOT, 'uploads'));
 const PUBLIC_DIR = path.join(ROOT, 'public');
+const ROOT_STATIC_FILES = new Map([
+  ['/', 'frontend.html'],
+  ['/admin/', 'index.html'],
+]);
 const MAX_UPLOAD_MB = Number(env.MAX_UPLOAD_MB) || 25;
 const MAX_UPLOAD = MAX_UPLOAD_MB * 1024 * 1024;
 const SESSION_HOURS = 12;
@@ -185,6 +189,12 @@ async function readJsonBody(req) {
   const raw = (await readBody(req)).toString('utf8');
   try { return raw ? JSON.parse(raw) : {}; } catch { throw bad('Format JSON tidak valid'); }
 }
+async function readSurveyBody(req) {
+  const contentType = String(req.headers['content-type'] || '').split(';', 1)[0].trim().toLowerCase();
+  if (contentType !== 'application/x-www-form-urlencoded') return readJsonBody(req);
+  const raw = (await readBody(req, 64 * 1024)).toString('utf8');
+  return Object.fromEntries(new URLSearchParams(raw));
+}
 function saveUpload(req, name) {
   return new Promise((resolve, reject) => {
     const file = path.join(UPLOAD_DIR, name);
@@ -282,7 +292,7 @@ on('POST', '/api/visit', ({ res, ip }) => {
 
 on('POST', '/api/survey', async ({ req, res, ip }) => {
   if (blocked(`survey:${ip}`, 5)) throw bad('Terlalu banyak pengiriman. Coba lagi nanti.', 429);
-  const b = await readJsonBody(req);
+  const b = await readSurveyBody(req);
   const nama = str(b.nama, 100);
   if (!nama) throw bad('Nama wajib diisi');
   const q = SURVEY_QUESTIONS.map((_, i) => {
@@ -295,7 +305,7 @@ on('POST', '/api/survey', async ({ req, res, ip }) => {
   surveys.push(entry);
   writeJson('survey.json', surveys);
   strike(`survey:${ip}`, 36e5);
-  json(res, 201, { ok: true });
+  json(res, 201, { status: 'success', ok: true });
 }, { cors: true });
 
 // Autentikasi
@@ -446,6 +456,13 @@ function serveStatic(req, res, pathname) {
     const name = p.slice(9);
     if (!/^[\w][\w.-]*$/.test(name)) throw bad('Berkas tidak ditemukan', 404);
     return sendFile(req, res, path.join(UPLOAD_DIR, name), { upload: true });
+  }
+  const rootFile = ROOT_STATIC_FILES.get(p);
+  if (rootFile) {
+    const file = p === '/admin/' && fs.existsSync(path.join(PUBLIC_DIR, 'admin', 'index.html'))
+      ? path.join(PUBLIC_DIR, 'admin', 'index.html')
+      : path.join(ROOT, rootFile);
+    return sendFile(req, res, file);
   }
   if (p.endsWith('/')) p += 'index.html';
   const file = path.resolve(PUBLIC_DIR, '.' + p);

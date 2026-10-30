@@ -5,6 +5,7 @@ sehingga data dan dokumen cukup diperbarui lewat panel admin — tanpa mengedit 
 
 - **Tanpa instalasi paket**: hanya butuh [Node.js](https://nodejs.org) versi 18 atau lebih baru. Tidak ada `npm install`.
 - Data tersimpan di berkas JSON (`data/`), berkas unggahan di `uploads/`.
+- Halaman publik disajikan dari `frontend.html`; panel admin tersedia di `/admin/`.
 
 ## Menjalankan
 
@@ -39,7 +40,9 @@ Grafik di beranda dihitung otomatis dari data Ranperda.
 
 ```
 server.js            backend (API + penyajian berkas)
-public/              situs publik (index.html, app.js, style.css) + public/admin/ (panel admin)
+frontend.html        halaman publik
+index.html           panel admin
+public/              aset statis publik (opsional, termasuk logo)
 data/db.json         data Ranperda & PROPEMPERDA
 data/survey.json     jawaban survei
 data/stats.json      penghitung pengunjung
@@ -139,3 +142,6 @@ dieksekusi; semua teks dari data di-escape di halaman publik; tautan hanya boleh
 
 Publik: `GET /api/public`, `POST /api/visit`, `POST /api/survey`.
 Admin (perlu login): `/api/admin/ranperda`, `/api/admin/propemperda`, `/api/admin/upload`, `/api/admin/surveys`, `/api/admin/backup`.
+
+Endpoint survei menerima JSON maupun formulir `application/x-www-form-urlencoded` dan menyimpan jawaban ke `data/survey.json`.
+Saat ini formulir di `frontend.html` masih mengirim langsung ke URL Google Apps Script yang tertanam di halaman, jadi survei dari halaman tersebut tidak masuk ke endpoint lokal.
